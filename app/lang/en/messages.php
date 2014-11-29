@@ -1,0 +1,9 @@
+<?php
+
+return array(
+	"registrationSuccess" => "Your account is created successfully. Please check your email for activation.",
+	"activationSuccess" => "Your account is activated.Please login using your username and password.",  
+	"emailHelp" => "Your email id.",
+	"usernameHelp" => "Atleast 8 character long username.",
+	"passwordHelp" => "Atleast 8 character long password.",
+);
