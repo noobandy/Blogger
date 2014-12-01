@@ -8,9 +8,9 @@ class LoginController extends BaseController {
 
 		//validation post data
 		$validator = Validator::make($registrationData, array(
-			"username" => "required | min:8 | unique:users",
+			"username" => "required | unique:users",
 			"email" => "required | email | unique:users",
-			"password" => "required | min:8"
+			"password" => "required | min:6"
 			));
 
 		if($validator->fails()){
@@ -19,9 +19,12 @@ class LoginController extends BaseController {
 			
 			//save user data in db
 			$key = uniqid();
-			$user = new User($registrationData);
+			$user = new User();
+			$user->username = $registrationData["username"];
+			$user->email = $registrationData["email"];
+			$user->password = Hash::make($registrationData["password"]);
 			$user->activationKey = $key;
-			$user->activatedAt = null;
+			$user->active = false;
 			$user->save();
 			
 			$mailData = array("to" => $user->email, "username" => $user->username, "key" => $key);
@@ -43,26 +46,53 @@ class LoginController extends BaseController {
 		//Get activation key form request 
 		$username = Input::get("username");
 		$key = Input::get("key");
-		$user = User::where("username" , "=", $username)->whereNull("activatedAt")->firstOrFail();
+		$user = User::where("username" , "=", $username)->where("active" , "=", false)->firstOrFail();
 		
 		//verify and activate account
 
 		if(strcasecmp($key,$user->activationKey) == 0){
-			$now = date("Y-m-d H:i:s");
-			$user->activatedAt = $now;
+		
+			$user->active = true;
 			$user->save();
 
 			//Flassh message 
 			Session::flash("flashMessage",array("type" => "success" ,"message" => Lang::get("messages.activationSuccess")));
+			return Redirect::to("/");
 		}
 	}
 
+	public function login(){
+		$username = Input::get("username");
+		$password = Input::get("password");
+		$remember = false;
+		if(Input::has("remember")){
+			$remember = true;
+		}
+
+		
+		if(Auth::attempt(array("username" => $username, "password" => $password, "active" => true), $remember))
+		{
+			return Redirect::intended("/blog/".Auth::user()->username);
+		}
+		
+		Session::flash("flashMessage",array("type" => "error" ,"message" => Lang::get("messages.loginFailed")));
+		return Redirect::to("/");
+	}
+
+
 	public function forgotPassword(){
 		$username = Input::get("username");
-		
-		$user = User::where("username", "=", $username)->firstOrFail();
 
-		if($user != null){
+		//validation post data
+		$validator = Validator::make(array("username" => $username), array(
+			"username" => "required"
+			));
+
+		if($validator->fails()){
+			return Redirect::to("forgotPassword")->withErrors($validator, "forgotPassword") ->withInput();
+		}else{
+			$user = User::where("username", "=", $username)->firstOrFail();
+
 			$key = uniqid();
 			$user->passwordResetKey = $key;
 			$user->save();
@@ -77,9 +107,8 @@ class LoginController extends BaseController {
 
 			//Flassh message 
 			Session::flash("flashMessage",array("type" => "success" ,"message" => Lang::get("messages.forgotPasswordMailSent")));
+			return Redirect::to("/");
 		}
-		
-		return Redirect::to("/");
 
 	}
 
@@ -88,27 +117,29 @@ class LoginController extends BaseController {
 		$username = Input::get("username");
 		$key = Input::get("key");
 		$newPassword = Input::get("newPassword");
-		$user = User::where("username", "=", $username)->where("passwordResetKey", "=", $key)->firstOrFail();
-		//verify and reset password
-		$user->password = $newPassword;
-		$user->save();
-		//Flassh message 
-		Session::flash("flashMessage",array("type" => "success" ,"message" => Lang::get("messages.resetPasswordSuccess")));
-		return Redirect::to("/");
+		$repeatNewPassword = Input::get("repeatNewPassword");
+
+		//validation post data
+		$validator = Validator::make(array("username" => $username,
+		 "key" => $key, "newPassword" => $newPassword, "repeatNewPassword" => $repeatNewPassword ),
+		  array("username" => "required",
+		 "key" => "required", "newPassword" => "required | min:6",
+		  "repeatNewPassword" => "required | min:6"
+			));
+
+		if($validator->fails()){
+			return Redirect::to("resetPassword")->withErrors($validator, "resetPassword") ->withInput();
+		} else {
+			$user = User::where("username", "=", $username)->where("passwordResetKey", "=", $key)->firstOrFail();
+			//verify and reset password
+			$user->password = Hash::make($newPassword);
+			$user->save();
+			//Flassh message 
+			Session::flash("flashMessage",array("type" => "success" ,"message" => Lang::get("messages.resetPasswordSuccess")));
+			return Redirect::to("/");
+		}
 	}
 
-	public function login(){
-		$username = Input::get("username");
-		$password = Input::get("password");
-		$user = User::where("username", "=", $username)->where("password", "=", $password);
-		if($user != null)
-		{
-			
-				//login success redirect to blogging app
-			return Redirect::to("/blog");
-		}
-		Session::flash("flashMessage",array("type" => "error" ,"message" => Lang::get("messages.loginFailed")));
-		return Redirect::to("/");
-	}
+	
 
 }

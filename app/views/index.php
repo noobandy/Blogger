@@ -20,7 +20,7 @@
 		        <span class="icon-bar"></span>
 		        <span class="icon-bar"></span>
 		      </button>
-		      <a class="navbar-brand" href="#">Blogger</a>
+		      <a class="navbar-brand" href="<?php echo(URL::to("/")); ?>">Blogger</a>
 		    </div>
 
 		    <!-- Collect the nav links, forms, and other content for toggling -->
@@ -79,6 +79,13 @@
 							</div>
 							<div class="form-group">
 								<input class="form-control" name="password" type="password" placeholder="password" />
+							</div>
+							<div class="form-group">
+								<label>
+									<input name="remember" type="checkbox" />
+									remeber
+								</label>
+								
 							</div>
 							<button class="btn btn-primary" type="submit">Login</button>
 						</form>

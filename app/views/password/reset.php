@@ -20,7 +20,7 @@
 		        <span class="icon-bar"></span>
 		        <span class="icon-bar"></span>
 		      </button>
-		      <a class="navbar-brand" href="#">Blogger</a>
+		      <a class="navbar-brand" href="<?php echo(URL::to("/")); ?>">Blogger</a>
 		    </div>
 
 		    <!-- Collect the nav links, forms, and other content for toggling -->
@@ -38,47 +38,25 @@
  		</div>
 	</nav>
 	<div class="container">
-		<?php
-			if(Session::has("flashMessage"))
-			{
-				$message = Session::get("flashMessage");
-				$alertClass = "alert-info";
-				if($message["type"] == "success"){
-					$alertClass = "alert-success";
-				}
-
-				if($message["type"] == "error"){
-					$alertClass = "alert-danger";
-				}
-
-				if($message["type"] == "warning"){
-					$alertClass = "alert-warning";
-				}
-				echo("<div class=\"row\">");
-				echo("<div class=\"col-md-12\">");
-				echo("<div class=\"alert $alertClass\" role=\"alert\">");
-				echo("<button type=\"button\" class=\"close\" data-dismiss=\"alert\">");
-				echo("<span aria-hidden=\"true\">&times;</span>");
-				echo("<span class=\"sr-only\">Close</span>");
-				echo("</button>");
-				echo($message["message"]);
-				echo("</div>");
-				echo("</div>");
-				echo("</div>");
-			}
-		?>
 		<div class="row">
 			<div class="col-md-6">
 			</div>
 			<div class="col-md-6">
 				<div class="row">
 					<div class="col-md-12">
-						<form name="loginForm" class="form-horizontal" method="post" action="<?php echo(URL::to("/forgotPassword")); ?>">
-							<legend>Reset passord</legend>
-							<div class="form-group">
-								<input class="form-control input-lg" name="username" type="text" placeholder="username" />
+						<form name="loginForm" class="form-horizontal" method="post" action="<?php echo(URL::to("/resetPassword")); ?>">
+							<legend>Change Password</legend>
+							<input type="hidden" name="token" value="<?php echo($token); ?>">
+						    <div class="form-group">
+								<input class="form-control input-lg" name="email" type="email" placeholder="email" />
 							</div>
-							<button class="btn btn-primary btn-lg" type="submit">Submit</button>
+							<div class="form-group">
+								<input class="form-control input-lg" name="password" type="password" placeholder="new password" />
+							</div>
+							<div class="form-group">
+								<input class="form-control input-lg" name="password_confirmation" type="password" placeholder="confirm password" />
+							</div>
+							<button class="btn btn-primary btn-lg" type="submit">Save</button>
 						</form>
 					</div>
 				</div>

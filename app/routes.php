@@ -22,18 +22,15 @@ Route::get("/activate", "LoginController@activate");
 
 Route::post("/login", "LoginController@login");
 
-Route::get("/forgotPassword", function(){
-	return View::make("forgotPassword");
-});
+Route::get("/forgotPassword", "RemindersController@getRemind");
 
-Route::post("/forgotPassword", "LoginController@forgotPassword");
+Route::post("/forgotPassword", "RemindersController@postRemind");
 
-Route::get("/resetPassword", function(){
-	return View::make("resetPassword");
-});
 
-Route::post("/resetPassword", "LoginController@resetPassword");
+Route::get("/password/reset/{token}", "RemindersController@getReset");
 
-Route::get("/blog",function(){
-	return "Blog";
-});
+Route::post("/resetPassword", "RemindersController@postReset");
+
+Route::get("/blog/{username}", array( "before" => "auth", function(){
+	return View::make("blog");
+}));
