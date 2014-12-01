@@ -41,14 +41,27 @@
 		<?php
 			if(Session::has("flashMessage"))
 			{
+				$message = Session::get("flashMessage");
+				$alertClass = "alert-info";
+				if($message["type"] == "success"){
+					$alertClass = "alert-success";
+				}
+
+				if($message["type"] == "error"){
+					$alertClass = "alert-danger";
+				}
+
+				if($message["type"] == "warning"){
+					$alertClass = "alert-warning";
+				}
 				echo("<div class=\"row\">");
 				echo("<div class=\"col-md-12\">");
-				echo("<div class=\"alert alert-success\" role=\"alert\">");
+				echo("<div class=\"alert $alertClass\" role=\"alert\">");
 				echo("<button type=\"button\" class=\"close\" data-dismiss=\"alert\">");
 				echo("<span aria-hidden=\"true\">&times;</span>");
 				echo("<span class=\"sr-only\">Close</span>");
 				echo("</button>");
-				echo(Session::get("flashMessage"));
+				echo($message["message"]);
 				echo("</div>");
 				echo("</div>");
 				echo("</div>");
@@ -60,7 +73,7 @@
 			<div class="col-md-6">
 				<div class="row">
 					<div class="col-md-12">
-						<form name="loginForm" class="form-inline" method="post" action="<?php URL::to("/login") ?>">
+						<form name="loginForm" class="form-inline" method="post" action="<?php echo(URL::to("/login")); ?>">
 							<div class="form-group">
 								<input class="form-control" name="username" type="text" placeholder="username" />
 							</div>

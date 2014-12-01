@@ -18,9 +18,9 @@ Route::get("/", function()
 
 Route::post("/register", "LoginController@register");
 
-Route::any("/activate", "LoginController@activate");
+Route::get("/activate", "LoginController@activate");
 
-Route::any("/login", "LoginController@login");
+Route::post("/login", "LoginController@login");
 
 Route::get("/forgotPassword", function(){
 	return View::make("forgotPassword");
@@ -34,8 +34,6 @@ Route::get("/resetPassword", function(){
 
 Route::post("/resetPassword", "LoginController@resetPassword");
 
-Route::post("/changePassword", "LoginController@changePassword");
-
-Route::any("/blog",function(){
+Route::get("/blog",function(){
 	return "Blog";
 });

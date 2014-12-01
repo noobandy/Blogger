@@ -5,7 +5,7 @@
 
     RewriteEngine On
 
-    Rewritebase /MyWebsites/HelloWorld/public
+    Rewritebase /Blogger/public
 
     # Redirect Trailing Slashes...
     RewriteRule ^(.*)/$ /$1 [L,R=301]
