@@ -5,11 +5,14 @@ use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\Reminders\RemindableInterface;
 use Jenssegers\Mongodb\Model as Eloquent;
+use Jenssegers\Mongodb\Eloquent\SoftDeletingTrait;
 
 class User extends Eloquent implements UserInterface, RemindableInterface {
 
 	use UserTrait, RemindableTrait, SoftDeletingTrait;
 
+	protected $dates = ['deleted_at'];
+	
 	/**
 	 * The database table used by the model.
 	 *
@@ -24,4 +27,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $hidden = array('password', 'remember_token');
 
+
+	public function blog()
+	{
+		return $this->hasOne("Blog");
+	}
 }

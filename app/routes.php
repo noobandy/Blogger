@@ -22,15 +22,28 @@ Route::get("/activate", "LoginController@activate");
 
 Route::post("/login", "LoginController@login");
 
-Route::get("/forgotPassword", "RemindersController@getRemind");
+Route::get("/password/remind", "RemindersController@getRemind");
 
-Route::post("/forgotPassword", "RemindersController@postRemind");
 
+Route::post("/password/remind", "RemindersController@postRemind");
 
 Route::get("/password/reset/{token}", "RemindersController@getReset");
 
-Route::post("/resetPassword", "RemindersController@postReset");
 
-Route::get("/blog/{username}", array( "before" => "auth", function(){
-	return View::make("blog");
-}));
+Route::post("/password/reset", "RemindersController@postReset");
+
+
+
+Route::resource("blog", "BlogController", array( "except" => array( "create", "edit")));
+
+Route::resource("blog.post", "PostController", array( "except" => array( "create", "edit")));
+
+Route::resource("blog.post.comment", "CommentController", array( "except" => array( "create", "edit")));
+
+Route::get("/blogger/{username}", function($username){
+	$author = User::where("username", "=", $username)->firstOrFail();
+
+	$blog =  $author->blog;
+
+	return View::make("blogger")->with(array("blog" => $blog->toJson(), "user" => $author->toJson()));
+});

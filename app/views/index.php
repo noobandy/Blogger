@@ -89,7 +89,7 @@
 							</div>
 							<button class="btn btn-primary" type="submit">Login</button>
 						</form>
-						<a href="<?php echo(URL::to("/forgotPassword")); ?>">forgot password? </a>
+						<a href="<?php echo(URL::action("RemindersController@getRemind")); ?>">forgot password? </a>
 					</div>
 				</div>
 				<div class="row">

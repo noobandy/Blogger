@@ -44,7 +44,7 @@
 			<div class="col-md-6">
 				<div class="row">
 					<div class="col-md-12">
-						<form name="loginForm" class="form-horizontal" method="post" action="<?php echo(URL::to("/resetPassword")); ?>">
+						<form name="loginForm" class="form-horizontal" method="post" action="<?php echo(URL::action("RemindersController@postReset")); ?>">
 							<legend>Change Password</legend>
 							<input type="hidden" name="token" value="<?php echo($token); ?>">
 						    <div class="form-group">

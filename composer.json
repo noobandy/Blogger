@@ -8,7 +8,9 @@
 		"laravel/framework": "4.2.*",
 		"jenssegers/mongodb": "~2.0",
 		"twbs/bootstrap": "~3.3",
-		"components/jquery": "~2.1"
+		"components/jquery": "~2.1",
+		"jenssegers/mongodb-session": "~1.0",
+		"components/angular.js": "~1.3"
 	},
 	"autoload": {
 		"classmap": [
@@ -25,13 +27,16 @@
 			"php artisan clear-compiled",
 			"php artisan optimize",
 			"php artisan asset:publish --path=vendor/twbs/bootstrap/dist bootstrap",
-			"php artisan asset:publish --path=vendor/components/jquery jquery"
+			"php artisan asset:publish --path=vendor/components/jquery jquery",
+			"php artisan asset:publish --path=vendor/components/angular.js angular.js"
+
 		],
 		"post-update-cmd": [
 			"php artisan clear-compiled",
 			"php artisan optimize",
 			"php artisan asset:publish --path=vendor/twbs/bootstrap/dist bootstrap",
-			"php artisan asset:publish --path=vendor/components/jquery jquery"
+			"php artisan asset:publish --path=vendor/components/jquery jquery",
+			"php artisan asset:publish --path=vendor/components/angular.js angular.js"
 		],
 		"post-create-project-cmd": [
 			"php artisan key:generate"

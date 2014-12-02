@@ -122,6 +122,8 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 		'Jenssegers\Mongodb\MongodbServiceProvider',
+		'Jenssegers\Mongodb\Auth\ReminderServiceProvider',
+		'Jenssegers\Mongodb\Session\SessionServiceProvider',
 
 	),
 

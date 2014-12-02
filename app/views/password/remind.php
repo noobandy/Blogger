@@ -44,7 +44,7 @@
 			<div class="col-md-6">
 				<div class="row">
 					<div class="col-md-12">
-						<form name="loginForm" class="form-horizontal" method="post" action="<?php echo(URL::to("/forgotPassword")); ?>">
+						<form name="loginForm" class="form-horizontal" method="post" action="<?php echo(URL::action("RemindersController@postRemind")); ?>">
 							<legend>Reset passord</legend>
 							<div class="form-group">	
 								<input class="form-control input-lg" name="email" type="email" placeholder="email" />

@@ -72,7 +72,7 @@ class LoginController extends BaseController {
 		
 		if(Auth::attempt(array("username" => $username, "password" => $password, "active" => true), $remember))
 		{
-			return Redirect::intended("/blog/".Auth::user()->username);
+			return Redirect::intended("/blogger/".Auth::user()->username);
 		}
 		
 		Session::flash("flashMessage",array("type" => "error" ,"message" => Lang::get("messages.loginFailed")));
