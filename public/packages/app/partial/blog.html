@@ -5,54 +5,18 @@
 <div class="row">
 	<div class="col-md-9">
 		<div class="list-group">
-			<a href="#" class="list-group-item active">
-    			<h4 class="list-group-item-heading">List group item heading</h4>
-    			<p class="list-group-item-text">...</p>
- 			 </a>
- 			 <a href="#" class="list-group-item ">
-    			<h4 class="list-group-item-heading">List group item heading</h4>
-    			<p class="list-group-item-text">...</p>
- 			 </a>
- 			 <a href="#" class="list-group-item ">
-    			<h4 class="list-group-item-heading">List group item heading</h4>
-    			<p class="list-group-item-text">...</p>
- 			 </a>
- 			 <a href="#" class="list-group-item ">
-    			<h4 class="list-group-item-heading">List group item heading</h4>
-    			<p class="list-group-item-text">...</p>
- 			 </a>
- 			 <a href="#" class="list-group-item ">
-    			<h4 class="list-group-item-heading">List group item heading</h4>
-    			<p class="list-group-item-text">...</p>
- 			 </a>
- 			 <a href="#" class="list-group-item ">
-    			<h4 class="list-group-item-heading">List group item heading</h4>
-    			<p class="list-group-item-text">...</p>
- 			 </a>
- 			 <a href="#" class="list-group-item ">
-    			<h4 class="list-group-item-heading">List group item heading</h4>
-    			<p class="list-group-item-text">...</p>
- 			 </a>
- 			 <a href="#" class="list-group-item ">
-    			<h4 class="list-group-item-heading">List group item heading</h4>
-    			<p class="list-group-item-text">...</p>
- 			 </a>
- 			 <a href="#" class="list-group-item ">
-    			<h4 class="list-group-item-heading">List group item heading</h4>
-    			<p class="list-group-item-text">...</p>
+			<a ng-repeat="post in posts | filter:withinPeriod" href="" class="list-group-item">
+    			<h4 class="list-group-item-heading">{{post.title}}</h4>
+    			<p class="list-group-item-text">
+    				{{post.excerpt}}
+    			</p>
  			 </a>
 		</div>
-		<nav>
-  			<ul class="pager">
-    			<li class="previous"><a href="#"><span aria-hidden="true">&larr;</span> Older</a></li>
-   				 <li class="next"><a href="#">Newer <span aria-hidden="true">&rarr;</span></a></li>
- 		 	</ul>
-		</nav>
 	</div>
 	<div class="col-md-3">
 		<ul class="nav nav-pills nav-stacked">
 			<li class="active">
-				<a href="">Link one</a>
+				<a ng-click='setPeriod("2014-01-01 00:00:00","2014-01-31 00:00:00")' href="">January(2014)</a>
 			</li>
 			<li>
 				<a href="">Link one</a>
