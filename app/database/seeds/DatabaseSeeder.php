@@ -15,3 +15,12 @@ class DatabaseSeeder extends Seeder {
 	}
 
 }
+
+
+class UserCollectionSeeder extends Seeder {
+
+	public functtion run()
+	{
+		
+	} 
+}
