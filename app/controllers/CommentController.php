@@ -11,8 +11,20 @@ class CommentController extends \BaseController {
 	{
 		//
 		$post = Post::findOrFail($postId);
-		$comments = $post->comments;
-		return Response::json($comments, 200);
+		$query = $post->comments();
+
+		$count = $query->count();
+
+		if(Input::has("pn") && Input::has("ps"))
+		{
+			$query = $query->skip((Input::get("pn") - 1) * Input::get("ps"))->take(Input::get("ps"));
+		}
+
+
+
+		$comments = $query->orderBy("created_at", "desc")->get();
+		
+		return Response::json(array("items" => $comments, "count" => $count), 200);
 	}
 
 

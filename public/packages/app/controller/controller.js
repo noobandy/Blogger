@@ -46,7 +46,7 @@ bloggerAppController.controller("LeftNavController",[
 		PostService.list({}).success(function(data)
 		{
 			
-			$scope.mostPopularPosts = data.slice(0,5);
+			$scope.mostPopularPosts = data.items.slice(0,5);
 		});
 
 
@@ -86,32 +86,34 @@ bloggerAppController.controller("HomeController",[
 
 		$scope.totalItems = 0;
 	  	$scope.currentPage = 1;
+	  	$scope.itemsPerPage = 5;
 	  	$scope.maxSize = 5;
 	   	
 	   	$scope.pageChanged = function() {
-	    	$log.log('Page changed to: ' + $scope.currentPage);
-	    	$scope.loadData();
+	    	loadData();
 	  	};
 
-	  	$scope.loadData = function(){
-	  		PostService.list({}).success(function(data)
+	  	var loadData = function(){
+	  		PostService.list({
+	  			"ps" : $scope.itemsPerPage,
+	  			"pn" : $scope.currentPage
+	  		}).success(function(data)
 	  			{
 	  				
-					$scope.posts = data;
-					$scope.totalItems = $scope.posts.length;
+					$scope.posts = data.items;
+					$scope.totalItems = data.count;
 	  			});
 	  	}
-
-	  	$scope.loadData();
+	  	//load data once
+	  	loadData();
 	}
 	]);
 
 
 
 bloggerAppController.controller("BlogController",[
-	"$scope",
-	"$stateParams",
-	function($scope, $stateParams)
+	"$scope", "$stateParams", "PostService",
+	function($scope, $stateParams, PostService)
 	{
 
 	}
@@ -119,11 +121,15 @@ bloggerAppController.controller("BlogController",[
 
 
 bloggerAppController.controller("PostController",[
-	"$scope",
-	"$stateParams",
-	function($scope, $stateParams)
+	"$scope", "$stateParams", "PostService",
+	function($scope, $stateParams, PostService)
 	{
+		$scope.post = {};
 
+		PostService.get($stateParams.postId).success(function(data)
+			{
+				$scope.post = data;
+			});
 	}
 	]);
 
@@ -138,19 +144,22 @@ bloggerAppController.controller("TextSearchController",[
 
 		$scope.totalItems = 0;
 	  	$scope.currentPage = 1;
+	  	$scope.itemsPerPage = 5;
 	  	$scope.maxSize = 5;
 	   	
 	   	$scope.pageChanged = function() {
-	    	$log.log('Page changed to: ' + $scope.currentPage);
 	    	$scope.loadData();
 	  	};
 
 	  	$scope.loadData = function(){
-	  		PostService.list({}).success(function(data)
+	  		PostService.list({
+	  			"ps" : $scope.itemsPerPage,
+	  			"pn" : $scope.currentPage,
+	  			"s" : $stateParams.searchText
+	  		}).success(function(data)
 	  			{
-	  				
-					$scope.posts = data;
-					$scope.totalItems = $scope.posts.length;
+					$scope.posts = data.items;
+					$scope.totalItems = data.count;
 	  			});
 	  	}
 
@@ -169,19 +178,23 @@ bloggerAppController.controller("TagSearchController",[
 
 		$scope.totalItems = 0;
 	  	$scope.currentPage = 1;
+	  	$scope.itemsPerPage = 5;
 	  	$scope.maxSize = 5;
 	   	
 	   	$scope.pageChanged = function() {
-	    	$log.log('Page changed to: ' + $scope.currentPage);
 	    	$scope.loadData();
 	  	};
 
 	  	$scope.loadData = function(){
-	  		PostService.list({}).success(function(data)
+	  		PostService.list({
+	  			"ps" : $scope.itemsPerPage,
+	  			"pn" : $scope.currentPage,
+	  			"t" : $stateParams.tag
+	  		}).success(function(data)
 	  			{
 	  				
-					$scope.posts = data;
-					$scope.totalItems = $scope.posts.length;
+					$scope.posts = data.items;
+					$scope.totalItems = data.count;
 	  			});
 	  	}
 
@@ -200,19 +213,23 @@ bloggerAppController.controller("ArchiveSearchController",[
 
 		$scope.totalItems = 0;
 	  	$scope.currentPage = 1;
+	  	$scope.itemsPerPage = 5;
 	  	$scope.maxSize = 5;
 	   	
 	   	$scope.pageChanged = function() {
-	    	$log.log('Page changed to: ' + $scope.currentPage);
 	    	$scope.loadData();
 	  	};
 
 	  	$scope.loadData = function(){
-	  		PostService.list({}).success(function(data)
-	  			{
-	  				
-					$scope.posts = data;
-					$scope.totalItems = $scope.posts.length;
+	  		PostService.list({
+	  			"ps" : $scope.itemsPerPage,
+	  			"pn" : $scope.currentPage,
+	  			"sd" : $stateParams.startDate,
+	  			"ed" : $stateParams.endDate
+	  		}).success(function(data)
+	  			{	
+					$scope.posts = data.items;
+					$scope.totalItems = data.count;
 	  			});
 	  	}
 

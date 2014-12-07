@@ -10,9 +10,50 @@ class PostController extends \BaseController {
 	public function index($blogId)
 	{
 		//
+		$params = Input::only("po", "s", "t", "sd", "ed", "pn", "ps");
+
 		$blog = Blog::findOrFail($blogId);
-		$posts = $blog->posts;
-		return Response::json($posts, 200);
+		$query = $blog->posts();
+		
+		if(Input::has("po"))
+		{
+			$query = $query->where("exists", "publishedAt", true);
+		}
+
+		if(Input::has("s"))
+		{
+			$query = $query->where("text", "like", "%".Input::get("s")."%");
+		}
+
+		if(Input::has("t"))
+		{
+			$query = $query->where("tags", "all", array(Input::get("t")));
+		}
+
+		if(Input::has("sd"))
+		{
+			$query = $query->where("published_at", ">=", Input::get("sd"));
+		}
+
+		if(Input::has("ed"))
+		{
+			$query = $query->where("published_at", "<=", Input::get("ed"));
+		}
+
+		$count = $query->count();
+
+		if(Input::has("pn") && Input::has("ps"))
+		{
+			$query = $query->skip((Input::get("pn") - 1) * Input::get("ps"))->take(Input::get("ps"));
+		}
+
+
+
+		$posts = $query->orderBy("created_at", "desc")->get(array(
+			"_id", "title", "excerpt","tags", "created_at", "updated_at","published_at"
+			));
+		
+		return Response::json(array("items" => $posts, "count" => $count), 200);
 	}
 
 
@@ -42,7 +83,7 @@ class PostController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($blobId, $id)
+	public function show($blogId, $id)
 	{
 		//
 		$post = Post::findOrFail($id);
