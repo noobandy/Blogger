@@ -6,7 +6,7 @@ use Jenssegers\Mongodb\Eloquent\SoftDeletingTrait;
 class Post extends Eloquent {
 
 	use SoftDeletingTrait;
-	protected $dates = ['deleted_at','publishedAt'];
+	protected $dates = array("deleted_at", "published_at", "created_at", "updated_at");
 
 	protected $fillable = array("title", "excerpt","text","tags");
 

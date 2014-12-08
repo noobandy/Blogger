@@ -38,9 +38,11 @@ bloggerAppController.controller("LeftNavController",[
 
 			var parts = monthYear.split("-");
 			if(parts.length > 1){
-				var startDate = parts[1] + "-" + parts[0] + 1 + "-" + "01"; 
+				var year = parts[1];
+				var month = String(parseInt(parts[0]) + 1);
+				var startDate = year + "-" + month + "-" + "01"; 
 				
-				var endDate = parts[1] + "-" + parts[0] + 1 + "-" + "31"; 
+				var endDate = year + "-" + month + "-" + "31"; 
 
 				$state.go("archiveSearch",
 					{

@@ -36,12 +36,12 @@ class PostController extends \BaseController {
 
 		if(Input::has("sd"))
 		{
-			$query = $query->where("published_at", ">=", Input::get("sd"));
+			$query = $query->where("created_at", ">=", date_create(Input::get("sd")));
 		}
 
 		if(Input::has("ed"))
 		{
-			$query = $query->where("published_at", "<=", Input::get("ed"));
+			$query = $query->where("created_at", "<=", date_create(Input::get("ed")));
 		}
 
 		$count = $query->count();

@@ -3,107 +3,11 @@
 <head>
 	<?php echo(HTML::style("packages/bootstrap/css/bootstrap.min.css")); ?>
 	<?php echo(HTML::style("packages/nav-tree/abn_tree.css")); ?>
+	<?php echo(HTML::style("packages/app/css/animation.css")); ?>
 	<style type="text/css">
 		body{
 			padding-top: 80px;
 		}
-		/*
- * animations css stylesheet
- */
-
-/* animate ngRepeat in phone listing */
-
-.post-listing.ng-enter,
-.post-listing.ng-leave,
-.post-listing.ng-move {
-  -webkit-transition: 0.5s linear all;
-  -moz-transition: 0.5s linear all;
-  -o-transition: 0.5s linear all;
-  transition: 0.5s linear all;
-}
-
-.post-listing.ng-enter,
-.post-listing.ng-move {
-  opacity: 0;
-  height: 0;
-  overflow: hidden;
-}
-
-.post-listing.ng-move.ng-move-active,
-.post-listing.ng-enter.ng-enter-active {
-  opacity: 1;
-  height: 120px;
-}
-
-.post-listing.ng-leave {
-  opacity: 1;
-  overflow: hidden;
-}
-
-.post-listing.ng-leave.ng-leave-active {
-  opacity: 0;
-  height: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-/* cross fading between routes with ngView */
-
-.view-container {
-  position: relative;
-}
-
-.view-frame.ng-enter,
-.view-frame.ng-leave {
-  background: white;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-}
-
-.view-frame.ng-enter {
-  -webkit-animation: 0.5s fade-in;
-  -moz-animation: 0.5s fade-in;
-  -o-animation: 0.5s fade-in;
-  animation: 0.5s fade-in;
-  z-index: 100;
-}
-
-.view-frame.ng-leave {
-  -webkit-animation: 0.5s fade-out;
-  -moz-animation: 0.5s fade-out;
-  -o-animation: 0.5s fade-out;
-  animation: 0.5s fade-out;
-  z-index: 99;
-}
-
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-@-moz-keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-@-webkit-keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes fade-out {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-@-moz-keyframes fade-out {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-@-webkit-keyframes fade-out {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-
 
 	</style>
 	<script type="text/javascript">
@@ -135,7 +39,7 @@
 		      </ul>
 		      <form ng-submit="search();" class="navbar-form navbar-right" role="search">
 					<div class="form-group">
-						<input ng-model="searchText" type="text" class="form-control" placeholder="Search">
+						<input required="required" ng-model="searchText" type="text" class="form-control" placeholder="Search">
 					</div>
 					<button type="submit" class="btn btn-default navbar-btn">
 						<i class="glyphicon glyphicon-search"></i>
