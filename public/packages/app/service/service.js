@@ -40,6 +40,35 @@ bloggerAppService.service("PostService", [
 	}]);
 
 
+bloggerAppService.service("ArchiveService", [
+	"$http", "APP_DATA",
+	function($http, APP_DATA)
+	{
+		var dataUrl = APP_DATA.BASE_URL+"/blog/"+APP_DATA.BLOG._id+"/archive";
+
+		this.list = function()
+		{
+			return $http.get(dataUrl);
+		}
+
+	}]);
+
+
+
+bloggerAppService.service("TagService", [
+	"$http", "APP_DATA",
+	function($http, APP_DATA)
+	{
+		var dataUrl = APP_DATA.BASE_URL+"/blog/"+APP_DATA.BLOG._id+"/tag";
+
+		this.list = function()
+		{
+			return $http.get(dataUrl);
+		}
+
+	}]);
+
+
 bloggerAppService.service("CommentService", [
 	"$http", "APP_DATA",
 	function($http, APP_DATA)

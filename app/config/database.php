@@ -89,7 +89,8 @@ return array(
 		    'port'     => 27017,
 		    'username' => '',
 		    'password' => '',
-		    'database' => 'blogger'
+		    'database' => 'blogger',
+		    'log' => true
 		),
 
 	),

@@ -5,8 +5,106 @@
 	<?php echo(HTML::style("packages/nav-tree/abn_tree.css")); ?>
 	<style type="text/css">
 		body{
-			padding-top: 60px;
+			padding-top: 80px;
 		}
+		/*
+ * animations css stylesheet
+ */
+
+/* animate ngRepeat in phone listing */
+
+.post-listing.ng-enter,
+.post-listing.ng-leave,
+.post-listing.ng-move {
+  -webkit-transition: 0.5s linear all;
+  -moz-transition: 0.5s linear all;
+  -o-transition: 0.5s linear all;
+  transition: 0.5s linear all;
+}
+
+.post-listing.ng-enter,
+.post-listing.ng-move {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.post-listing.ng-move.ng-move-active,
+.post-listing.ng-enter.ng-enter-active {
+  opacity: 1;
+  height: 120px;
+}
+
+.post-listing.ng-leave {
+  opacity: 1;
+  overflow: hidden;
+}
+
+.post-listing.ng-leave.ng-leave-active {
+  opacity: 0;
+  height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* cross fading between routes with ngView */
+
+.view-container {
+  position: relative;
+}
+
+.view-frame.ng-enter,
+.view-frame.ng-leave {
+  background: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.view-frame.ng-enter {
+  -webkit-animation: 0.5s fade-in;
+  -moz-animation: 0.5s fade-in;
+  -o-animation: 0.5s fade-in;
+  animation: 0.5s fade-in;
+  z-index: 100;
+}
+
+.view-frame.ng-leave {
+  -webkit-animation: 0.5s fade-out;
+  -moz-animation: 0.5s fade-out;
+  -o-animation: 0.5s fade-out;
+  animation: 0.5s fade-out;
+  z-index: 99;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@-moz-keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@-webkit-keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@-moz-keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@-webkit-keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+
 	</style>
 	<script type="text/javascript">
 		var BASE_URL = "<?php echo URL::to("/"); ?>";
@@ -27,7 +125,7 @@
 		        <span class="icon-bar"></span>
 		        <span class="icon-bar"></span>
 		      </button>
-		      <a class="navbar-brand" ui-sref="home">{{brand}}</a>
+		      <a class="navbar-brand" ui-sref="home">{{blog.name}}</a>
 		    </div>
 
 		    <!-- Collect the nav links, forms, and other content for toggling -->
@@ -35,10 +133,13 @@
 		      <ul class="nav navbar-nav">
 		        <li class="active"><a href="#">About <span class="sr-only">(current)</span></a></li>
 		      </ul>
-		      <form class="navbar-form navbar-right" role="search">
+		      <form ng-submit="search();" class="navbar-form navbar-right" role="search">
 					<div class="form-group">
-						<input type="text" class="form-control" placeholder="Search">
+						<input ng-model="searchText" type="text" class="form-control" placeholder="Search">
 					</div>
+					<button type="submit" class="btn btn-default navbar-btn">
+						<i class="glyphicon glyphicon-search"></i>
+					</button>
 			  </form>
 
     </div><!-- /.navbar-collapse -->
@@ -46,8 +147,9 @@
 	</nav>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-9">
-				<ui-view>
+			<div class="col-md-9 view-container">
+				<div ui-view class="view-frame">
+				</div>	
 			</div>
 			<div class="col-md-3" ng-controller="LeftNavController">
 				<div class="panel panel-default">
@@ -67,7 +169,7 @@
 		   				<h3 class="panel-title">Blog Archive</h3>
 		  			</div>
 		  			<div class="panel-body">
-		  				<abn-tree icon-leaf= "glyphicon glyphicon-file" icon-expand= "glyphicon glyphicon-chevron-right" icon-collapse="glyphicon glyphicon-chevron-down" tree-data="archiveTree" expand-level= "1" >
+		  				<abn-tree  on-select="archiveSelected(branch)" icon-leaf= "glyphicon glyphicon-file" icon-expand= "glyphicon glyphicon-chevron-right" icon-collapse="glyphicon glyphicon-chevron-down" tree-data="archiveTree" expand-level= "1" >
 						</abn-tree>
 		  			</div>
 				</div>
@@ -76,8 +178,8 @@
 		   				<h3 class="panel-title">Tags</h3>
 		  			</div>
 		  			<div class="panel-body">
-		  				<a ng-repeat="tagCount in tagCounts" ui-sref="tagSearch({blogId: blog._id, tag: tagCount.tag})" class="btn btn-default">
-		  					{{tagCount.tag}}
+		  				<a ng-repeat="tagCount in tagCounts" ui-sref="tagSearch({blogId: blog._id, tag: tagCount._id})" class="btn btn-default">
+		  					{{tagCount._id}}
 		  					<span class="badge">
 		  						{{tagCount.count}}
 		  					</span>

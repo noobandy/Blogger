@@ -22,7 +22,11 @@ class PostController extends \BaseController {
 
 		if(Input::has("s"))
 		{
-			$query = $query->where("text", "like", "%".Input::get("s")."%");
+			$query = $query->where(function($query)
+			{
+				$query->where("excerpt", "like", "%".Input::get("s")."%")
+				->orWhere("text", "like", "%".Input::get("s")."%");
+			});
 		}
 
 		if(Input::has("t"))

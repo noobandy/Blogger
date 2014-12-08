@@ -3,43 +3,58 @@
 var bloggerAppController = angular.module("bloggerApp.controller",[]);
 
 bloggerAppController.controller("NavController",[
-	"$scope", "APP_DATA",
-	function($scope,APP_DATA)
+	"$scope", "APP_DATA", "$state",
+	function($scope, APP_DATA, $state)
 	{
-		$scope.brand = APP_DATA.BLOG.name;
-		$scope.username = APP_DATA.USER.username;
-		$scope.homeUrl = APP_DATA.BASE_URL + "/blogger/" + $scope.username;
+		$scope.blog = APP_DATA.BLOG;
+		$scope.user = APP_DATA.USER;
+		$scope.homeUrl = APP_DATA.BASE_URL + "/blogger/" + $scope.user.username;
+
+		$scope.searchText = "";
+
+		$scope.search = function()
+		{
+			$state.go("textSearch", {
+				blogId : $scope.blog._id,
+				searchText : $scope.searchText
+			});
+		}
 	}
 	]);
 
 bloggerAppController.controller("LeftNavController",[
-	"$scope", "$http", "PostService", "APP_DATA",
-	function($scope, $http, PostService, APP_DATA)
+	"$scope", "$http", "PostService", "APP_DATA", "TagService", "ArchiveService", "$state",
+	function($scope, $http, PostService, APP_DATA, TagService, ArchiveService, $state)
 	{
 		$scope.blog = APP_DATA.BLOG;
 
-		$scope.archiveTree = [
-			{
-				label: "2014 (140)",
-				children: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Aug", "Sep", "Oct", "Nov", "Dec"]
-			},
-			{
-				label: "2013",
-				children: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Aug", "Sep", "Oct", "Nov", "Dec"]
-			},
-			{
-				label: "2012",
-				children: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Aug", "Sep", "Oct", "Nov", "Dec"]
-			},
-			{
-				label: "2011",
-				children: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Aug", "Sep", "Oct", "Nov", "Dec"]
-			},
-			{
-				label: "2010",
-				children: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Aug", "Sep", "Oct", "Nov", "Dec"]
-			}
-		];
+		$scope.archiveTree = [];
+
+		$scope.archiveSelected = function(archive)
+		{
+			console.log(archive.data);
+
+			var monthYear = String(archive.data);
+
+			var parts = monthYear.split("-");
+			if(parts.length > 1){
+				var startDate = parts[1] + "-" + parts[0] + 1 + "-" + "01"; 
+				
+				var endDate = parts[1] + "-" + parts[0] + 1 + "-" + "31"; 
+
+				$state.go("archiveSearch",
+					{
+						blogId : $scope.blog._id,
+						startDate : startDate,
+						endDate : endDate
+					});
+			} 
+		}
+
+		ArchiveService.list().success(function(data)
+		{
+			$scope.archiveTree = data;
+		});
 
 		$scope.mostPopularPosts = [];
 
@@ -50,28 +65,12 @@ bloggerAppController.controller("LeftNavController",[
 		});
 
 
-		$scope.tagCounts = [
+		$scope.tagCounts = [];
+
+		TagService.list().success(function(data)
 		{
-			tag: "Java",
-			count: 40
-		},
-		{
-			tag: "Hibernate",
-			count: 30
-		},
-		{
-			tag: "Spring",
-			count: 20
-		},
-		{
-			tag: "AngularJs",
-			count: 10
-		},
-		{
-			tag: "Javascript",
-			count: 5
-		}
-		];
+			$scope.tagCounts = data;
+		});
 	}
 	]);
 

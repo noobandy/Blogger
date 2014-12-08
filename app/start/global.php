@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+
 /*
 |--------------------------------------------------------------------------
 | Register The Laravel Class Loader
@@ -88,3 +89,6 @@ App::down(function()
 */
 
 require app_path().'/filters.php';
+
+
+require app_path().'/loggers.php';

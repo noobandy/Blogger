@@ -69,7 +69,7 @@ bloggerApp.config([
 
 		$stateProvider.state("textSearch",
 		{
-			"url" : "/search/{blogId}/text/{text}",
+			"url" : "/search/{blogId}/text/{searchText}",
 			"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/textSearchResult.html",
 			"controller" : "TextSearchController"
 		});

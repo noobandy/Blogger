@@ -40,6 +40,10 @@ Route::resource("blog.post", "PostController", array( "except" => array( "create
 
 Route::resource("blog.post.comment", "CommentController", array( "except" => array( "create", "edit")));
 
+Route::resource("blog.tag", "TagController", array( "only" => array( "index")));
+
+Route::resource("blog.archive", "ArchiveController", array( "only" => array( "index")));
+
 Route::get("/blogger/{username}", function($username){
 	$author = User::where("username", "=", $username)->firstOrFail();
 
