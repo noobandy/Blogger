@@ -122,15 +122,51 @@ bloggerAppController.controller("BlogController",[
 
 
 bloggerAppController.controller("PostController",[
-	"$scope", "$stateParams", "PostService",
-	function($scope, $stateParams, PostService)
+	"$scope", "$stateParams", "PostService", "CommentService",
+	function($scope, $stateParams, PostService, CommentService)
 	{
 		$scope.post = {};
+
+		$scope.comments = [];
+		$scope.totalItems = 0;
+	  	$scope.currentPage = 1;
+	  	$scope.itemsPerPage = 5;
+
+	  	$scope.isCollasped = false;
+
+	  	$scope.toggleCollaspe = function(){
+	  		$scope.isCollasped = !$scope.isCollasped;
+	  	}
 
 		PostService.get($stateParams.postId).success(function(data)
 			{
 				$scope.post = data;
 			});
+
+		var loadComments = function(){
+	  		CommentService.list($stateParams.postId, {
+	  			"ps" : $scope.itemsPerPage,
+	  			"pn" : $scope.currentPage
+	  		}).success(function(data)
+	  			{
+	  				data.items.forEach(function(comment)
+	  				{
+	  					$scope.comments.push(comment);
+	  				});
+				
+					$scope.totalItems = data.count;
+	  			});
+	  	}
+
+
+	  	$scope.loadMore = function(){
+			$scope.currentPage = $scope.currentPage + 1;
+			
+			loadComments();
+		}
+
+		//load once
+		loadComments();
 	}
 	]);
 

@@ -60,7 +60,7 @@ class CommentController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($blobId, $postId, $id)
+	public function show($blogId, $postId, $id)
 	{
 		//
 		$comment = Comment::findOrFail($id);
@@ -78,7 +78,7 @@ class CommentController extends \BaseController {
 	public function update($blogId, $postId, $id)
 	{
 		//
-		$updateData = Input::only("title", "excerpt", "text", "tags");
+		$updateData = Input::only("comment");
 
 		Comment::findOrFail($id)->update($updateData);
 

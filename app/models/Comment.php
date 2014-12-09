@@ -7,7 +7,7 @@ class Comment extends Eloquent {
 
 	use SoftDeletingTrait;
 
-	protected $dates = ['deleted_at'];
+	protected $dates = array("deleted_at", "created_at", "updated_at");
 
 	protected $fillable = array("comment");
 	

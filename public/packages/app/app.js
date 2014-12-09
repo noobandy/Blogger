@@ -3,6 +3,7 @@ var bloggerApp = angular.module("bloggerApp", [
 	"ui.bootstrap",
 	"ui.router",
 	"angularBootstrapNavTree",
+	"angularMoment",
 	"bloggerApp.controller",
 	"bloggerApp.service",
 	"bloggerApp.filter",
@@ -14,6 +15,11 @@ bloggerApp.constant("APP_DATA", {
 	"BASE_URL": BASE_URL,
 	"USER": user,
 	"BLOG": blog
+});
+
+bloggerApp.constant('angularMomentConfig', {
+    preprocess: 'utc', // optional
+    timezone: tzid // optional
 });
 
 

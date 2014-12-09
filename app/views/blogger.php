@@ -10,12 +10,6 @@
 		}
 
 	</style>
-	<script type="text/javascript">
-		var BASE_URL = "<?php echo URL::to("/"); ?>";
-
-		var blog = <?php echo $blog; ?>;
-		var user = <?php echo $user; ?>;
-	</script>
 	<title>Blogger</title>
 </head>
 <body ng-app="bloggerApp">
@@ -82,12 +76,14 @@
 		   				<h3 class="panel-title">Tags</h3>
 		  			</div>
 		  			<div class="panel-body">
-		  				<a ng-repeat="tagCount in tagCounts" ui-sref="tagSearch({blogId: blog._id, tag: tagCount._id})" class="btn btn-default">
-		  					{{tagCount._id}}
-		  					<span class="badge">
-		  						{{tagCount.count}}
-		  					</span>
-		  				</a>
+		  				<span ng-repeat="tagCount in tagCounts">
+		  					<a ui-sref="tagSearch({blogId: blog._id, tag: tagCount._id})" class="btn btn-default">
+			  					{{tagCount._id}}
+			  					<span class="badge">
+			  						{{tagCount.count}}
+			  					</span>
+		  					</a>
+		  				</span>
 		  			</div>
 				</div>
 			</div>
@@ -99,6 +95,17 @@
 <?php echo( HTML::script("packages/ui-router/angular-ui-router.min.js"));?>
 <?php echo( HTML::script("packages/ui-bootstrap/ui-bootstrap-tpls-0.12.0.min.js"));?>
 <?php echo(HTML::script("packages/nav-tree/abn_tree_directive.js")); ?>
+<?php echo(HTML::script("packages/angular-moment.js/moment-with-locales.js")); ?>
+<?php echo(HTML::script("packages/angular-moment.js/moment-timezone-with-data.js")); ?>
+<?php echo(HTML::script("packages/angular-moment.js/tzdetect.js")); ?>
+<?php echo(HTML::script("packages/angular-moment.js/angular-moment.min.js")); ?>
+<script type="text/javascript">
+		var BASE_URL = "<?php echo URL::to("/"); ?>";
+
+		var blog = <?php echo $blog; ?>;
+		var user = <?php echo $user; ?>;
+		var tzid = tzdetect.matches()[0]
+</script>
 <?php echo( HTML::script("packages/app/app.js"));?>
 <?php echo( HTML::script("packages/app/controller/controller.js"));?>
 <?php echo( HTML::script("packages/app/service/service.js"));?>

@@ -1,12 +1,33 @@
 <!doctype html>
 <div class="page-header">
-	<h1>
-  		{{post.title}}
-  	</h1>
+	<h4>{{post.created_at | amDateFormat:'dddd, MMMM Do YYYY, h:mm a'}}<h4>
+	<h2>{{post.title}}</h2>
 </div>
 <div class="row">
 	<div class="col-md-12">
-		{{post.text}}
-		Tags: {{post.tags}}
+		<div class="panel panel-default">
+		    <div class="panel-body">
+		        <p>{{post.text}}</p>
+		    </div>
+		    <div class="panel-footer">
+		    	Tags: <span ng-repeat="tag in post.tags"><span class="label label-primary">{{tag}}</span> </span>
+		    </div>
+		</div>
 	</div>
-</div>  
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<button ng-click="toggleCollaspe()" class="btn btn-primary btn-block">{{totalItems}} Comments</button>
+		<div collapse="isCollapsed">	
+			<div class="list-group">
+				<div ng-repeat="comment in comments" class="list-group-item">
+					<p class="list-group-item-text">
+						{{comment.comment}}
+					</p>
+				</div>
+			</div>
+			<button ng-show="totalItems > itemsPerPage * currentPage" ng-click="loadMore()" class="btn btn-primary">More Comments</button>
+		</div>
+	</div>
+</div>
+

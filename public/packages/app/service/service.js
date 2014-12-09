@@ -77,7 +77,11 @@ bloggerAppService.service("CommentService", [
 
 		this.list = function(postId, params)
 		{
-			return $http.get(dataUrl + "/" + postId +"/comment",params);
+			return $http({
+				method : "GET",
+				url : dataUrl + "/" + postId +"/comment",
+				params : params
+			});
 		}
 
 		this.get = function(postId, commentId)
