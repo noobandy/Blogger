@@ -17,17 +17,50 @@
 </div>
 <div class="row">
 	<div class="col-md-12">
-		<button ng-click="toggleCollaspe()" class="btn btn-primary btn-block">{{totalItems}} Comments</button>
-		<div collapse="isCollapsed">	
-			<div class="list-group">
-				<div ng-repeat="comment in comments" class="list-group-item">
-					<p class="list-group-item-text">
-						{{comment.comment}}
-					</p>
+			<form name="commentForm" novalidate ng-submit="commentForm.$valid &&postComment()">
+				<legend>Comments</legend>
+				<div class="form-group">
+					<textarea ng-model="newCommentText" class="form-control input-lg" placeholder="write your comment" required></textarea>
 				</div>
-			</div>
+				<button class="btn btn-primary pull-right btn-lg">
+					<i class="glyphicon glyphicon-arrow-right"></i>
+				</button>
+			</form>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<ul class="media-list">
+				<li ng-repeat="comment in comments" class="media">
+					<a href="" class="media-left">
+						<img holder="holder.js/64x64">
+					</a>
+					<div class="media-body">
+						<h4 class="media-heading">
+							<a href="">
+								{{comment.author_id}}
+							</a>
+							<small>
+								- <span am-time-ago="comment.created_at">
+								</span>
+							</small>
+						</h4>
+						{{comment.comment}}
+						<div>
+							<a class="comment-control left" href="">
+								<i class="glyphicon glyphicon-thumbs-up"></i>
+							</a>
+							<a class="comment-control left" href="">
+								<i class="glyphicon glyphicon-thumbs-down"></i>
+							</a>
+							<a class="comment-control" href="">
+								Reply
+							</a>
+						<div>	
+					</div>
+				</li>
+			</ul>
 			<button ng-show="totalItems > itemsPerPage * currentPage" ng-click="loadMore()" class="btn btn-primary">More Comments</button>
-		</div>
 	</div>
 </div>
 

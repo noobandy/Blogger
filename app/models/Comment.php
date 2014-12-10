@@ -19,5 +19,11 @@ class Comment extends Eloquent {
 	public function author()
 	{
 		return $this->belongsTo("User");
+	}
+
+
+	public function replies()
+	{
+		return $this->embedsMany('Comment');
 	}	
 }

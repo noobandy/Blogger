@@ -9,6 +9,32 @@
 			padding-top: 80px;
 		}
 
+		input.ng-invalid.ng-touched {
+	    	border-color: #FA787E;
+	  	}
+
+	  	input.ng-valid.ng-touched {
+	    	border-color: #78FA89;
+	  	}
+
+
+	  	textarea.ng-invalid.ng-touched {
+	    	border-color: #FA787E;
+	  	}
+
+	  	textarea.ng-valid.ng-touched {
+	  		border-color: #78FA89;
+	  	}
+
+	  	.comment-control {
+   	 		display: inline-block;
+    		width: auto;
+    		padding: 2px;
+		}
+		
+		.left {
+		    border-right: 1px solid #ccc;
+		}
 	</style>
 	<title>Blogger</title>
 </head>
@@ -31,9 +57,9 @@
 		      <ul class="nav navbar-nav">
 		        <li class="active"><a href="#">About <span class="sr-only">(current)</span></a></li>
 		      </ul>
-		      <form ng-submit="search();" class="navbar-form navbar-right" role="search">
+		      <form novalidate name="searchForm" ng-submit="searchForm.$valid && search()" class="navbar-form navbar-right" role="search">
 					<div class="form-group">
-						<input required="required" ng-model="searchText" type="text" class="form-control" placeholder="Search">
+						<input required ng-model="searchText" type="text" class="form-control" placeholder="Search">
 					</div>
 					<button type="submit" class="btn btn-default navbar-btn">
 						<i class="glyphicon glyphicon-search"></i>
@@ -90,7 +116,6 @@
 		</div>		
 	</div>
 <?php echo(HTML::script("packages/jquery/jquery.min.js")); ?>
-<?php echo(HTML::script("packages/bootstrap/js/bootstrap.min.js")); ?>
 <?php echo( HTML::script("packages/angular.js/angular.min.js"));?>
 <?php echo( HTML::script("packages/ui-router/angular-ui-router.min.js"));?>
 <?php echo( HTML::script("packages/ui-bootstrap/ui-bootstrap-tpls-0.12.0.min.js"));?>
@@ -106,6 +131,7 @@
 		var user = <?php echo $user; ?>;
 		var tzid = tzdetect.matches()[0]
 </script>
+<?php echo( HTML::script("packages/holder.js/holder.js"));?>
 <?php echo( HTML::script("packages/app/app.js"));?>
 <?php echo( HTML::script("packages/app/controller/controller.js"));?>
 <?php echo( HTML::script("packages/app/service/service.js"));?>

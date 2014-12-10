@@ -128,15 +128,13 @@ bloggerAppController.controller("PostController",[
 		$scope.post = {};
 
 		$scope.comments = [];
+
+		$scope.newCommentText;
 		$scope.totalItems = 0;
 	  	$scope.currentPage = 1;
 	  	$scope.itemsPerPage = 5;
 
-	  	$scope.isCollasped = false;
-
-	  	$scope.toggleCollaspe = function(){
-	  		$scope.isCollasped = !$scope.isCollasped;
-	  	}
+	  	$scope.isCollasped = true;
 
 		PostService.get($stateParams.postId).success(function(data)
 			{
