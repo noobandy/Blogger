@@ -22,7 +22,7 @@ class CommentController extends \BaseController {
 
 
 
-		$comments = $query->orderBy("created_at", "desc")->get();
+		$comments = $query->orderBy("slug", "asc")->get();
 		
 		return Response::json(array("items" => $comments, "count" => $count), 200);
 	}
