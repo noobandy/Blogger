@@ -13,7 +13,6 @@ var bloggerApp = angular.module("bloggerApp", [
 
 bloggerApp.constant("APP_DATA", {
 	"BASE_URL": BASE_URL,
-	"USER": user,
 	"BLOG": blog
 });
 
@@ -37,12 +36,6 @@ bloggerApp.config([
 			"controller" : "HomeController"
 		});
 
-		$stateProvider.state("blog",
-		{
-			"url" : "/blog/{blogId}",
-			"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/blog.html",
-			"controller" : "BlogController"
-		});
 
 		$stateProvider.state("editBlog",
 		{
@@ -53,21 +46,21 @@ bloggerApp.config([
 
 		$stateProvider.state("newPost",
 		{
-			"url" : "/blog/{blogId}/post",
+			"url" : "/post",
 			"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/postEditor.html",
 			"controller" : "PostController"
 		});
 
 		$stateProvider.state("post",
 		{
-			"url" : "/blog/{blogId}/post/{postId}",
+			"url" : "/post/{slug}",
 			"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/post.html",
 			"controller" : "PostController"
 		});
 
 		$stateProvider.state("editPost",
 		{
-			"url" : "/blog/{blogId}/post/{postId}/edit",
+			"url" : "/post/{slug}/edit",
 			"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/postEditor.html",
 			"controller" : "PostController"
 		});
@@ -75,21 +68,21 @@ bloggerApp.config([
 
 		$stateProvider.state("textSearch",
 		{
-			"url" : "/search/{blogId}/text/{searchText}",
+			"url" : "/search/text/{searchText}",
 			"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/textSearchResult.html",
 			"controller" : "TextSearchController"
 		});
 
 		$stateProvider.state("tagSearch",
 		{
-			"url" : "/search/{blogId}/tag/{tag}",
+			"url" : "/search/tag/{tag}",
 			"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/tagSearchResult.html",
 			"controller" : "TagSearchController"
 		});
 
 		$stateProvider.state("archiveSearch",
 		{
-			"url" : "/search/{blogId}/archive/{startDate}/{endDate}",
+			"url" : "/search/archive/{startDate}/{endDate}",
 			"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/archiveSearchResult.html",
 			"controller" : "ArchiveSearchController"
 		});

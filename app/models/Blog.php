@@ -10,7 +10,7 @@ class Blog extends Eloquent {
 	protected $dates = ['deleted_at'];
 
 	protected $fillable = array("name", "about");
-
+	
 	public function author()
 	{
 		return $this->belongsTo("User");

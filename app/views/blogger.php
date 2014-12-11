@@ -36,6 +36,13 @@
 		    border-right: 1px solid #ccc;
 		}
 	</style>
+	<!-- Globals -->
+	<script type="text/javascript">
+
+		var BASE_URL = "<?php echo URL::to("/"); ?>";
+
+		var blog = <?php echo $blog; ?>;
+	</script>
 	<title>Blogger</title>
 </head>
 <body ng-app="bloggerApp">
@@ -83,7 +90,7 @@
 		  			<div class="panel-body">
 		  				<ul class="list-unstyled">
 		  					<li ng-repeat="post in mostPopularPosts">
-		  						<a ui-sref="post({blogId: blog._id, postId: post._id})">{{post.title}}</a>
+		  						<a ui-sref="post({slug: post.slug})">{{post.title}}</a>
 		  					</li>
 		  				</ul>
 		  			</div>
@@ -103,7 +110,7 @@
 		  			</div>
 		  			<div class="panel-body">
 		  				<span ng-repeat="tagCount in tagCounts">
-		  					<a ui-sref="tagSearch({blogId: blog._id, tag: tagCount._id})" class="btn btn-default">
+		  					<a ui-sref="tagSearch({tag: tagCount._id})" class="btn btn-default">
 			  					{{tagCount._id}}
 			  					<span class="badge">
 			  						{{tagCount.count}}
@@ -125,10 +132,6 @@
 <?php echo(HTML::script("packages/angular-moment.js/tzdetect.js")); ?>
 <?php echo(HTML::script("packages/angular-moment.js/angular-moment.min.js")); ?>
 <script type="text/javascript">
-		var BASE_URL = "<?php echo URL::to("/"); ?>";
-
-		var blog = <?php echo $blog; ?>;
-		var user = <?php echo $user; ?>;
 		var tzid = tzdetect.matches()[0]
 </script>
 <?php echo( HTML::script("packages/holder.js/holder.js"));?>

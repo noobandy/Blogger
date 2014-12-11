@@ -2,18 +2,7 @@
 
 class BlogController extends \BaseController {
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		//
-		$blogs = Blog::all();
-		return Response::json($blogs, 200);
-	}
-
+	
 
 	/**
 	 * Store a newly created resource in storage.
@@ -22,6 +11,11 @@ class BlogController extends \BaseController {
 	 */
 	public function store()
 	{
+		if(Auth::check())
+		{
+			
+		}
+
 		$inputData = Input::only("name", "about");
 		$blog = new Blog($inputData);
 		$username = Auth::user()->username;

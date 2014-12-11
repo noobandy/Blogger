@@ -1,4 +1,4 @@
-"user strict"
+"use strict"
 
 var bloggerAppController = angular.module("bloggerApp.controller",[]);
 
@@ -7,15 +7,12 @@ bloggerAppController.controller("NavController",[
 	function($scope, APP_DATA, $state)
 	{
 		$scope.blog = APP_DATA.BLOG;
-		$scope.user = APP_DATA.USER;
-		$scope.homeUrl = APP_DATA.BASE_URL + "/blogger/" + $scope.user.username;
 
 		$scope.searchText = "";
 
 		$scope.search = function()
 		{
 			$state.go("textSearch", {
-				blogId : $scope.blog._id,
 				searchText : $scope.searchText
 			});
 		}
@@ -26,7 +23,6 @@ bloggerAppController.controller("LeftNavController",[
 	"$scope", "$http", "PostService", "APP_DATA", "TagService", "ArchiveService", "$state",
 	function($scope, $http, PostService, APP_DATA, TagService, ArchiveService, $state)
 	{
-		$scope.blog = APP_DATA.BLOG;
 
 		$scope.archiveTree = [];
 
@@ -46,7 +42,6 @@ bloggerAppController.controller("LeftNavController",[
 
 				$state.go("archiveSearch",
 					{
-						blogId : $scope.blog._id,
 						startDate : startDate,
 						endDate : endDate
 					});
@@ -81,7 +76,6 @@ bloggerAppController.controller("HomeController",[
 	"$scope", "$http", "PostService", "APP_DATA",
 	function($scope, $http, PostService, APP_DATA)
 	{
-		$scope.blog = APP_DATA.BLOG;
 
 		$scope.posts = [];
 
@@ -134,15 +128,15 @@ bloggerAppController.controller("PostController",[
 	  	$scope.currentPage = 1;
 	  	$scope.itemsPerPage = 5;
 
-	  	$scope.isCollasped = true;
-
-		PostService.get($stateParams.postId).success(function(data)
+		PostService.get($stateParams.slug).success(function(data)
 			{
 				$scope.post = data;
+				//load once
+				loadComments($scope.post._id);
 			});
 
-		var loadComments = function(){
-	  		CommentService.list($stateParams.postId, {
+		var loadComments = function(postId){
+	  		CommentService.list(postId, {
 	  			"ps" : $scope.itemsPerPage,
 	  			"pn" : $scope.currentPage
 	  		}).success(function(data)
@@ -160,11 +154,10 @@ bloggerAppController.controller("PostController",[
 	  	$scope.loadMore = function(){
 			$scope.currentPage = $scope.currentPage + 1;
 			
-			loadComments();
+			loadComments($scope.post._id);
 		}
 
-		//load once
-		loadComments();
+		
 	}
 	]);
 
@@ -173,7 +166,6 @@ bloggerAppController.controller("TextSearchController",[
 	"$scope", "$http", "PostService","$stateParams", "APP_DATA",
 	function($scope, $http, PostService, $stateParams, APP_DATA)
 	{
-		$scope.blog = APP_DATA.BLOG;
 
 		$scope.posts = [];
 
@@ -207,7 +199,6 @@ bloggerAppController.controller("TagSearchController",[
 	"$scope", "$http", "PostService","$stateParams","APP_DATA",
 	function($scope, $http, PostService, $stateParams, APP_DATA)
 	{
-		$scope.blog = APP_DATA.BLOG;
 
 		$scope.posts = [];
 
@@ -242,7 +233,6 @@ bloggerAppController.controller("ArchiveSearchController",[
 	"$scope", "$http", "PostService","$stateParams","APP_DATA",
 	function($scope, $http, PostService, $stateParams, APP_DATA)
 	{
-		$scope.blog = APP_DATA.BLOG;
 
 		$scope.posts = [];
 

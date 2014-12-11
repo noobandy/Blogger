@@ -1,4 +1,4 @@
-"user strict"
+"use strict"
 
 var bloggerAppService = angular.module("bloggerApp.service",[]);
 
@@ -17,9 +17,9 @@ bloggerAppService.service("PostService", [
 			});
 		}
 
-		this.get = function(postId)
+		this.get = function(slug)
 		{
-			return $http.get(dataUrl + "/" + postId);
+			return $http.get(dataUrl + "/" + slug);
 		}
 
 		this.delete = function(postId)

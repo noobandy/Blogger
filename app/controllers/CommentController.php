@@ -37,6 +37,8 @@ class CommentController extends \BaseController {
 	{
 		$post = Post::findOrFail($postId);
 		
+		$parentId = Input::get("parentId");
+
 		$inputData = Input::only("comment");
 
 		$username = Auth::user()->username;
@@ -46,6 +48,12 @@ class CommentController extends \BaseController {
 		$comment = new Comment($inputData);
 
 		$comment->author()->associate($currentUser);
+
+		if($parentId)
+		{
+			$parent = Comment::findOrFail($parentId);
+			$comment->parent()->associate($parent);
+		}
 	
 		$commnet = $post->comments()->save($comment);
 

@@ -1,4 +1,4 @@
-"user strict"
+"use strict"
 
 var bloggerAppDirective = angular.module("bloggerApp.directive",[]);
 

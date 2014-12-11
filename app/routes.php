@@ -34,7 +34,7 @@ Route::post("/password/reset", "RemindersController@postReset");
 
 
 
-Route::resource("blog", "BlogController", array( "except" => array( "create", "edit")));
+Route::resource("blog", "BlogController", array( "except" => array("index", "create", "edit")));
 
 Route::resource("blog.post", "PostController", array( "except" => array( "create", "edit")));
 
@@ -49,5 +49,5 @@ Route::get("/blogger/{username}", function($username){
 
 	$blog =  $author->blog;
 
-	return View::make("blogger")->with(array("blog" => $blog->toJson(), "user" => $author->toJson()));
+	return View::make("blogger")->with(array("blog" => $blog->toJson()));
 });

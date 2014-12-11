@@ -54,7 +54,7 @@ class PostController extends \BaseController {
 
 
 		$posts = $query->orderBy("created_at", "desc")->get(array(
-			"_id", "title", "excerpt","tags", "created_at", "updated_at","published_at"
+			"_id", "title", "excerpt","tags", "created_at", "updated_at","published_at", "slug"
 			));
 		
 		return Response::json(array("items" => $posts, "count" => $count), 200);
@@ -84,13 +84,13 @@ class PostController extends \BaseController {
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param  str $slug
 	 * @return Response
 	 */
-	public function show($blogId, $id)
+	public function show($blogId, $slug)
 	{
 		//
-		$post = Post::findOrFail($id);
+		$post = Post::where("slug", "=", $slug)->firstOrFail();
 
 		return Response::json($post, 200);
 	}
