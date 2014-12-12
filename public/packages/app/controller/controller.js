@@ -114,11 +114,49 @@ bloggerAppController.controller("BlogController",[
 	}
 	]);
 
+bloggerAppController.controller("PostEditorController",[
+	"$scope", "$stateParams", "PostService",
+	function($scope, $stateParams, PostService)
+	{
+		$scope.editorOptions = {
+	        lineWrapping : true,
+	        lineNumbers: true,
+	        readOnly: false,
+	        mode: "Markdown",
+	        theme: "cobalt",
+	        autofocus: true
+    	};
+
+    	$scope.post = {
+    		"title" : "New post title",
+    		"text" : ""
+    	}
+
+    	if($stateParams.slug)
+    	{
+    		PostService.get($stateParams.slug).success(function(data)
+			{
+				$scope.post = data;
+			});
+    	}
+
+
+    	$scope.savePost = function(){
+    		PostService.add($scope.post).success(function(data)
+    		{
+    			console.log(data);
+    		});
+    	}
+	}
+	]);
+
 
 bloggerAppController.controller("PostController",[
 	"$scope", "$stateParams", "PostService", "CommentService",
 	function($scope, $stateParams, PostService, CommentService)
 	{
+
+
 		$scope.post = {};
 
 		$scope.comments = [];

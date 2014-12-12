@@ -4,6 +4,8 @@
 	<?php echo(HTML::style("packages/bootstrap/css/bootstrap.min.css")); ?>
 	<?php echo(HTML::style("packages/nav-tree/abn_tree.css")); ?>
 	<?php echo(HTML::style("packages/app/css/animation.css")); ?>
+	<?php echo(HTML::style("packages/codemirror-4.8/lib/codemirror.css")); ?>
+	<?php echo(HTML::style("packages/codemirror-4.8/theme/cobalt.css")); ?>
 	<style type="text/css">
 		body{
 			padding-top: 80px;
@@ -124,6 +126,7 @@
 	</div>
 <?php echo(HTML::script("packages/jquery/jquery.min.js")); ?>
 <?php echo( HTML::script("packages/angular.js/angular.min.js"));?>
+<?php echo( HTML::script("packages/angular.js/angular-sanitize.min.js"));?>
 <?php echo( HTML::script("packages/ui-router/angular-ui-router.min.js"));?>
 <?php echo( HTML::script("packages/ui-bootstrap/ui-bootstrap-tpls-0.12.0.min.js"));?>
 <?php echo(HTML::script("packages/nav-tree/abn_tree_directive.js")); ?>
@@ -135,6 +138,15 @@
 		var tzid = tzdetect.matches()[0]
 </script>
 <?php echo( HTML::script("packages/holder.js/holder.js"));?>
+<?php echo( HTML::script("packages/codemirror-4.8/lib/codemirror.js"));?>
+<?php echo( HTML::script("packages/codemirror-4.8/addon/mode/overlay.js"));?>
+<?php echo( HTML::script("packages/codemirror-4.8/mode/gfm/gfm.js"));?>
+<?php echo( HTML::script("packages/codemirror-4.8/mode/markdown/markdown.js"));?>
+<?php echo( HTML::script("packages/ui-codemirror-0.2.1/ui-codemirror.js"));?>
+<?php echo( HTML::script("packages/showdown-0.3.1/compressed/showdown.js"));?>
+<?php echo( HTML::script("packages/showdown-0.3.1/compressed/extensions/github.js"));?>
+<?php echo( HTML::script("packages/angular-markdown-directive/markdown.js"));?>
+
 <?php echo( HTML::script("packages/app/app.js"));?>
 <?php echo( HTML::script("packages/app/controller/controller.js"));?>
 <?php echo( HTML::script("packages/app/service/service.js"));?>

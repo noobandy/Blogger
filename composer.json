@@ -7,7 +7,7 @@
 	"require": {
 		"laravel/framework": "4.2.*",
 		"jenssegers/mongodb": "~2.0",
-		"twbs/bootstrap": "~3.3",
+		"twbs/bootstrap": "~3.1.0",
 		"components/jquery": "~2.1",
 		"jenssegers/mongodb-session": "~1.0",
 		"components/angular.js": "~1.3",

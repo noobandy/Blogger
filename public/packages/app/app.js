@@ -7,7 +7,10 @@ var bloggerApp = angular.module("bloggerApp", [
 	"bloggerApp.controller",
 	"bloggerApp.service",
 	"bloggerApp.filter",
-	"bloggerApp.directive"
+	"bloggerApp.directive",
+	"ui.codemirror",
+	"ngSanitize",
+  	"btford.markdown"
 	]);
 
 
@@ -23,9 +26,18 @@ bloggerApp.constant('angularMomentConfig', {
 
 
 bloggerApp.config([
-	"$stateProvider", "$urlRouterProvider", "$httpProvider", "APP_DATA",
-	function($stateProvider, $urlRouterProvider, $httpProvider, APP_DATA)
+	"$stateProvider", "$urlRouterProvider", "$httpProvider", "APP_DATA", 
+	"markdownConverterProvider",
+	function($stateProvider, $urlRouterProvider, $httpProvider, APP_DATA,
+	 markdownConverterProvider)
 	{
+
+		// options to be passed to Showdown
+  		// see: https://github.com/coreyti/showdown#extensions
+		markdownConverterProvider.config({
+		   extensions: ['github']
+		});
+
 		//default state when non matches
 		$urlRouterProvider.otherwise("/");
 
@@ -48,7 +60,7 @@ bloggerApp.config([
 		{
 			"url" : "/post",
 			"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/postEditor.html",
-			"controller" : "PostController"
+			"controller" : "PostEditorController"
 		});
 
 		$stateProvider.state("post",
@@ -62,7 +74,7 @@ bloggerApp.config([
 		{
 			"url" : "/post/{slug}/edit",
 			"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/postEditor.html",
-			"controller" : "PostController"
+			"controller" : "PostEditorController"
 		});
 
 

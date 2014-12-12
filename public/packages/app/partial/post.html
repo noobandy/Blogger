@@ -6,8 +6,7 @@
 <div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-default">
-		    <div class="panel-body">
-		        <p>{{post.text}}</p>
+		    <div class="panel-body" btf-markdown="post.text">
 		    </div>
 		    <div class="panel-footer">
 		    	Tags: <span ng-repeat="tag in post.tags"><span class="label label-primary">{{tag}}</span> </span>

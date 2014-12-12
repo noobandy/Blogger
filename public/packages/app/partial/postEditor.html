@@ -3,5 +3,20 @@
   <h1>Edit Post</h1>
 </div>
 <div class="row">
-  
+	<div class="col-md-6">
+		<form name="postForm"  novalidate ng-submit="postForm.$valid && savePost()">
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="Title" ng-model="post.title" required/>
+			</div>
+			<div class="form-group">
+				<textarea required ui-codemirror ui-codemirror-opts="editorOptions" ng-model="post.text"></textarea>
+			</div>
+			<button type="submit" class="btn btn-primary">
+				Save
+			</button>
+		</form>
+	</div>
+	<div class="col-md-6" btf-markdown="post.text">
+
+	</div>
 </div>  
