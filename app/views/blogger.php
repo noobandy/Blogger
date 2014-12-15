@@ -6,6 +6,7 @@
 	<?php echo(HTML::style("packages/app/css/animation.css")); ?>
 	<?php echo(HTML::style("packages/codemirror-4.8/lib/codemirror.css")); ?>
 	<?php echo(HTML::style("packages/codemirror-4.8/theme/cobalt.css")); ?>
+	<?php echo(HTML::style("packages/highlight.js/default.min.css")); ?>
 	<style type="text/css">
 		body{
 			padding-top: 80px;
@@ -37,6 +38,12 @@
 		.left {
 		    border-right: 1px solid #ccc;
 		}
+
+		.CodeMirror {
+  			border: 1px solid #eee;
+  			height: auto;
+  			font-size: 16px;
+		}
 	</style>
 	<!-- Globals -->
 	<script type="text/javascript">
@@ -49,7 +56,7 @@
 </head>
 <body ng-app="bloggerApp">
 	<nav class="navbar navbar-default navbar-fixed-top" role="navigation" ng-controller="NavController">
- 		<div class="container">
+ 		<div class="container-fluid">
  			<!-- Brand and toggle get grouped for better mobile display -->
 		    <div class="navbar-header">
 		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -78,7 +85,7 @@
     </div><!-- /.navbar-collapse -->
  		</div>
 	</nav>
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-9 view-container">
 				<div ui-view class="view-frame">
@@ -126,7 +133,6 @@
 	</div>
 <?php echo(HTML::script("packages/jquery/jquery.min.js")); ?>
 <?php echo( HTML::script("packages/angular.js/angular.min.js"));?>
-<?php echo( HTML::script("packages/angular.js/angular-sanitize.min.js"));?>
 <?php echo( HTML::script("packages/ui-router/angular-ui-router.min.js"));?>
 <?php echo( HTML::script("packages/ui-bootstrap/ui-bootstrap-tpls-0.12.0.min.js"));?>
 <?php echo(HTML::script("packages/nav-tree/abn_tree_directive.js")); ?>
@@ -143,10 +149,8 @@
 <?php echo( HTML::script("packages/codemirror-4.8/mode/gfm/gfm.js"));?>
 <?php echo( HTML::script("packages/codemirror-4.8/mode/markdown/markdown.js"));?>
 <?php echo( HTML::script("packages/ui-codemirror-0.2.1/ui-codemirror.js"));?>
-<?php echo( HTML::script("packages/showdown-0.3.1/compressed/showdown.js"));?>
-<?php echo( HTML::script("packages/showdown-0.3.1/compressed/extensions/github.js"));?>
-<?php echo( HTML::script("packages/angular-markdown-directive/markdown.js"));?>
-
+<?php echo( HTML::script("packages/highlight.js/highlight.min.js"));?>
+<?php echo( HTML::script("packages/marked.js/marked.min.js"));?>
 <?php echo( HTML::script("packages/app/app.js"));?>
 <?php echo( HTML::script("packages/app/controller/controller.js"));?>
 <?php echo( HTML::script("packages/app/service/service.js"));?>

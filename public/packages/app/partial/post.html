@@ -2,11 +2,14 @@
 <div class="page-header">
 	<h4>{{post.created_at | amDateFormat:'dddd, MMMM Do YYYY, h:mm a'}}<h4>
 	<h2>{{post.title}}</h2>
+	<a class="btn btn-primary pull-right" ui-sref="editPost({slug: post.slug})">
+		Edit
+	</a>
 </div>
 <div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-default">
-		    <div class="panel-body" btf-markdown="post.text">
+		    <div class="panel-body" marked="post.text">
 		    </div>
 		    <div class="panel-footer">
 		    	Tags: <span ng-repeat="tag in post.tags"><span class="label label-primary">{{tag}}</span> </span>

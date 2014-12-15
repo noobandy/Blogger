@@ -8,9 +8,7 @@ var bloggerApp = angular.module("bloggerApp", [
 	"bloggerApp.service",
 	"bloggerApp.filter",
 	"bloggerApp.directive",
-	"ui.codemirror",
-	"ngSanitize",
-  	"btford.markdown"
+	"ui.codemirror"
 	]);
 
 
@@ -26,17 +24,9 @@ bloggerApp.constant('angularMomentConfig', {
 
 
 bloggerApp.config([
-	"$stateProvider", "$urlRouterProvider", "$httpProvider", "APP_DATA", 
-	"markdownConverterProvider",
-	function($stateProvider, $urlRouterProvider, $httpProvider, APP_DATA,
-	 markdownConverterProvider)
+	"$stateProvider", "$urlRouterProvider", "$httpProvider", "APP_DATA",
+	function($stateProvider, $urlRouterProvider, $httpProvider, APP_DATA)
 	{
-
-		// options to be passed to Showdown
-  		// see: https://github.com/coreyti/showdown#extensions
-		markdownConverterProvider.config({
-		   extensions: ['github']
-		});
 
 		//default state when non matches
 		$urlRouterProvider.otherwise("/");

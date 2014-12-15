@@ -115,8 +115,8 @@ bloggerAppController.controller("BlogController",[
 	]);
 
 bloggerAppController.controller("PostEditorController",[
-	"$scope", "$stateParams", "PostService",
-	function($scope, $stateParams, PostService)
+	"$scope", "$stateParams", "PostService", "$modal", "APP_DATA",
+	function($scope, $stateParams, PostService, $modal, APP_DATA)
 	{
 		$scope.editorOptions = {
 	        lineWrapping : true,
@@ -128,8 +128,11 @@ bloggerAppController.controller("PostEditorController",[
     	};
 
     	$scope.post = {
-    		"title" : "New post title",
-    		"text" : ""
+    		title : "New post title",
+    		text : "Post content",
+    		tags : [],
+    		created_at : new Date(),
+    		excerpt : "Short summary"
     	}
 
     	if($stateParams.slug)
@@ -140,16 +143,54 @@ bloggerAppController.controller("PostEditorController",[
 			});
     	}
 
-
-    	$scope.savePost = function(){
-    		PostService.add($scope.post).success(function(data)
+    	$scope.preview = function()
+    	{
+    		$scope.modalInstance = $modal.open(
     		{
-    			console.log(data);
+    			templateUrl: APP_DATA.BASE_URL + "/packages/app/partial/postPreview.html",
+				size: "lg",
+				scope: $scope
     		});
+    	}
+
+    	$scope.closePreviewModal = function()
+    	{
+    		$scope.modalInstance.dismiss("ok");
+    	}
+
+    	$scope.savePost = function()
+    	{
+    		if($scope.post._id)
+    		{
+    			PostService.update($scope.post).success(function(data)
+	    		{
+	    			console.log(data);
+	    		});
+    		}
+    		else
+    		{
+    			PostService.add($scope.post).success(function(data)
+	    		{
+	    			console.log(data);
+	    		});
+    		}
+    		
+    	}
+
+    	$scope.deletePost = function()
+    	{
+    		if($scope.post._id)
+    		{
+    			PostService.delete($scope.post._id).success(function(data)
+	    		{
+	    			console.log(data);
+	    		});
+    		}
+
+    		$state.go("post");
     	}
 	}
 	]);
-
 
 bloggerAppController.controller("PostController",[
 	"$scope", "$stateParams", "PostService", "CommentService",

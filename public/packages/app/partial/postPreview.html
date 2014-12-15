@@ -1,0 +1,18 @@
+<!doctype html>
+<div class="modal-header">
+	<h4>{{post.created_at | amDateFormat:'dddd, MMMM Do YYYY, h:mm a'}}<h4>
+	<h2>{{post.title}}</h2>
+</div>
+<div class="modal-body">
+	<div class="panel panel-default">
+		<div class="panel-body" marked="post.text">
+		</div>
+		<div class="panel-footer">
+			Tags: <span ng-repeat="tag in post.tags"><span class="label label-primary">{{tag}}</span> </span>
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="closePreviewModal()">Close</button>
+</div>
+

@@ -3,20 +3,29 @@
   <h1>Edit Post</h1>
 </div>
 <div class="row">
-	<div class="col-md-6">
+	<div class="col-md-12">
 		<form name="postForm"  novalidate ng-submit="postForm.$valid && savePost()">
 			<div class="form-group">
-				<input type="text" class="form-control" placeholder="Title" ng-model="post.title" required/>
+				<input type="text" class="form-control input-lg" placeholder="Title" ng-model="post.title" required/>
+			</div>
+			<div class="form-group">
+				<input type="tags" class="form-control input-lg" placeholder="Tags" ng-model="post.tags"/>
+			</div>
+			<div class="form-group">
+				<textarea class="form-control input-lg" placeholder="Excerpt" ng-model="post.excerpt"></textarea>
 			</div>
 			<div class="form-group">
 				<textarea required ui-codemirror ui-codemirror-opts="editorOptions" ng-model="post.text"></textarea>
 			</div>
-			<button type="submit" class="btn btn-primary">
+			<button type="submit" class="btn btn-success">
 				Save
 			</button>
+			<button ng-click="delete()" type="button" class="btn btn-danger">
+				Delete
+			</button>
+			<button ng-click="preview()" type="button" class="btn btn-primary">
+				Preview
+			</button>
 		</form>
-	</div>
-	<div class="col-md-6" btf-markdown="post.text">
-
 	</div>
 </div>  

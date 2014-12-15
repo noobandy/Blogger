@@ -10,3 +10,34 @@ bloggerAppDirective.directive('holder', function() {
     }
   };
 });
+
+bloggerAppDirective.directive('marked', [function () {
+	marked.setOptions({
+		renderer: new marked.Renderer(),
+		highlight: function (code) {
+			return hljs.highlightAuto(code).value;
+		},
+		gfm: true,
+		tables: true,
+		breaks: true,
+		pedantic: false,
+		sanitize: true,
+		smartLists: true,
+		smartypants: true
+	});
+
+    return {
+      restrict: 'AE',
+      link: function (scope, element, attrs) {
+        if (attrs.marked) {
+          scope.$watch(attrs.marked, function (newVal) {
+            var html = newVal ? marked(newVal) : '';
+            element.html(html);
+          });
+        } else {
+          var html = marked(element.text());
+          element.html(html);
+        }
+      }
+    };
+}]);
