@@ -22,14 +22,14 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-12 well">
-			<form name="commentForm" novalidate ng-submit="commentForm.$valid &&postComment(newCommentText)">
+	<div class="col-md-12">
+			<form class="well" name="commentForm" novalidate ng-submit="commentForm.$valid &&postComment(newCommentText)">
 				<legend>Post Comment</legend>
 				<div class="form-group">
 					<textarea ng-model="newCommentText" class="form-control input-lg" placeholder="write your comment" required></textarea>
 				</div>
 				<button class="btn btn-primary">
-					Submmit
+					Submit
 				</button>
 			</form>
 	</div>
@@ -37,35 +37,35 @@
 <div class="row">
 	<div class="col-md-12">
 		<ul class="media-list">
-				<li ng-repeat="comment in comments" class="media">
-					<a href="" class="media-left">
-						<img holder="holder.js/64x64">
-					</a>
-					<div class="media-body">
-						<h4 class="media-heading">
-							<a href="" ng-bind="comment.author_id">
-							</a>
-							<small>
-								- <span am-time-ago="comment.created_at">
-								</span>
-							</small>
-						</h4>
-						<p ng-bind="comment.comment"></p>
-						<div>
-							<a class="comment-control left" href="">
-								<i class="glyphicon glyphicon-thumbs-up"></i>
-							</a>
-							<a class="comment-control left" href="">
-								<i class="glyphicon glyphicon-thumbs-down"></i>
-							</a>
-							<a class="comment-control" href="">
-								Reply
-							</a>
-						<div>	
+  			<li ng-repeat="comment in comments" class="media">
+    			<a class="media-left" href="#">
+      				<img holder="holder.js/64x64">
+    			</a>
+	    		<div class="media-body">
+	        		<h4 class="media-heading">
+	        			<a href="">{{comment.author_id}}</a>
+	        			<small am-time-ago="comment.created_at">
+
+	        			</small>
+	        		</h4>
+	        		<p>
+	        			{{comment.comment}}
+	        		</p>
+	        		<div>
+						<a class="comment-control left" href="">
+							<i class="glyphicon glyphicon-thumbs-up"></i>
+						</a>
+						<a class="comment-control left" href="">
+							<i class="glyphicon glyphicon-thumbs-down"></i>
+						</a>
+						<a class="comment-control" href="">
+							Reply
+						</a>
 					</div>
-				</li>
-			</ul>
-			<button ng-show="totalItems > itemsPerPage * currentPage" ng-click="loadMore()" class="btn btn-primary">More Comments</button>
+	    		</div>
+  			</li>
+		</ul>
+		<button ng-show="totalItems > itemsPerPage * currentPage" ng-click="loadMore()" class="btn btn-primary">More Comments</button>
 	</div>
 </div>
 

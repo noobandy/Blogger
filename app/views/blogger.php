@@ -2,6 +2,7 @@
 <html>
 <head>
 	<?php echo(HTML::style("packages/bootstrap/css/bootstrap.min.css")); ?>
+	<?php echo(HTML::style("packages/bootstrap/css/bootstrap-theme.min.css")); ?>
 	<?php echo(HTML::style("packages/nav-tree/abn_tree.css")); ?>
 	<?php echo(HTML::style("packages/app/css/animation.css")); ?>
 	<?php echo(HTML::style("packages/codemirror-4.8/lib/codemirror.css")); ?>
@@ -152,7 +153,8 @@
 		  			</div>
 		  			<div class="panel-body">
 		  				<span ng-repeat="tagCount in tagCounts">
-		  					<a ui-sref="tagSearch({tag: tagCount._id})" class="btn btn-default" ng-bind="tagCount._id">
+		  					<a ui-sref="tagSearch({tag: tagCount._id})" class="btn btn-default">
+		  						<span ng-bind="tagCount._id"></span>
 			  					<span class="badge" ng-bind="tagCount.count">
 			  					</span>
 		  					</a>
