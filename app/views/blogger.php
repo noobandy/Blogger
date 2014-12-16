@@ -7,6 +7,7 @@
 	<?php echo(HTML::style("packages/codemirror-4.8/lib/codemirror.css")); ?>
 	<?php echo(HTML::style("packages/codemirror-4.8/theme/cobalt.css")); ?>
 	<?php echo(HTML::style("packages/highlight.js/default.min.css")); ?>
+	<?php echo(HTML::style("packages/ui-select/select.min.css")); ?>
 	<style type="text/css">
 		body{
 			padding-top: 80px;
@@ -44,6 +45,11 @@
   			height: auto;
   			font-size: 16px;
 		}
+
+		.select2 > .select2-choice.ui-select-match {
+		    /* Because of the inclusion of Bootstrap */
+		    height: 36px;
+    	}
 	</style>
 	<!-- Globals -->
 	<script type="text/javascript">
@@ -52,11 +58,38 @@
 
 		var blog = <?php echo $blog; ?>;
 	</script>
+	<?php echo(HTML::script("packages/jquery/jquery.min.js")); ?>
+	<?php echo( HTML::script("packages/angular.js/angular.min.js"));?>
+	<?php echo( HTML::script("packages/angular.js/angular-sanitize.min.js"));?>
+	<?php echo( HTML::script("packages/ui-router/angular-ui-router.min.js"));?>
+	<?php echo( HTML::script("packages/ui-bootstrap/ui-bootstrap-tpls-0.12.0.min.js"));?>
+	<?php echo(HTML::script("packages/nav-tree/abn_tree_directive.js")); ?>
+	<?php echo(HTML::script("packages/angular-moment.js/moment-with-locales.js")); ?>
+	<?php echo(HTML::script("packages/angular-moment.js/moment-timezone-with-data.js")); ?>
+	<?php echo(HTML::script("packages/angular-moment.js/tzdetect.js")); ?>
+	<?php echo(HTML::script("packages/angular-moment.js/angular-moment.min.js")); ?>
+	<script type="text/javascript">
+			var tzid = tzdetect.matches()[0]
+	</script>
+	<?php echo( HTML::script("packages/holder.js/holder.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/lib/codemirror.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/mode/overlay.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/mode/gfm/gfm.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/mode/markdown/markdown.js"));?>
+	<?php echo( HTML::script("packages/ui-codemirror-0.2.1/ui-codemirror.js"));?>
+	<?php echo( HTML::script("packages/highlight.js/highlight.min.js"));?>
+	<?php echo( HTML::script("packages/marked.js/marked.min.js"));?>
+	<?php echo( HTML::script("packages/ui-select/select.min.js"));?>
+	<?php echo( HTML::script("packages/app/app.js"));?>
+	<?php echo( HTML::script("packages/app/controller/controller.js"));?>
+	<?php echo( HTML::script("packages/app/service/service.js"));?>
+	<?php echo( HTML::script("packages/app/filter/filter.js"));?>
+	<?php echo( HTML::script("packages/app/directive/directive.js"));?>
 	<title>Blogger</title>
 </head>
 <body ng-app="bloggerApp">
 	<nav class="navbar navbar-default navbar-fixed-top" role="navigation" ng-controller="NavController">
- 		<div class="container-fluid">
+ 		<div class="container">
  			<!-- Brand and toggle get grouped for better mobile display -->
 		    <div class="navbar-header">
 		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -65,13 +98,13 @@
 		        <span class="icon-bar"></span>
 		        <span class="icon-bar"></span>
 		      </button>
-		      <a class="navbar-brand" ui-sref="home">{{blog.name}}</a>
+		      <a class="navbar-brand" ui-sref="home" ng-bind="blog.name"></a>
 		    </div>
 
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav">
-		        <li class="active"><a href="#">About <span class="sr-only">(current)</span></a></li>
+		        <li><a href="#">About <span class="sr-only">(current)</span></a></li>
 		      </ul>
 		      <form novalidate name="searchForm" ng-submit="searchForm.$valid && search()" class="navbar-form navbar-right" role="search">
 					<div class="form-group">
@@ -85,7 +118,7 @@
     </div><!-- /.navbar-collapse -->
  		</div>
 	</nav>
-	<div class="container-fluid">
+	<div class="container">
 		<div class="row">
 			<div class="col-md-9 view-container">
 				<div ui-view class="view-frame">
@@ -99,7 +132,7 @@
 		  			<div class="panel-body">
 		  				<ul class="list-unstyled">
 		  					<li ng-repeat="post in mostPopularPosts">
-		  						<a ui-sref="post({slug: post.slug})">{{post.title}}</a>
+		  						<a ui-sref="post({slug: post.slug})" ng-bind="post.title"></a>
 		  					</li>
 		  				</ul>
 		  			</div>
@@ -119,10 +152,8 @@
 		  			</div>
 		  			<div class="panel-body">
 		  				<span ng-repeat="tagCount in tagCounts">
-		  					<a ui-sref="tagSearch({tag: tagCount._id})" class="btn btn-default">
-			  					{{tagCount._id}}
-			  					<span class="badge">
-			  						{{tagCount.count}}
+		  					<a ui-sref="tagSearch({tag: tagCount._id})" class="btn btn-default" ng-bind="tagCount._id">
+			  					<span class="badge" ng-bind="tagCount.count">
 			  					</span>
 		  					</a>
 		  				</span>
@@ -131,30 +162,5 @@
 			</div>
 		</div>		
 	</div>
-<?php echo(HTML::script("packages/jquery/jquery.min.js")); ?>
-<?php echo( HTML::script("packages/angular.js/angular.min.js"));?>
-<?php echo( HTML::script("packages/ui-router/angular-ui-router.min.js"));?>
-<?php echo( HTML::script("packages/ui-bootstrap/ui-bootstrap-tpls-0.12.0.min.js"));?>
-<?php echo(HTML::script("packages/nav-tree/abn_tree_directive.js")); ?>
-<?php echo(HTML::script("packages/angular-moment.js/moment-with-locales.js")); ?>
-<?php echo(HTML::script("packages/angular-moment.js/moment-timezone-with-data.js")); ?>
-<?php echo(HTML::script("packages/angular-moment.js/tzdetect.js")); ?>
-<?php echo(HTML::script("packages/angular-moment.js/angular-moment.min.js")); ?>
-<script type="text/javascript">
-		var tzid = tzdetect.matches()[0]
-</script>
-<?php echo( HTML::script("packages/holder.js/holder.js"));?>
-<?php echo( HTML::script("packages/codemirror-4.8/lib/codemirror.js"));?>
-<?php echo( HTML::script("packages/codemirror-4.8/addon/mode/overlay.js"));?>
-<?php echo( HTML::script("packages/codemirror-4.8/mode/gfm/gfm.js"));?>
-<?php echo( HTML::script("packages/codemirror-4.8/mode/markdown/markdown.js"));?>
-<?php echo( HTML::script("packages/ui-codemirror-0.2.1/ui-codemirror.js"));?>
-<?php echo( HTML::script("packages/highlight.js/highlight.min.js"));?>
-<?php echo( HTML::script("packages/marked.js/marked.min.js"));?>
-<?php echo( HTML::script("packages/app/app.js"));?>
-<?php echo( HTML::script("packages/app/controller/controller.js"));?>
-<?php echo( HTML::script("packages/app/service/service.js"));?>
-<?php echo( HTML::script("packages/app/filter/filter.js"));?>
-<?php echo( HTML::script("packages/app/directive/directive.js"));?>
 </body>
 </html>

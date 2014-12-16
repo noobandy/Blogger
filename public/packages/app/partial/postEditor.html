@@ -1,31 +1,48 @@
 <!doctype html>
 <div class="page-header">
-  <h1>Edit Post</h1>
+	<h1>Edit Post</h1>
+</div>
+<div class="row">
+	<div class="col-md-12">
+  		<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
+  			<span ng-bind="alert.msg"></span>
+  		</alert>
+	</div>
 </div>
 <div class="row">
 	<div class="col-md-12">
 		<form name="postForm"  novalidate ng-submit="postForm.$valid && savePost()">
+			<legend>
+				<button type="submit" class="btn btn-success">
+					<i class="glyphicon glyphicon-floppy-disk"></i> Save
+				</button>
+				<button ng-click="deletePost()" type="button" class="btn btn-danger">
+					<i class="glyphicon glyphicon-trash"></i> Delete
+				</button>
+				<button ng-click="preview()" type="button" class="btn btn-primary">
+					<i class="glyphicon glyphicon-eye-open"></i> Preview
+				</button>
+
+			</legend>
 			<div class="form-group">
 				<input type="text" class="form-control input-lg" placeholder="Title" ng-model="post.title" required/>
 			</div>
 			<div class="form-group">
-				<input type="tags" class="form-control input-lg" placeholder="Tags" ng-model="post.tags"/>
+				<ui-select multiple tagging tagging-label="(custom 'new' label)" ng-model="post.tags" theme="bootstrap" class="form-control input-lg">
+				    <ui-select-match placeholder="Select tags...">
+				    	<span ng-bind="$item"></span>
+					</ui-select-match>
+				    <ui-select-choices repeat="tag in availableTags | filter:$select.search">
+				    	<span ng-bind="tag"></span>
+				    </ui-select-choices>
+		  		</ui-select>
 			</div>
 			<div class="form-group">
-				<textarea class="form-control input-lg" placeholder="Excerpt" ng-model="post.excerpt"></textarea>
+				<textarea class="form-control input-lg" required ui-codemirror ui-codemirror-opts="editorOptions" ng-model="post.excerpt"></textarea>
 			</div>
 			<div class="form-group">
 				<textarea required ui-codemirror ui-codemirror-opts="editorOptions" ng-model="post.text"></textarea>
 			</div>
-			<button type="submit" class="btn btn-success">
-				Save
-			</button>
-			<button ng-click="delete()" type="button" class="btn btn-danger">
-				Delete
-			</button>
-			<button ng-click="preview()" type="button" class="btn btn-primary">
-				Preview
-			</button>
 		</form>
 	</div>
 </div>  

@@ -1,31 +1,35 @@
 <!doctype html>
 <div class="page-header">
-	<h4>{{post.created_at | amDateFormat:'dddd, MMMM Do YYYY, h:mm a'}}<h4>
-	<h2>{{post.title}}</h2>
-	<a class="btn btn-primary pull-right" ui-sref="editPost({slug: post.slug})">
-		Edit
-	</a>
+	<h4 ng-bind="post.created_at | amDateFormat:'dddd, MMMM Do YYYY, h:mm a'"><h4>
+	<h2 ng-bind="post.title"></h2>
 </div>
 <div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-default">
+			<div class="panel-heading">
+				<a class="btn btn-primary" ui-sref="editPost({slug: post.slug})">
+					<i class="glyphicon glyphicon-edit"></i> Edit
+				</a>
+			</div>
 		    <div class="panel-body" marked="post.text">
 		    </div>
 		    <div class="panel-footer">
-		    	Tags: <span ng-repeat="tag in post.tags"><span class="label label-primary">{{tag}}</span> </span>
+		    <i class="glyphicon glyphicon-tags"></i> 
+		    <strong>Tags: </strong> 
+		    <span ng-repeat="tag in post.tags"><span class="label label-primary" ng-bind="tag"></span> </span>
 		    </div>
 		</div>
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-12">
-			<form name="commentForm" novalidate ng-submit="commentForm.$valid &&postComment()">
-				<legend>Comments</legend>
+	<div class="col-md-12 well">
+			<form name="commentForm" novalidate ng-submit="commentForm.$valid &&postComment(newCommentText)">
+				<legend>Post Comment</legend>
 				<div class="form-group">
 					<textarea ng-model="newCommentText" class="form-control input-lg" placeholder="write your comment" required></textarea>
 				</div>
-				<button class="btn btn-primary pull-right btn-lg">
-					<i class="glyphicon glyphicon-arrow-right"></i>
+				<button class="btn btn-primary">
+					Submmit
 				</button>
 			</form>
 	</div>
@@ -39,15 +43,14 @@
 					</a>
 					<div class="media-body">
 						<h4 class="media-heading">
-							<a href="">
-								{{comment.author_id}}
+							<a href="" ng-bind="comment.author_id">
 							</a>
 							<small>
 								- <span am-time-ago="comment.created_at">
 								</span>
 							</small>
 						</h4>
-						{{comment.comment}}
+						<p ng-bind="comment.comment"></p>
 						<div>
 							<a class="comment-control left" href="">
 								<i class="glyphicon glyphicon-thumbs-up"></i>

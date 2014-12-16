@@ -1,18 +1,19 @@
 <!doctype html>
 <div class="modal-header">
-	<h4>{{post.created_at | amDateFormat:'dddd, MMMM Do YYYY, h:mm a'}}<h4>
-	<h2>{{post.title}}</h2>
+	<button class="btn btn-primary" ng-click="closePreviewModal()">&times;</button>
 </div>
 <div class="modal-body">
+	<div class="page-header">
+		<h4 ng-bind="post.created_at | amDateFormat:'dddd, MMMM Do YYYY, h:mm a'"><h4>
+		<h2 ng-bind="post.title"></h2>
+	</div>
 	<div class="panel panel-default">
 		<div class="panel-body" marked="post.text">
 		</div>
 		<div class="panel-footer">
-			Tags: <span ng-repeat="tag in post.tags"><span class="label label-primary">{{tag}}</span> </span>
+			<i class="glyphicon glyphicon-tags"></i> 
+		    <strong>Tags: </strong> <span ng-repeat="tag in post.tags"><span class="label label-primary" ng-bind="tag"></span> </span>
 		</div>
 	</div>
-</div>
-<div class="modal-footer">
-    <button class="btn btn-primary" ng-click="closePreviewModal()">Close</button>
 </div>
 

@@ -96,12 +96,12 @@ bloggerAppService.service("CommentService", [
 
 		this.add = function(comment)
 		{
-			return $http.post(dataUrl + "/" + comment.post_id + "/comment", post);
+			return $http.post(dataUrl + "/" + comment.post_id + "/comment", comment);
 		}
 
 		this.update = function(comment)
 		{
-			return $http.put( dataUrl + "/" + comment.post_id + "/comment/", post);
+			return $http.put( dataUrl + "/" + comment.post_id + "/comment/", comment);
 		}
 
 	}]);

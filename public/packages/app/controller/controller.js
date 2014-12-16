@@ -115,9 +115,18 @@ bloggerAppController.controller("BlogController",[
 	]);
 
 bloggerAppController.controller("PostEditorController",[
-	"$scope", "$stateParams", "PostService", "$modal", "APP_DATA",
-	function($scope, $stateParams, PostService, $modal, APP_DATA)
+	"$scope", "$stateParams", "PostService", "$modal", "APP_DATA", "TagService",
+	"$state",
+	function($scope, $stateParams, PostService, $modal, APP_DATA, TagService, $state)
 	{
+		$scope.alerts = [];
+
+		$scope.closeAlert = function(index)
+		{
+			$scope.alerts.splice(index, 1);
+
+		};
+
 		$scope.editorOptions = {
 	        lineWrapping : true,
 	        lineNumbers: true,
@@ -134,6 +143,16 @@ bloggerAppController.controller("PostEditorController",[
     		created_at : new Date(),
     		excerpt : "Short summary"
     	}
+
+    	$scope.availableTags = [];
+
+    	TagService.list().success(function(data)
+    	{
+    		data.forEach(function(tagCount)
+    		{
+    			$scope.availableTags.push(tagCount._id);
+    		});
+    	});
 
     	if($stateParams.slug)
     	{
@@ -164,14 +183,18 @@ bloggerAppController.controller("PostEditorController",[
     		{
     			PostService.update($scope.post).success(function(data)
 	    		{
-	    			console.log(data);
+	    			$scope.alerts.push(
+	    				{ type: 'success', msg: 'Post saved successfully.' }
+	    				);
 	    		});
     		}
     		else
     		{
     			PostService.add($scope.post).success(function(data)
 	    		{
-	    			console.log(data);
+	    			$scope.alerts.push(
+	    				{ type: 'success', msg: 'Post saved successfully.' }
+	    				);
 	    		});
     		}
     		
@@ -183,11 +206,9 @@ bloggerAppController.controller("PostEditorController",[
     		{
     			PostService.delete($scope.post._id).success(function(data)
 	    		{
-	    			console.log(data);
+	    			$state.go("home");
 	    		});
     		}
-
-    		$state.go("post");
     	}
 	}
 	]);
@@ -236,6 +257,18 @@ bloggerAppController.controller("PostController",[
 			loadComments($scope.post._id);
 		}
 
+		$scope.postComment = function(comment)
+		{
+			var commentObj = {
+				post_id : $scope.post._id,
+				comment : comment
+			};
+
+			CommentService.add(commentObj).success(function(data)
+			{
+				$scope.comments.unshift(data);
+			});	
+		}
 		
 	}
 	]);
@@ -245,6 +278,7 @@ bloggerAppController.controller("TextSearchController",[
 	"$scope", "$http", "PostService","$stateParams", "APP_DATA",
 	function($scope, $http, PostService, $stateParams, APP_DATA)
 	{
+		$scope.searchText = $stateParams.searchText;
 
 		$scope.posts = [];
 
@@ -261,7 +295,7 @@ bloggerAppController.controller("TextSearchController",[
 	  		PostService.list({
 	  			"ps" : $scope.itemsPerPage,
 	  			"pn" : $scope.currentPage,
-	  			"s" : $stateParams.searchText
+	  			"s" : $scope.searchText
 	  		}).success(function(data)
 	  			{
 					$scope.posts = data.items;
@@ -278,6 +312,7 @@ bloggerAppController.controller("TagSearchController",[
 	"$scope", "$http", "PostService","$stateParams","APP_DATA",
 	function($scope, $http, PostService, $stateParams, APP_DATA)
 	{
+		$scope.currentTag = $stateParams.tag;
 
 		$scope.posts = [];
 
@@ -294,7 +329,7 @@ bloggerAppController.controller("TagSearchController",[
 	  		PostService.list({
 	  			"ps" : $scope.itemsPerPage,
 	  			"pn" : $scope.currentPage,
-	  			"t" : $stateParams.tag
+	  			"t" : $scope.currentTag
 	  		}).success(function(data)
 	  			{
 	  				
@@ -312,6 +347,8 @@ bloggerAppController.controller("ArchiveSearchController",[
 	"$scope", "$http", "PostService","$stateParams","APP_DATA",
 	function($scope, $http, PostService, $stateParams, APP_DATA)
 	{
+		$scope.startDate = $stateParams.startDate;
+		$scope.endDate = $stateParams.endDate;
 
 		$scope.posts = [];
 
@@ -328,8 +365,8 @@ bloggerAppController.controller("ArchiveSearchController",[
 	  		PostService.list({
 	  			"ps" : $scope.itemsPerPage,
 	  			"pn" : $scope.currentPage,
-	  			"sd" : $stateParams.startDate,
-	  			"ed" : $stateParams.endDate
+	  			"sd" : $scope.startDate,
+	  			"ed" : $scope.endDate
 	  		}).success(function(data)
 	  			{	
 					$scope.posts = data.items;

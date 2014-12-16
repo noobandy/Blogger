@@ -8,7 +8,9 @@ var bloggerApp = angular.module("bloggerApp", [
 	"bloggerApp.service",
 	"bloggerApp.filter",
 	"bloggerApp.directive",
-	"ui.codemirror"
+	"ui.codemirror",
+	"ngSanitize",
+	"ui.select"
 	]);
 
 

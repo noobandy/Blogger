@@ -11,7 +11,9 @@ bloggerAppDirective.directive('holder', function() {
   };
 });
 
-bloggerAppDirective.directive('marked', [function () {
+bloggerAppDirective.directive("marked",[
+  "$sanitize",
+  function ($sanitize) {
 	marked.setOptions({
 		renderer: new marked.Renderer(),
 		highlight: function (code) {
@@ -19,9 +21,9 @@ bloggerAppDirective.directive('marked', [function () {
 		},
 		gfm: true,
 		tables: true,
-		breaks: true,
+		breaks: false,
 		pedantic: false,
-		sanitize: true,
+		sanitize: false,
 		smartLists: true,
 		smartypants: true
 	});
@@ -31,11 +33,11 @@ bloggerAppDirective.directive('marked', [function () {
       link: function (scope, element, attrs) {
         if (attrs.marked) {
           scope.$watch(attrs.marked, function (newVal) {
-            var html = newVal ? marked(newVal) : '';
+            var html = newVal ? $sanitize(marked(newVal)) : '';
             element.html(html);
           });
         } else {
-          var html = marked(element.text());
+          var html = $sanitize(marked(element.text()));
           element.html(html);
         }
       }
