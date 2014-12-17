@@ -1,0 +1,35 @@
+<div class="panel panel-default">
+		  			<div class="panel-heading">
+		   				<h3 class="panel-title">Most Popular</h3>
+		  			</div>
+		  			<div class="panel-body">
+		  				<ul class="list-unstyled">
+		  					<li ng-repeat="post in mostPopularPosts">
+		  						<a ui-sref="base.post({slug: post.slug})" ng-bind="post.title"></a>
+		  					</li>
+		  				</ul>
+		  			</div>
+				</div>
+				<div class="panel panel-default">
+		  			<div class="panel-heading">
+		   				<h3 class="panel-title">Blog Archive</h3>
+		  			</div>
+		  			<div class="panel-body">
+		  				<abn-tree  on-select="archiveSelected(branch)" icon-leaf= "glyphicon glyphicon-file" icon-expand= "glyphicon glyphicon-chevron-right" icon-collapse="glyphicon glyphicon-chevron-down" tree-data="archiveTree" expand-level= "1" >
+						</abn-tree>
+		  			</div>
+				</div>
+				<div class="panel panel-default">
+		  			<div class="panel-heading">
+		   				<h3 class="panel-title">Tags</h3>
+		  			</div>
+		  			<div class="panel-body">
+		  				<span ng-repeat="tagCount in tagCounts">
+		  					<a ui-sref="base.tagSearch({tag: tagCount._id})" class="btn btn-default">
+		  						<span ng-bind="tagCount._id"></span>
+			  					<span class="badge" ng-bind="tagCount.count">
+			  					</span>
+		  					</a>
+		  				</span>
+		  			</div>
+				</div>

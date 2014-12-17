@@ -89,78 +89,20 @@
 	<title>Blogger</title>
 </head>
 <body ng-app="bloggerApp">
-	<nav class="navbar navbar-default navbar-fixed-top" role="navigation" ng-controller="NavController">
- 		<div class="container">
- 			<!-- Brand and toggle get grouped for better mobile display -->
-		    <div class="navbar-header">
-		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-		        <span class="sr-only">Toggle navigation</span>
-		        <span class="icon-bar"></span>
-		        <span class="icon-bar"></span>
-		        <span class="icon-bar"></span>
-		      </button>
-		      <a class="navbar-brand" ui-sref="home" ng-bind="blog.name"></a>
-		    </div>
+	<ui-view name="navbar">
 
-		    <!-- Collect the nav links, forms, and other content for toggling -->
-		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-		      <ul class="nav navbar-nav">
-		        <li><a href="#">About <span class="sr-only">(current)</span></a></li>
-		      </ul>
-		      <form novalidate name="searchForm" ng-submit="searchForm.$valid && search()" class="navbar-form navbar-right" role="search">
-					<div class="form-group">
-						<input required ng-model="searchText" type="text" class="form-control" placeholder="Search">
-					</div>
-					<button type="submit" class="btn btn-default navbar-btn">
-						<i class="glyphicon glyphicon-search"></i>
-					</button>
-			  </form>
-
-    </div><!-- /.navbar-collapse -->
- 		</div>
-	</nav>
+	</ui-view>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-9 view-container">
-				<div ui-view class="view-frame">
-				</div>	
+			<div class="col-md-9">
+				<ui-view name="content@base">
+
+				</ui-view>	
 			</div>
-			<div class="col-md-3" ng-controller="LeftNavController">
-				<div class="panel panel-default">
-		  			<div class="panel-heading">
-		   				<h3 class="panel-title">Most Popular</h3>
-		  			</div>
-		  			<div class="panel-body">
-		  				<ul class="list-unstyled">
-		  					<li ng-repeat="post in mostPopularPosts">
-		  						<a ui-sref="post({slug: post.slug})" ng-bind="post.title"></a>
-		  					</li>
-		  				</ul>
-		  			</div>
-				</div>
-				<div class="panel panel-default">
-		  			<div class="panel-heading">
-		   				<h3 class="panel-title">Blog Archive</h3>
-		  			</div>
-		  			<div class="panel-body">
-		  				<abn-tree  on-select="archiveSelected(branch)" icon-leaf= "glyphicon glyphicon-file" icon-expand= "glyphicon glyphicon-chevron-right" icon-collapse="glyphicon glyphicon-chevron-down" tree-data="archiveTree" expand-level= "1" >
-						</abn-tree>
-		  			</div>
-				</div>
-				<div class="panel panel-default">
-		  			<div class="panel-heading">
-		   				<h3 class="panel-title">Tags</h3>
-		  			</div>
-		  			<div class="panel-body">
-		  				<span ng-repeat="tagCount in tagCounts">
-		  					<a ui-sref="tagSearch({tag: tagCount._id})" class="btn btn-default">
-		  						<span ng-bind="tagCount._id"></span>
-			  					<span class="badge" ng-bind="tagCount.count">
-			  					</span>
-		  					</a>
-		  				</span>
-		  			</div>
-				</div>
+			<div class="col-md-3">
+				<ui-view name="sidebar">
+
+				</ui-view>
 			</div>
 		</div>		
 	</div>

@@ -2,7 +2,7 @@
 
 var bloggerAppController = angular.module("bloggerApp.controller",[]);
 
-bloggerAppController.controller("NavController",[
+bloggerAppController.controller("NavbarController",[
 	"$scope", "APP_DATA", "$state",
 	function($scope, APP_DATA, $state)
 	{
@@ -12,14 +12,19 @@ bloggerAppController.controller("NavController",[
 
 		$scope.search = function()
 		{
-			$state.go("textSearch", {
-				searchText : $scope.searchText
+			
+			var searchText = $scope.searchText;
+			$scope.searchText = "";
+			$scope.searchForm.$setUntouched();
+
+			$state.go("base.textSearch", {
+				searchText : searchText
 			});
 		}
 	}
 	]);
 
-bloggerAppController.controller("LeftNavController",[
+bloggerAppController.controller("SidebarController",[
 	"$scope", "$http", "PostService", "APP_DATA", "TagService", "ArchiveService", "$state",
 	function($scope, $http, PostService, APP_DATA, TagService, ArchiveService, $state)
 	{
@@ -40,7 +45,7 @@ bloggerAppController.controller("LeftNavController",[
 				
 				var endDate = year + "-" + month + "-" + "31"; 
 
-				$state.go("archiveSearch",
+				$state.go("base.archiveSearch",
 					{
 						startDate : startDate,
 						endDate : endDate
@@ -195,6 +200,8 @@ bloggerAppController.controller("PostEditorController",[
 	    			$scope.alerts.push(
 	    				{ type: 'success', msg: 'Post saved successfully.' }
 	    				);
+
+	    			$scope.post = data;
 	    		});
     		}
     		
@@ -206,7 +213,7 @@ bloggerAppController.controller("PostEditorController",[
     		{
     			PostService.delete($scope.post._id).success(function(data)
 	    		{
-	    			$state.go("home");
+	    			$state.go("base.home");
 	    		});
     		}
     	}
@@ -257,12 +264,16 @@ bloggerAppController.controller("PostController",[
 			loadComments($scope.post._id);
 		}
 
-		$scope.postComment = function(comment)
+		$scope.postComment = function()
 		{
 			var commentObj = {
 				post_id : $scope.post._id,
-				comment : comment
+				comment : $scope.newCommentText
 			};
+
+			$scope.newCommentText = "";
+
+			$scope.commentForm.$setUntouched();
 
 			CommentService.add(commentObj).success(function(data)
 			{

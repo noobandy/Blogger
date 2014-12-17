@@ -1,9 +1,9 @@
 <div class="page-header">
 	<h1>Blog posts <small>tagged <span ng-bind="currentTag"></span> </small> </h1>
-	<a class="btn btn-primary" ui-sref="newPost"><i class="glyphicon glyphicon-plus"></i> New Post</a>
+	<a class="btn btn-primary" ui-sref="base.newPost"><i class="glyphicon glyphicon-plus"></i> New Post</a>
 </div>
 <div class="list-group">
-	<a ng-repeat="post in posts" class="list-group-item" ui-sref="post({slug: post.slug})">
+	<a ng-repeat="post in posts" class="list-group-item" ui-sref="base.post({slug: post.slug})">
 		<h4 class="list-group-item-heading" ng-bind="post.title"></h4>
 		<p class="list-group-item-text" marked="post.excerpt">
 		</p>

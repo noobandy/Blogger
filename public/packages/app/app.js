@@ -31,64 +31,114 @@ bloggerApp.config([
 	{
 
 		//default state when non matches
-		$urlRouterProvider.otherwise("/");
+		$urlRouterProvider.otherwise("/home");
 
-		$stateProvider.state("home",
+		$stateProvider.state("base",
 		{
+			"abstract" : true,
 			"url" : "/",
-			"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/home.html",
-			"controller" : "HomeController"
+			"views" : {
+				"navbar" : {
+					"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/navbar.html",
+					"controller" : "NavbarController"
+				},
+				"sidebar" : {
+					"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/sidebar.html",
+					"controller" : "SidebarController"
+				}
+			}
+		});
+
+		$stateProvider.state("base.home",
+		{
+			"url" : "home",
+			"views" : {
+				"content@base" : {
+					"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/home.html",
+					"controller" : "HomeController"
+				}
+			}
+		});
+
+		$stateProvider.state("base.editBlog",
+		{
+			"url" : "blog/{blogId}/edit",
+			"views" : {
+				"content@base" : {
+					"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/blogEditor.html",
+					"controller" : "BlogController"
+				}
+			}
+			
+		});
+
+		$stateProvider.state("base.newPost",
+		{
+			"url" : "post",
+			"views" : {
+				"content@base" : {
+					"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/postEditor.html",
+					"controller" : "PostEditorController"
+				}
+			}
+			
+		});
+
+		$stateProvider.state("base.post",
+		{
+			"url" : "post/{slug}",
+			"views" : {
+				"content@base" : {
+					"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/post.html",
+					"controller" : "PostController"
+				}
+			}
+			
+		});
+
+		$stateProvider.state("base.editPost",
+		{
+			"url" : "post/{slug}/edit",
+			"views" : {
+				"content@base" : {
+					"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/postEditor.html",
+					"controller" : "PostEditorController"
+				}
+			}
 		});
 
 
-		$stateProvider.state("editBlog",
+		$stateProvider.state("base.textSearch",
 		{
-			"url" : "/blog/{blogId}/edit",
-			"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/blogEditor.html",
-			"controller" : "BlogController"
+			"url" : "search/text/{searchText}",
+			"views" : {
+				"content@base" : {
+					"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/textSearchResult.html",
+					"controller" : "TextSearchController"
+				}
+			}
 		});
 
-		$stateProvider.state("newPost",
+		$stateProvider.state("base.tagSearch",
 		{
-			"url" : "/post",
-			"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/postEditor.html",
-			"controller" : "PostEditorController"
+			"url" : "search/tag/{tag}",
+			"views" : {
+				"content@base" : {
+					"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/tagSearchResult.html",
+					"controller" : "TagSearchController"
+				}
+			}
 		});
 
-		$stateProvider.state("post",
+		$stateProvider.state("base.archiveSearch",
 		{
-			"url" : "/post/{slug}",
-			"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/post.html",
-			"controller" : "PostController"
-		});
-
-		$stateProvider.state("editPost",
-		{
-			"url" : "/post/{slug}/edit",
-			"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/postEditor.html",
-			"controller" : "PostEditorController"
-		});
-
-
-		$stateProvider.state("textSearch",
-		{
-			"url" : "/search/text/{searchText}",
-			"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/textSearchResult.html",
-			"controller" : "TextSearchController"
-		});
-
-		$stateProvider.state("tagSearch",
-		{
-			"url" : "/search/tag/{tag}",
-			"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/tagSearchResult.html",
-			"controller" : "TagSearchController"
-		});
-
-		$stateProvider.state("archiveSearch",
-		{
-			"url" : "/search/archive/{startDate}/{endDate}",
-			"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/archiveSearchResult.html",
-			"controller" : "ArchiveSearchController"
+			"url" : "search/archive/{startDate}/{endDate}",
+			"views" : {
+				"content@base" : {
+					"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/archiveSearchResult.html",
+					"controller" : "ArchiveSearchController"
+				}
+			}
 		});
 
 	}

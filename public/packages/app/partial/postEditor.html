@@ -16,7 +16,7 @@
 				<button type="submit" class="btn btn-success">
 					<i class="glyphicon glyphicon-floppy-disk"></i> Save
 				</button>
-				<button ng-click="deletePost()" type="button" class="btn btn-danger">
+				<button ng-if="post._id" ng-click="deletePost()" type="button" class="btn btn-danger">
 					<i class="glyphicon glyphicon-trash"></i> Delete
 				</button>
 				<button ng-click="preview()" type="button" class="btn btn-primary">
