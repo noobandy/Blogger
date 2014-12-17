@@ -44,7 +44,47 @@ bloggerApp.config([
 				},
 				"sidebar" : {
 					"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/sidebar.html",
-					"controller" : "SidebarController"
+					"controller" : "SidebarController",
+					"resolve" : {
+						archiveTree : ["$q", "ArchiveService",
+						function($q, ArchiveService)
+						{
+							var deferred = $q.defer();
+							ArchiveService.list().success(function(data)
+								{
+									deferred.resolve(data);
+								});
+							return deferred.promise;
+						}],
+						tagCounts : ["$q", "TagService",
+						function($q, TagService)
+						{
+							var deferred = $q.defer();
+							TagService.list().success(function(data)
+								{
+									deferred.resolve(data);
+								});
+							return deferred.promise;
+						}],
+						mostPopularPosts : ["$q", "PostService",
+						function($q, PostService)
+						{
+							var deferred = $q.defer();
+							var params = {
+									ps : 5,
+									pn : 1
+								}
+
+							PostService.list(params).success(function(data)
+								{
+									deferred.resolve(data.items);
+								});
+
+							return deferred.promise;
+						}],
+					}
+
+
 				}
 			}
 		});
@@ -55,7 +95,26 @@ bloggerApp.config([
 			"views" : {
 				"content@base" : {
 					"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/home.html",
-					"controller" : "HomeController"
+					"controller" : "HomeController",
+					"resolve" : {
+						data : [
+							"$q", "PostService",
+							function($q, PostService)
+							{
+								var deferred = $q.defer();
+								var params = {
+									ps : 5,
+									pn : 1
+								}
+
+								PostService.list(params).success(function(data)
+								{
+									deferred.resolve(data);
+								});
+
+								return deferred.promise;
+							}]
+					}
 				}
 			}
 		});

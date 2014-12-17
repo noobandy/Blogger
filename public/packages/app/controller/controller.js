@@ -25,11 +25,15 @@ bloggerAppController.controller("NavbarController",[
 	]);
 
 bloggerAppController.controller("SidebarController",[
-	"$scope", "$http", "PostService", "APP_DATA", "TagService", "ArchiveService", "$state",
-	function($scope, $http, PostService, APP_DATA, TagService, ArchiveService, $state)
+	"$scope", "tagCounts", "archiveTree",
+	 "mostPopularPosts", "$state",
+	function($scope, tagCounts, archiveTree,
+	 mostPopularPosts,  $state)
 	{
 
-		$scope.archiveTree = [];
+		$scope.archiveTree = archiveTree;
+		$scope.mostPopularPosts = mostPopularPosts;
+		$scope.tagCounts = tagCounts;
 
 		$scope.archiveSelected = function(archive)
 		{
@@ -52,39 +56,19 @@ bloggerAppController.controller("SidebarController",[
 					});
 			} 
 		}
-
-		ArchiveService.list().success(function(data)
-		{
-			$scope.archiveTree = data;
-		});
-
-		$scope.mostPopularPosts = [];
-
-		PostService.list({}).success(function(data)
-		{
-			
-			$scope.mostPopularPosts = data.items.slice(0,5);
-		});
-
-
-		$scope.tagCounts = [];
-
-		TagService.list().success(function(data)
-		{
-			$scope.tagCounts = data;
-		});
 	}
 	]);
 
 
 bloggerAppController.controller("HomeController",[
-	"$scope", "$http", "PostService", "APP_DATA",
-	function($scope, $http, PostService, APP_DATA)
+	"$scope", "$http", "PostService", "APP_DATA", "data",
+	function($scope, $http, PostService, APP_DATA, data)
 	{
+	
 
-		$scope.posts = [];
+		$scope.posts = data.items;
 
-		$scope.totalItems = 0;
+		$scope.totalItems = data.count;
 	  	$scope.currentPage = 1;
 	  	$scope.itemsPerPage = 5;
 	  	$scope.maxSize = 5;
@@ -98,14 +82,11 @@ bloggerAppController.controller("HomeController",[
 	  			"ps" : $scope.itemsPerPage,
 	  			"pn" : $scope.currentPage
 	  		}).success(function(data)
-	  			{
-	  				
+	  			{	
 					$scope.posts = data.items;
 					$scope.totalItems = data.count;
 	  			});
 	  	}
-	  	//load data once
-	  	loadData();
 	}
 	]);
 
