@@ -16,9 +16,18 @@ var bloggerApp = angular.module("bloggerApp", [
 
 bloggerApp.constant("APP_DATA", {
 	"BASE_URL": BASE_URL,
-	"BLOG": blog,
-	"globalRecordsPerPage": glogalRecordsPerPage,
-	"gloablStartPage": gloablStartPage
+	"BLOG": blog
+});
+
+bloggerApp.constant('paginationConfig', {
+  itemsPerPage: 5,
+  boundaryLinks: true,
+  directionLinks: true,
+  firstText: 'First',
+  previousText: 'Previous',
+  nextText: 'Next',
+  lastText: 'Last',
+  rotate: false
 });
 
 bloggerApp.constant('angularMomentConfig', {
@@ -68,13 +77,13 @@ bloggerApp.config([
 								});
 							return deferred.promise;
 						}],
-						mostPopularPosts : ["$q", "PostService", "APP_DATA",
-						function($q, PostService)
+						mostPopularPosts : ["$q", "PostService", "paginationConfig",
+						function($q, PostService, paginationConfig)
 						{
 							var deferred = $q.defer();
 							var params = {
-									ps : APP_DATA.glogalRecordsPerPage,
-									pn : APP_DATA.gloablStartPage
+									ps : paginationConfig.itemsPerPage,
+									pn : 1
 								}
 
 							PostService.list(params).success(function(data)
@@ -100,13 +109,13 @@ bloggerApp.config([
 					"controller" : "HomeController",
 					"resolve" : {
 						data : [
-							"$q", "PostService", "APP_DATA",
-							function($q, PostService)
+							"$q", "PostService", "paginationConfig",
+							function($q, PostService, paginationConfig)
 							{
 								var deferred = $q.defer();
 								var params = {
-									ps : APP_DATA.glogalRecordsPerPage,
-									pn : APP_DATA.gloablStartPage
+									ps : paginationConfig.itemsPerPage,
+									pn : 1
 								}
 
 								PostService.list(params).success(function(data)
@@ -190,6 +199,18 @@ bloggerApp.config([
 								deferred.resolve(data);
 							});
 							return deferred.promise;
+						}],
+						commentsCount : ["$q", "$stateParams", "CommentService", 
+						function($q, $stateParams, CommentService)
+						{
+							var deferred = $q.defer();
+
+							CommentService.count($stateParams.slug).success(function(data)
+							{
+								deferred.resolve(data);
+							});
+
+							return deferred.promise;
 						}]
 					}
 
@@ -248,13 +269,13 @@ bloggerApp.config([
 					"controller" : "TextSearchController",
 					"resolve" : {
 						data : [
-							"$q", "PostService", "$stateParams", "APP_DATA",
-							function($q, PostService, $stateParams)
+							"$q", "PostService", "$stateParams", "paginationConfig",
+							function($q, PostService, $stateParams, paginationConfig)
 							{
 								var deferred = $q.defer();
 								var params = {
-									ps : APP_DATA.glogalRecordsPerPage,
-									pn : APP_DATA.gloablStartPage,
+									ps : paginationConfig.itemsPerPage,
+									pn : 1,
 									s : $stateParams.searchText
 								}
 
@@ -279,13 +300,13 @@ bloggerApp.config([
 					"controller" : "TagSearchController",
 					"resolve" : {
 						data : [
-							"$q", "PostService", "$stateParams", "APP_DATA",
-							function($q, PostService, $stateParams)
+							"$q", "PostService", "$stateParams", "paginationConfig",
+							function($q, PostService, $stateParams, paginationConfig)
 							{
 								var deferred = $q.defer();
 								var params = {
-									ps : APP_DATA.glogalRecordsPerPage,
-									pn : APP_DATA.gloablStartPage,
+									ps : paginationConfig.itemsPerPage,
+									pn : 1,
 									t : $stateParams.tag
 								}
 
@@ -310,13 +331,13 @@ bloggerApp.config([
 					"controller" : "ArchiveSearchController",
 					"resolve" : {
 						data : [
-							"$q", "PostService", "$stateParams", "APP_DATA",
-							function($q, PostService, $stateParams)
+							"$q", "PostService", "$stateParams", "paginationConfig",
+							function($q, PostService, $stateParams, paginationConfig)
 							{
 								var deferred = $q.defer();
 								var params = {
-									ps : APP_DATA.glogalRecordsPerPage,
-									pn : APP_DATA.gloablStartPage,
+									ps : paginationConfig.itemsPerPage,
+									pn : 1,
 									sd : $stateParams.startDate,
 									ed : $stateParams.endDate
 								}

@@ -84,6 +84,11 @@ bloggerAppService.service("CommentService", [
 			});
 		}
 
+		this.count = function(slug)
+		{
+			return $http.get(dataUrl + "/" + slug +"/commentCount");
+		}
+
 		this.get = function(postId, commentId)
 		{
 			return $http.get(dataUrl + "/" + postId +"/comment/" + commentId);

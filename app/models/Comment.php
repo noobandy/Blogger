@@ -47,4 +47,20 @@ class Comment extends Eloquent implements SluggableInterface {
 		return $this->belongsTo("Comment");
 	}
 
+
+	public function upVotes()
+	{
+		return $this->hasMany("User");
+	}
+
+	public function downVotes()
+	{
+		return $this->hasMany("User");
+	}
+
+	public function flags()
+	{
+		return $this->hasMany("User");
+	}
+
 }

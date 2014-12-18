@@ -21,7 +21,13 @@
 		</div>
 	</div>
 </div>
-<div class="row">
+<div ng-show="!commentsVisible" class="row">
+	<div class="col-md-12">
+		<button ng-click="showComments()" class="btn btn-primary btn-lg btn-block">
+		<span ng-bind="commentsCount"></span> Comments</button>
+	</div>
+</div>
+<div ng-show="commentsVisible" class="row">
 	<div class="col-md-12">
 			<form class="well" name="commentForm" ng-submit="commentForm.$valid && postComment()" novalidate>
 				<legend>Post Comment</legend>
@@ -34,7 +40,7 @@
 			</form>
 	</div>
 </div>
-<div class="row">
+<div ng-show="commentsVisible" class="row">
 	<div class="col-md-12">
 		<ul class="media-list">
   			<li ng-repeat="comment in comments" class="media">
@@ -65,7 +71,6 @@
 	    		</div>
   			</li>
 		</ul>
-		<button ng-show="totalItems > itemsPerPage * currentPage" ng-click="loadMore()" class="btn btn-primary">More Comments</button>
 	</div>
 </div>
 

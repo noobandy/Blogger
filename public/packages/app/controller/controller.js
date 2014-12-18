@@ -61,8 +61,8 @@ bloggerAppController.controller("SidebarController",[
 
 
 bloggerAppController.controller("HomeController",[
-	"$scope", "$http", "PostService", "APP_DATA", "data",
-	function($scope, $http, PostService, APP_DATA, data)
+	"$scope", "$http", "PostService", "APP_DATA", "paginationConfig", "data",
+	function($scope, $http, PostService, APP_DATA, paginationConfig, data)
 	{
 	
 
@@ -70,16 +70,16 @@ bloggerAppController.controller("HomeController",[
 
 		$scope.totalItems = data.count;
 	  	$scope.currentPage = 1;
-	  	$scope.itemsPerPage = 5;
-	  	$scope.maxSize = 5;
+	  	
+	  	
 	   	
 	   	$scope.pageChanged = function() {
-	    	loadData();
+	    	$scope.loadData();
 	  	};
 
-	  	var loadData = function(){
+	  	$scope.loadData = function(){
 	  		PostService.list({
-	  			"ps" : $scope.itemsPerPage,
+	  			"ps" : paginationConfig.itemsPerPage,
 	  			"pn" : $scope.currentPage
 	  		}).success(function(data)
 	  			{	
@@ -182,42 +182,27 @@ bloggerAppController.controller("PostEditorController",[
 
 bloggerAppController.controller("PostController",[
 	"$scope", "$stateParams", "PostService", "CommentService",
-	"post",
+	"post", "commentsCount", "paginationConfig",
 	function($scope, $stateParams, PostService, CommentService, 
-		post)
+		post, commentsCount, paginationConfig)
 	{
 
 		$scope.post = post;
+		$scope.commentsCount = commentsCount;
+
+		$scope.commentsVisible = false;
 
 		$scope.comments = [];
 
-		$scope.newCommentText;
-
-		$scope.totalItems = 0;
-	  	$scope.currentPage = 1;
-	  	$scope.itemsPerPage = 5;
-
-		var loadComments = function(postId){
-	  		CommentService.list(postId, {
-	  			"ps" : $scope.itemsPerPage,
-	  			"pn" : $scope.currentPage
-	  		}).success(function(data)
+		$scope.showComments = function(){
+	  		CommentService.list($scope.post._id).success(function(data)
 	  			{
-	  				data.items.forEach(function(comment)
-	  				{
-	  					$scope.comments.push(comment);
-	  				});
-				
-					$scope.totalItems = data.count;
+	  				$scope.comments = data.items;
+	  				$scope.commentsVisible = true;
 	  			});
 	  	}
 
-
-	  	$scope.loadMore = function(){
-			$scope.currentPage = $scope.currentPage + 1;
-			
-			loadComments($scope.post._id);
-		}
+	  	$scope.newCommentText;
 
 		$scope.postComment = function()
 		{
@@ -241,8 +226,8 @@ bloggerAppController.controller("PostController",[
 
 
 bloggerAppController.controller("TextSearchController",[
-	"$scope", "$stateParams", "PostService", "data",
-	function($scope, $stateParams, PostService, data)
+	"$scope", "$stateParams", "PostService", "data", "paginationConfig",
+	function($scope, $stateParams, PostService, data, paginationConfig)
 	{
 		$scope.searchText = $stateParams.searchText;
 
@@ -251,8 +236,8 @@ bloggerAppController.controller("TextSearchController",[
 		$scope.totalItems = data.count;
 
 	  	$scope.currentPage = 1;
-	  	$scope.itemsPerPage = 5;
-	  	$scope.maxSize = 5;
+	  	
+	  	
 	   	
 	   	$scope.pageChanged = function() {
 	    	$scope.loadData();
@@ -260,7 +245,7 @@ bloggerAppController.controller("TextSearchController",[
 
 	  	$scope.loadData = function(){
 	  		PostService.list({
-	  			"ps" : $scope.itemsPerPage,
+	  			"ps" : paginationConfig.itemsPerPage,
 	  			"pn" : $scope.currentPage,
 	  			"s" : $scope.searchText
 	  		}).success(function(data)
@@ -274,8 +259,8 @@ bloggerAppController.controller("TextSearchController",[
 
 
 bloggerAppController.controller("TagSearchController",[
-	"$scope","PostService","$stateParams","data",
-	function($scope, PostService, $stateParams, data)
+	"$scope","PostService","$stateParams","data", "paginationConfig",
+	function($scope, PostService, $stateParams, data, paginationConfig)
 	{
 		$scope.currentTag = $stateParams.tag;
 
@@ -284,8 +269,8 @@ bloggerAppController.controller("TagSearchController",[
 		$scope.totalItems = data.count;
 
 	  	$scope.currentPage = 1;
-	  	$scope.itemsPerPage = 5;
-	  	$scope.maxSize = 5;
+	  	
+	  	
 	   	
 	   	$scope.pageChanged = function() {
 	    	$scope.loadData();
@@ -293,7 +278,7 @@ bloggerAppController.controller("TagSearchController",[
 
 	  	$scope.loadData = function(){
 	  		PostService.list({
-	  			"ps" : $scope.itemsPerPage,
+	  			"ps" : paginationConfig.itemsPerPage,
 	  			"pn" : $scope.currentPage,
 	  			"t" : $scope.currentTag
 	  		}).success(function(data)
@@ -308,8 +293,8 @@ bloggerAppController.controller("TagSearchController",[
 
 
 bloggerAppController.controller("ArchiveSearchController",[
-	"$scope", "PostService","$stateParams","data",
-	function($scope, PostService, $stateParams, data)
+	"$scope", "PostService","$stateParams","data", "paginationConfig",
+	function($scope, PostService, $stateParams, data, paginationConfig)
 	{
 		$scope.startDate = $stateParams.startDate;
 		$scope.endDate = $stateParams.endDate;
@@ -319,8 +304,8 @@ bloggerAppController.controller("ArchiveSearchController",[
 		$scope.totalItems = data.count;
 
 	  	$scope.currentPage = 1;
-	  	$scope.itemsPerPage = 5;
-	  	$scope.maxSize = 5;
+	  	
+	  	
 	   	
 	   	$scope.pageChanged = function() {
 	    	$scope.loadData();
@@ -328,7 +313,7 @@ bloggerAppController.controller("ArchiveSearchController",[
 
 	  	$scope.loadData = function(){
 	  		PostService.list({
-	  			"ps" : $scope.itemsPerPage,
+	  			"ps" : paginationConfig.itemsPerPage,
 	  			"pn" : $scope.currentPage,
 	  			"sd" : $scope.startDate,
 	  			"ed" : $scope.endDate

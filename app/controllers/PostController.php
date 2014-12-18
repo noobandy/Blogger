@@ -90,7 +90,7 @@ class PostController extends \BaseController {
 	public function show($blogId, $slug)
 	{
 		//
-		$post = Post::where("slug", "=", $slug)->firstOrFail();
+		$post = Post::where("blog_id", "=", $blogId)->where("slug", "=", $slug)->firstOrFail();
 
 		return Response::json($post, 200);
 	}

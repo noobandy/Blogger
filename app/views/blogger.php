@@ -59,12 +59,6 @@
 
 		var blog = <?php echo $blog; ?>;
 
-	/*	var glogalRecordsPerPage = <?php echo Lang::get("pagination.recordsPerPage"); ?>;
-		var gloablStartPage = <?php echo Lang::get("pagination.startPage"); ?>; */
-
-		var glogalRecordsPerPage = 5;
-		var gloablStartPage = 1;
-
 	</script>
 	<?php echo(HTML::script("packages/jquery/jquery.min.js")); ?>
 	<?php echo( HTML::script("packages/angular.js/angular.min.js"));?>

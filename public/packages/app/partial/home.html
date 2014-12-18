@@ -11,6 +11,6 @@
 		</p>
 	</a>
 </div>
- <pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages" ng-change="pageChanged()"></pagination>
-    <pre>Page: <span ng-bind="currentPage"></span> / <span ng-bind="numPages"></span> </pre>
-
+<pagination total-items="totalItems" ng-model="currentPage" class="pagination-sm" num-pages="numPages" ng-change="pageChanged()">
+</pagination>
+<pre>Page: <span ng-bind="currentPage"></span> / <span ng-bind="numPages"></span> </pre>

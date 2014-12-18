@@ -40,6 +40,8 @@ Route::resource("blog.post", "PostController", array( "except" => array( "create
 
 Route::resource("blog.post.comment", "CommentController", array( "except" => array( "create", "edit")));
 
+Route::resource("blog.post.commentCount", "CommentCountController", array( "only" => array( "create", "index")));
+
 Route::resource("blog.tag", "TagController", array( "only" => array( "index")));
 
 Route::resource("blog.archive", "ArchiveController", array( "only" => array( "index")));
