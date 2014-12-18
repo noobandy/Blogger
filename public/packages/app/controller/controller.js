@@ -101,9 +101,10 @@ bloggerAppController.controller("BlogController",[
 	]);
 
 bloggerAppController.controller("PostEditorController",[
-	"$scope", "$stateParams", "PostService", "$modal", "APP_DATA", "TagService",
-	"$state",
-	function($scope, $stateParams, PostService, $modal, APP_DATA, TagService, $state)
+	"$scope", "PostService", "$modal", "APP_DATA", "TagService",
+	"$state", "post", "availableTags",
+	function($scope, PostService, $modal, APP_DATA, TagService,
+	 $state, post, availableTags)
 	{
 		$scope.alerts = [];
 
@@ -122,31 +123,9 @@ bloggerAppController.controller("PostEditorController",[
 	        autofocus: true
     	};
 
-    	$scope.post = {
-    		title : "New post title",
-    		text : "Post content",
-    		tags : [],
-    		created_at : new Date(),
-    		excerpt : "Short summary"
-    	}
+    	$scope.post = post;
 
-    	$scope.availableTags = [];
-
-    	TagService.list().success(function(data)
-    	{
-    		data.forEach(function(tagCount)
-    		{
-    			$scope.availableTags.push(tagCount._id);
-    		});
-    	});
-
-    	if($stateParams.slug)
-    	{
-    		PostService.get($stateParams.slug).success(function(data)
-			{
-				$scope.post = data;
-			});
-    	}
+    	$scope.availableTags = availableTags;
 
     	$scope.preview = function()
     	{
@@ -203,25 +182,20 @@ bloggerAppController.controller("PostEditorController",[
 
 bloggerAppController.controller("PostController",[
 	"$scope", "$stateParams", "PostService", "CommentService",
-	function($scope, $stateParams, PostService, CommentService)
+	"post",
+	function($scope, $stateParams, PostService, CommentService, 
+		post)
 	{
 
-
-		$scope.post = {};
+		$scope.post = post;
 
 		$scope.comments = [];
 
 		$scope.newCommentText;
+
 		$scope.totalItems = 0;
 	  	$scope.currentPage = 1;
 	  	$scope.itemsPerPage = 5;
-
-		PostService.get($stateParams.slug).success(function(data)
-			{
-				$scope.post = data;
-				//load once
-				loadComments($scope.post._id);
-			});
 
 		var loadComments = function(postId){
 	  		CommentService.list(postId, {
@@ -267,14 +241,15 @@ bloggerAppController.controller("PostController",[
 
 
 bloggerAppController.controller("TextSearchController",[
-	"$scope", "$http", "PostService","$stateParams", "APP_DATA",
-	function($scope, $http, PostService, $stateParams, APP_DATA)
+	"$scope", "$stateParams", "PostService", "data",
+	function($scope, $stateParams, PostService, data)
 	{
 		$scope.searchText = $stateParams.searchText;
 
-		$scope.posts = [];
+		$scope.posts = data.items;
 
-		$scope.totalItems = 0;
+		$scope.totalItems = data.count;
+
 	  	$scope.currentPage = 1;
 	  	$scope.itemsPerPage = 5;
 	  	$scope.maxSize = 5;
@@ -294,21 +269,20 @@ bloggerAppController.controller("TextSearchController",[
 					$scope.totalItems = data.count;
 	  			});
 	  	}
-
-	  	$scope.loadData();
 	}
 	]);
 
 
 bloggerAppController.controller("TagSearchController",[
-	"$scope", "$http", "PostService","$stateParams","APP_DATA",
-	function($scope, $http, PostService, $stateParams, APP_DATA)
+	"$scope","PostService","$stateParams","data",
+	function($scope, PostService, $stateParams, data)
 	{
 		$scope.currentTag = $stateParams.tag;
 
-		$scope.posts = [];
+		$scope.posts = data.items;
 
-		$scope.totalItems = 0;
+		$scope.totalItems = data.count;
+
 	  	$scope.currentPage = 1;
 	  	$scope.itemsPerPage = 5;
 	  	$scope.maxSize = 5;
@@ -329,22 +303,21 @@ bloggerAppController.controller("TagSearchController",[
 					$scope.totalItems = data.count;
 	  			});
 	  	}
-
-	  	$scope.loadData();
 	}
 	]);
 
 
 bloggerAppController.controller("ArchiveSearchController",[
-	"$scope", "$http", "PostService","$stateParams","APP_DATA",
-	function($scope, $http, PostService, $stateParams, APP_DATA)
+	"$scope", "PostService","$stateParams","data",
+	function($scope, PostService, $stateParams, data)
 	{
 		$scope.startDate = $stateParams.startDate;
 		$scope.endDate = $stateParams.endDate;
 
-		$scope.posts = [];
+		$scope.posts = data.items;
 
-		$scope.totalItems = 0;
+		$scope.totalItems = data.count;
+
 	  	$scope.currentPage = 1;
 	  	$scope.itemsPerPage = 5;
 	  	$scope.maxSize = 5;
@@ -365,7 +338,5 @@ bloggerAppController.controller("ArchiveSearchController",[
 					$scope.totalItems = data.count;
 	  			});
 	  	}
-
-	  	$scope.loadData();
 	}
 	]);

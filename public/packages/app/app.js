@@ -16,7 +16,9 @@ var bloggerApp = angular.module("bloggerApp", [
 
 bloggerApp.constant("APP_DATA", {
 	"BASE_URL": BASE_URL,
-	"BLOG": blog
+	"BLOG": blog,
+	"globalRecordsPerPage": glogalRecordsPerPage,
+	"gloablStartPage": gloablStartPage
 });
 
 bloggerApp.constant('angularMomentConfig', {
@@ -66,13 +68,13 @@ bloggerApp.config([
 								});
 							return deferred.promise;
 						}],
-						mostPopularPosts : ["$q", "PostService",
+						mostPopularPosts : ["$q", "PostService", "APP_DATA",
 						function($q, PostService)
 						{
 							var deferred = $q.defer();
 							var params = {
-									ps : 5,
-									pn : 1
+									ps : APP_DATA.glogalRecordsPerPage,
+									pn : APP_DATA.gloablStartPage
 								}
 
 							PostService.list(params).success(function(data)
@@ -98,13 +100,13 @@ bloggerApp.config([
 					"controller" : "HomeController",
 					"resolve" : {
 						data : [
-							"$q", "PostService",
+							"$q", "PostService", "APP_DATA",
 							function($q, PostService)
 							{
 								var deferred = $q.defer();
 								var params = {
-									ps : 5,
-									pn : 1
+									ps : APP_DATA.glogalRecordsPerPage,
+									pn : APP_DATA.gloablStartPage
 								}
 
 								PostService.list(params).success(function(data)
@@ -137,7 +139,35 @@ bloggerApp.config([
 			"views" : {
 				"content@base" : {
 					"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/postEditor.html",
-					"controller" : "PostEditorController"
+					"controller" : "PostEditorController",
+					"resolve" : {
+						post : function()
+						{
+							return {
+								title : "Post Title",
+								text : "Post content",
+								excerpt : "Post summary",
+								tags : []
+							}
+						},
+						availableTags : ["$q", "TagService", function($q, TagService)
+						{
+							var deferred = $q.defer();
+
+							TagService.list().success(function(data)
+							{
+								var availableTags = [];
+								data.forEach(function(tagCount)
+								{
+									availableTags.push(tagCount._id);
+								});
+
+								deferred.resolve(availableTags);
+							});
+
+							return deferred.promise;
+						}] 
+					}
 				}
 			}
 			
@@ -149,7 +179,20 @@ bloggerApp.config([
 			"views" : {
 				"content@base" : {
 					"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/post.html",
-					"controller" : "PostController"
+					"controller" : "PostController",
+					"resolve" : {
+						post : ["$q", "$stateParams", "PostService", function($q, 
+							$stateParams, PostService)
+						{
+							var deferred = $q.defer();
+							PostService.get($stateParams.slug).success(function(data)
+							{
+								deferred.resolve(data);
+							});
+							return deferred.promise;
+						}]
+					}
+
 				}
 			}
 			
@@ -161,7 +204,36 @@ bloggerApp.config([
 			"views" : {
 				"content@base" : {
 					"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/postEditor.html",
-					"controller" : "PostEditorController"
+					"controller" : "PostEditorController",
+					"resolve" : {
+						post : ["$q", "$stateParams", "PostService", function($q, 
+							$stateParams, PostService)
+						{
+							var deferred = $q.defer();
+							PostService.get($stateParams.slug).success(function(data)
+							{
+								deferred.resolve(data);
+							});
+							return deferred.promise;
+						}],
+						availableTags : ["$q", "TagService", function($q, TagService)
+						{
+							var deferred = $q.defer();
+
+							TagService.list().success(function(data)
+							{
+								var availableTags = [];
+								data.forEach(function(tagCount)
+								{
+									availableTags.push(tagCount._id);
+								});
+
+								deferred.resolve(availableTags);
+							});
+
+							return deferred.promise;
+						}] 
+					}
 				}
 			}
 		});
@@ -173,7 +245,27 @@ bloggerApp.config([
 			"views" : {
 				"content@base" : {
 					"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/textSearchResult.html",
-					"controller" : "TextSearchController"
+					"controller" : "TextSearchController",
+					"resolve" : {
+						data : [
+							"$q", "PostService", "$stateParams", "APP_DATA",
+							function($q, PostService, $stateParams)
+							{
+								var deferred = $q.defer();
+								var params = {
+									ps : APP_DATA.glogalRecordsPerPage,
+									pn : APP_DATA.gloablStartPage,
+									s : $stateParams.searchText
+								}
+
+								PostService.list(params).success(function(data)
+								{
+									deferred.resolve(data);
+								});
+
+								return deferred.promise;
+							}]
+					}
 				}
 			}
 		});
@@ -184,7 +276,27 @@ bloggerApp.config([
 			"views" : {
 				"content@base" : {
 					"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/tagSearchResult.html",
-					"controller" : "TagSearchController"
+					"controller" : "TagSearchController",
+					"resolve" : {
+						data : [
+							"$q", "PostService", "$stateParams", "APP_DATA",
+							function($q, PostService, $stateParams)
+							{
+								var deferred = $q.defer();
+								var params = {
+									ps : APP_DATA.glogalRecordsPerPage,
+									pn : APP_DATA.gloablStartPage,
+									t : $stateParams.tag
+								}
+
+								PostService.list(params).success(function(data)
+								{
+									deferred.resolve(data);
+								});
+
+								return deferred.promise;
+							}]
+					}
 				}
 			}
 		});
@@ -195,7 +307,28 @@ bloggerApp.config([
 			"views" : {
 				"content@base" : {
 					"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/archiveSearchResult.html",
-					"controller" : "ArchiveSearchController"
+					"controller" : "ArchiveSearchController",
+					"resolve" : {
+						data : [
+							"$q", "PostService", "$stateParams", "APP_DATA",
+							function($q, PostService, $stateParams)
+							{
+								var deferred = $q.defer();
+								var params = {
+									ps : APP_DATA.glogalRecordsPerPage,
+									pn : APP_DATA.gloablStartPage,
+									sd : $stateParams.startDate,
+									ed : $stateParams.endDate
+								}
+
+								PostService.list(params).success(function(data)
+								{
+									deferred.resolve(data);
+								});
+
+								return deferred.promise;
+							}]
+					}
 				}
 			}
 		});

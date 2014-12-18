@@ -16,5 +16,7 @@ return array(
 	'previous' => '&laquo; Previous',
 
 	'next'     => 'Next &raquo;',
+	"recordsPerPage" => 5,
+	"startPage" => 1,
 
 );
