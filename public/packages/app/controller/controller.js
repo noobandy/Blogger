@@ -189,20 +189,18 @@ bloggerAppController.controller("PostController",[
 
 		$scope.post = post;
 		$scope.commentsCount = commentsCount;
+		
+	}
+	]);
 
-		$scope.commentsVisible = false;
+bloggerAppController.controller("CommentController", [
+	"$scope", "$stateParams", "CommentService", "comments",
+	function($scope, $stateParams, CommentService, comments){
+		$scope.comments = comments;
 
-		$scope.comments = [];
+		console.log($scope.comments);
 
-		$scope.showComments = function(){
-	  		CommentService.list($scope.post._id).success(function(data)
-	  			{
-	  				$scope.comments = data.items;
-	  				$scope.commentsVisible = true;
-	  			});
-	  	}
-
-	  	$scope.newCommentText;
+		$scope.newCommentText;
 
 		$scope.postComment = function()
 		{
@@ -220,10 +218,22 @@ bloggerAppController.controller("PostController",[
 				$scope.comments.unshift(data);
 			});	
 		}
-		
-	}
-	]);
 
+		$scope.postReply = function(comment, reply)
+		{
+			var commentObj = {
+				post_id : $scope.post._id,
+				parent_id : comment._id,
+				comment : reply 
+			}
+
+			CommentService.add(commentObj).success(function(data)
+			{
+				coomment.replies.unshift(data);
+			});
+		}
+
+	}]);
 
 bloggerAppController.controller("TextSearchController",[
 	"$scope", "$stateParams", "PostService", "data", "paginationConfig",

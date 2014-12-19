@@ -75,11 +75,11 @@ bloggerAppService.service("CommentService", [
 	{
 		var dataUrl = APP_DATA.BASE_URL+"/blog/"+APP_DATA.BLOG._id+"/post";
 
-		this.list = function(postId, params)
+		this.list = function(postSlug, params)
 		{
 			return $http({
 				method : "GET",
-				url : dataUrl + "/" + postId +"/comment",
+				url : dataUrl + "/" + postSlug +"/comment",
 				params : params
 			});
 		}

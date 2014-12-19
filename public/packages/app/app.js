@@ -219,6 +219,45 @@ bloggerApp.config([
 			
 		});
 
+
+
+		$stateProvider.state("base.post.comment",
+		{
+			"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/comment.html",
+			"controller" : "CommentController",
+			"resolve" : {
+				comments : ["$q", "$stateParams", "CommentService",
+				function($q, $stateParams, CommentService)
+				{
+					var deferred = $q.defer();
+
+					CommentService.list($stateParams.slug).success(function(data)
+					{
+		  				var idToNodeMap = {};
+						var comments = [];
+						for(var i = 0; i < data.items.length; i++) {
+						    var datum = data.items[i];
+						    datum.replies = [];
+						    idToNodeMap[datum._id] = datum;
+						    
+						    if(typeof datum.parent_id === "undefined") {
+						        comments.push(datum);        
+						    } else {
+						        var parentNode = idToNodeMap[datum.parent_id];
+						        parentNode.replies.push(datum);
+						    }
+						}
+						
+						deferred.resolve(comments);
+
+	  				});
+	  				
+	  				return deferred.promise;
+				}]
+			}
+		});
+
+
 		$stateProvider.state("base.editPost",
 		{
 			"url" : "post/{slug}/edit",

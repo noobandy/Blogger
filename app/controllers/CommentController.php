@@ -7,10 +7,11 @@ class CommentController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function index($blogId, $postId)
+	public function index($blogId, $slug)
 	{
 		//
-		$post = Post::findOrFail($postId);
+		$post = Post::where("blog_id", "=", $blogId)->where("slug", "=", $slug)->firstOrFail();
+		
 		$query = $post->comments();
 
 		$count = $query->count();

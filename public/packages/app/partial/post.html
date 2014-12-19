@@ -21,56 +21,13 @@
 		</div>
 	</div>
 </div>
-<div ng-show="!commentsVisible" class="row">
+<div class="row">
 	<div class="col-md-12">
-		<button ng-click="showComments()" class="btn btn-primary btn-lg btn-block">
-		<span ng-bind="commentsCount"></span> Comments</button>
-	</div>
-</div>
-<div ng-show="commentsVisible" class="row">
-	<div class="col-md-12">
-			<form class="well" name="commentForm" ng-submit="commentForm.$valid && postComment()" novalidate>
-				<legend>Post Comment</legend>
-				<div class="form-group">
-					<textarea ng-model="newCommentText" class="form-control input-lg" placeholder="write your comment" required></textarea>
-				</div>
-				<button class="btn btn-primary">
-					Submit
-				</button>
-			</form>
-	</div>
-</div>
-<div ng-show="commentsVisible" class="row">
-	<div class="col-md-12">
-		<ul class="media-list">
-  			<li ng-repeat="comment in comments" class="media">
-    			<a class="media-left" href="#">
-      				<img holder="holder.js/64x64">
-    			</a>
-	    		<div class="media-body">
-	        		<h4 class="media-heading">
-	        			<a href="">{{comment.author_id}}</a>
-	        			<small am-time-ago="comment.created_at">
-
-	        			</small>
-	        		</h4>
-	        		<p>
-	        			{{comment.comment}}
-	        		</p>
-	        		<div>
-						<a class="comment-control left" href="">
-							<i class="glyphicon glyphicon-thumbs-up"></i>
-						</a>
-						<a class="comment-control left" href="">
-							<i class="glyphicon glyphicon-thumbs-down"></i>
-						</a>
-						<a class="comment-control" href="">
-							Reply
-						</a>
-					</div>
-	    		</div>
-  			</li>
-		</ul>
+		<a ui-sref="base.post.comment" class="btn btn-primary btn-lg btn-block">
+		<span ng-bind="commentsCount"></span> Comments</a>
 	</div>
 </div>
 
+<ui-view>
+
+</ui-view>
