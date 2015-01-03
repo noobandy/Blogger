@@ -2,6 +2,30 @@
 
 var bloggerAppService = angular.module("bloggerApp.service",[]);
 
+bloggerAppService.service("LoginService", [
+	"$http", "APP_DATA",
+	function($http, APP_DATA)
+	{
+		var loginUrl = APP_DATA.BASE_URL + "/login";
+		var logoutUrl = APP_DATA.BASE_URL + "/logout";
+
+		this.login = function(username, password)
+		{
+			return $http.post(loginUrl, {
+				username : username,
+				password : password
+			});
+		}
+
+		this.logout = function()
+		{
+			return $http.post(logoutUrl,{});
+		}
+
+	}
+	]);
+
+
 bloggerAppService.service("PostService", [
 	"$http", "APP_DATA",
 	function($http, APP_DATA)

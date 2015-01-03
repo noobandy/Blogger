@@ -20,7 +20,9 @@ Route::post("/register", "LoginController@register");
 
 Route::get("/activate", "LoginController@activate");
 
-Route::post("/login", "LoginController@login");
+Route::post("/login", "AjaxLoginController@login");
+
+Route::post("/logout", "AjaxLoginController@logout");
 
 Route::get("/password/remind", "RemindersController@getRemind");
 

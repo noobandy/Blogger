@@ -10,7 +10,8 @@ var bloggerApp = angular.module("bloggerApp", [
 	"bloggerApp.directive",
 	"ui.codemirror",
 	"ngSanitize",
-	"ui.select"
+	"ui.select",
+	"http-auth-interceptor"
 	]);
 
 
@@ -395,4 +396,25 @@ bloggerApp.config([
 
 	}
 	]);
+
+bloggerApp.run(["APP_DATA", "$rootScope", "$modal",
+	function(APP_DATA, $rootScope, $modal)
+	{
+		$rootScope.$on("event:auth-loginRequired", function()
+		{
+			$modal.open(
+    		{
+    			templateUrl: APP_DATA.BASE_URL + "/packages/app/partial/loginForm.html",
+				size: "sm",
+				controller: "LoginController"
+    		});
+		});
+
+		$rootScope.$on("event:auth-loginConfirmed", function()
+		{
+			$rootScope.isLoggedIn = true;
+		});
+	}
+	]);
+
 

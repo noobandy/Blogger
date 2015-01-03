@@ -82,6 +82,7 @@
 	<?php echo( HTML::script("packages/highlight.js/highlight.min.js"));?>
 	<?php echo( HTML::script("packages/marked.js/marked.min.js"));?>
 	<?php echo( HTML::script("packages/ui-select/select.min.js"));?>
+	<?php echo( HTML::script("packages/app/interceptor/http-auth-interceptor.js"));?>
 	<?php echo( HTML::script("packages/app/app.js"));?>
 	<?php echo( HTML::script("packages/app/controller/controller.js"));?>
 	<?php echo( HTML::script("packages/app/service/service.js"));?>

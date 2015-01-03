@@ -68,16 +68,23 @@ class PostController extends \BaseController {
 	 */
 	public function store($blogId)
 	{
-		$blog = Blog::findOrFail($blogId);
+
+		if (Auth::guest())
+		{
+			return Response::make('Unauthorized', 401);
+		}
+		else
+		{
+			$blog = Blog::findOrFail($blogId);
+			
+			$inputData = Input::only("title", "excerpt", "text", "tags");
+
+			$post = new Post($inputData);
 		
-		$inputData = Input::only("title", "excerpt", "text", "tags");
+			$post = $blog->posts()->save($post);
 
-		$post = new Post($inputData);
-	
-		$post = $blog->posts()->save($post);
-
-		return Response::json($post, 201);
-		//
+			return Response::json($post, 201);
+		}
 	}
 
 
@@ -104,12 +111,19 @@ class PostController extends \BaseController {
 	 */
 	public function update($blogId, $id)
 	{
-		//
-		$updateData = Input::only("title", "excerpt", "text", "tags");
+		if (Auth::guest())
+		{
+			return Response::make('Unauthorized', 401);
+		}
+		else
+		{
+			$updateData = Input::only("title", "excerpt", "text", "tags");
 
-		Post::findOrFail($id)->update($updateData);
+			Post::findOrFail($id)->update($updateData);
 
-		return Response::json(array(), 200);
+			return Response::json(array(), 200);
+		}
+		
 	}
 
 
@@ -121,10 +135,19 @@ class PostController extends \BaseController {
 	 */
 	public function destroy($blogId, $id)
 	{
-		//
-		Post::findOrFail($id)->delete();
+		
+		if (Auth::guest())
+		{
+			return Response::make('Unauthorized', 401);
+		}
+		else
+		{
+			Post::findOrFail($id)->delete();
 
-		return Response::json(array(), 200);
+			return Response::json(array(), 200);
+		}
+
+		
 	}
 
 

@@ -78,4 +78,9 @@ class LoginController extends BaseController {
 		Session::flash("flashMessage",array("type" => "error" ,"message" => Lang::get("messages.loginFailed")));
 		return Redirect::to("/");
 	}
+
+	public function logout(){
+		Auth::logout();
+		return Response::json(array(), 200);
+	}
 }

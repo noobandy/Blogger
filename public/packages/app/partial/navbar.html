@@ -14,7 +14,7 @@
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav">
-		        <li><a href="#">About <span class="sr-only">(current)</span></a></li>
+		        <li ng-if="isLoggedIn"><a ng-click="logout()" href="#">Log out</a></li>
 		      </ul>
 		      <form novalidate name="searchForm" ng-submit="searchForm.$valid && search()" class="navbar-form navbar-right" role="search">
 					<div class="form-group">
