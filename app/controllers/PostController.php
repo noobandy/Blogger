@@ -71,7 +71,9 @@ class PostController extends \BaseController {
 
 		$blog = Blog::findOrFail($blogId);
 
-		if(strcmp($blog->author()->username, Auth::user()->username) == 0)
+		$author = User::findOrFail($blog->user_id);
+
+		if(strcmp($author->username, Auth::user()->username) == 0)
 		{
 			$inputData = Input::only("title", "excerpt", "text", "tags");
 
@@ -114,7 +116,9 @@ class PostController extends \BaseController {
 	{
 		$blog = Blog::findOrFail($blogId);
 
-		if(strcmp($blog->author()->username, Auth::user()->username) == 0)
+		$author = User::findOrFail($blog->user_id);
+
+		if(strcmp($author->username, Auth::user()->username) == 0)
 		{
 			$updateData = Input::only("title", "excerpt", "text", "tags");
 
@@ -140,8 +144,10 @@ class PostController extends \BaseController {
 	{
 		
 		$blog = Blog::findOrFail($blogId);
+		
+		$author = User::findOrFail($blog->user_id);
 
-		if(strcmp($blog->author()->username, Auth::user()->username) == 0)
+		if(strcmp($author->username, Auth::user()->username) == 0)
 		{
 			$updateData = Input::only("title", "excerpt", "text", "tags");
 

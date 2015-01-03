@@ -28,8 +28,10 @@ class BlogController extends \BaseController {
 	public function update($blogId)
 	{
 		$blog = Blog::findOrFail($blogId);
+		
+		$author = User::findOrFail($blog->user_id);
 
-		if(strcmp($blog->author()->username, Auth::user()->username) == 0)
+		if(strcmp($author->username, Auth::user()->username) == 0)
 		{
 			$updateData = Input::only("name", "about");
 
@@ -53,8 +55,10 @@ class BlogController extends \BaseController {
 	public function destroy($blogId)
 	{
 		$blog = Blog::findOrFail($blogId);
+		
+		$author = User::findOrFail($blog->user_id);
 
-		if(strcmp($blog->author()->username, Auth::user()->username) == 0)
+		if(strcmp($author->username, Auth::user()->username) == 0)
 		{
 			$updateData = Input::only("name", "about");
 

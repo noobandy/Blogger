@@ -36,6 +36,7 @@ class CommentController extends \BaseController {
 	 */
 	public function store($blogId, $postId)
 	{
+
 		$post = Post::findOrFail($postId);
 		
 		$parentId = Input::get("parentId");
@@ -66,13 +67,13 @@ class CommentController extends \BaseController {
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param  string  $commentId
 	 * @return Response
 	 */
-	public function show($blogId, $postId, $id)
+	public function show($blogId, $postId, $commentId)
 	{
 		//
-		$comment = Comment::findOrFail($id);
+		$comment = Comment::findOrFail($commentId);
 
 		return Response::json($comment, 200);
 	}
@@ -81,32 +82,51 @@ class CommentController extends \BaseController {
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param  int  $id
+	 * @param  string  $commentId
 	 * @return Response
 	 */
-	public function update($blogId, $postId, $id)
+	public function update($blogId, $postId, $commentId)
 	{
-		//
-		$updateData = Input::only("comment");
+		
+		$comment = Comment::findOrFail($commentId);
+		
+		$author = User::findOrFail($comment->author_id);
 
-		Comment::findOrFail($id)->update($updateData);
-
-		return Response::json(array(), 200);
+		if(strcmp($author->username, Auth::user()->username) == 0)
+		{
+			$updateData = Input::only("comment");
+			$comment->update($updateData);
+			return Response::json(array(), 200);
+		}
+		else
+		{
+			App::abort(403);
+		}
+		
 	}
 
 
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  int  $id
+	 * @param  string  $commentId
 	 * @return Response
 	 */
-	public function destroy($blogId, $postId, $id)
+	public function destroy($blogId, $postId, $commentId)
 	{
-		//
-		Comment::findOrFail($id)->delete();
+		$comment = Comment::findOrFail($commentId);
+		
+		$author = User::findOrFail($comment->author_id);
 
-		return Response::json(array(), 200);
+		if(strcmp($author->username, Auth::user()->username) == 0)
+		{
+			$comment->delete();
+			return Response::json(array(), 200);
+		}
+		else
+		{
+			App::abort(403);
+		}
 	}
 
 

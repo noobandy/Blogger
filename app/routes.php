@@ -38,31 +38,56 @@ Route::post("/password/reset", "RemindersController@postReset");
 
 Route::get("/blog/{blogId}","BlogController@show");
 
-Route::put("/blog/{blogId}", array('before' => "basic.once","BlogController@update"));
+Route::put("/blog/{blogId}",
+	array('before' => "basic.once",
+		"uses" => "BlogController@update",
+		"as" => "blog.update"));
 
-Route::delete("/blog/{blogId}", array('before' => "basic.once","BlogController@destroy"));
+Route::delete("/blog/{blogId}",
+	array('before' => "basic.once",
+		"uses" => "BlogController@destroy",
+		"as" => "blog.destroy"));
 
 
 Route::get("/blog/{blogId}/post","PostController@index");
 
-Route::post("/blog/{blogId}/post", array('before' => "basic.once", "PostController@store"));
+Route::post("/blog/{blogId}/post",
+	array('before' => "basic.once",
+		"uses" => "PostController@store",
+		"as" => "post.store"));
 
 Route::get("/blog/{blogId}/post/{slug}","PostController@show");
 
-Route::put("/blog/{blogId}/post/{postId}", array('before' => "basic.once", "PostController@update"));
+Route::put("/blog/{blogId}/post/{postId}",
+	array('before' => "basic.once",
+	"uses" => "PostController@update",
+	"as" => "post.update"));
 
-Route::delete("/blog/{blogId}/post/{postId}", array('before' => "basic.once", "PostController@destroy"));
+Route::delete("/blog/{blogId}/post/{postId}",
+	array('before' => "basic.once",
+		"uses" => "PostController@destroy",
+		"as" => "post.destroy"));
 
 
 Route::get("/blog/{blogId}/post/{postId}/comment","CommentController@index");
 
-Route::post("/blog/{blogId}/post/{postId}/comment", array('before' => "basic.once", "CommentController@store"));
+Route::post("/blog/{blogId}/post/{postId}/comment",
+	array('before' => "basic.once",
+	"uses" => "CommentController@store",
+	"as" => "comment.store"));
 
 Route::get("/blog/{blogId}/post/{postId}/comment/{commentId}","CommentController@show");
 
-Route::put("/blog/{blogId}/post/{postId}/comment/{commentId}", array('before' => "basic.once", "CommentController@update"));
+Route::put("/blog/{blogId}/post/{postId}/comment/{commentId}",
+	array('before' => "basic.once",
+	"uses" => "CommentController@update",
+	"as" => "comment.update"));
 
-Route::delete("/blog/{blogId}/post/{postId}/comment/commentId", array('before' => "basic.once", "CommentController@destroy"));
+Route::delete("/blog/{blogId}/post/{postId}/comment/commentId",
+	array('before' => "basic.once",
+	"uses" => "CommentController@destroy",
+	"as" => "comment.destroy"));
+
 
 Route::get("/blog/{blogId}/post/{postId}/commentCount","CommentCountController@index");
 

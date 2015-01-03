@@ -56,7 +56,7 @@ Route::filter('auth.basic', function()
 
 Route::filter('basic.once', function()
 {
-	return Auth::onceBasic();
+	return Auth::onceBasic("username");
 });
 
 /*
