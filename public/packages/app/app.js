@@ -17,7 +17,7 @@ var bloggerApp = angular.module("bloggerApp", [
 
 bloggerApp.constant("APP_DATA", {
 	"BASE_URL": BASE_URL,
-	"BLOG": blog
+	"BLOG": BLOG
 });
 
 bloggerApp.constant('paginationConfig', {

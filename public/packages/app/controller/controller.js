@@ -3,8 +3,8 @@
 var bloggerAppController = angular.module("bloggerApp.controller",[]);
 
 bloggerAppController.controller("LoginController",[
-	"$scope", "$modalInstance", "LoginService", "authService",
-	function($scope, $modalInstance, LoginService, authService)
+	"$rootScope", "$scope", "$modalInstance", "LoginService", "authService",
+	function($rootScope, $scope, $modalInstance, LoginService, authService)
 	{
 		$scope.alerts = [];
 
@@ -23,13 +23,17 @@ bloggerAppController.controller("LoginController",[
     	$scope.login = function(username, password) {
     		LoginService.login(username, password).success(function(data)
     		{
-    			if(data.login)
+    			if(data.loggedInUser != null)
     			{
     				$scope.alerts.push(
 	    				{ type: 'success', msg: 'You are successfully logged in.' }
 	    				);
-    				authService.loginConfirmed();
+    				
+    				$rootScope.isLoggedIn = true;
+    				$rootScope.loggedInUser = data.loggedInUser;
 
+    				authService.loginConfirmed();
+    				
     				$modalInstance.dismiss("ok");
     			}
     			else
@@ -70,7 +74,7 @@ bloggerAppController.controller("NavbarController",[
     		LoginService.logout().success.function(data)
     		{
     			$rootScope.isLoggedIn = false;
-    			
+    			$rootScope.loggedInUser = null;
     		};
     	}
 	}

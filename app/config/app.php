@@ -124,7 +124,7 @@ return array(
 		'Jenssegers\Mongodb\MongodbServiceProvider',
 		'Jenssegers\Mongodb\Auth\ReminderServiceProvider',
 		'Jenssegers\Mongodb\Session\SessionServiceProvider',
-		"Cviebrock\EloquentSluggable\SluggableServiceProvider",
+		'Cviebrock\EloquentSluggable\SluggableServiceProvider',
 
 	),
 

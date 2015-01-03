@@ -69,14 +69,10 @@ class PostController extends \BaseController {
 	public function store($blogId)
 	{
 
-		if (Auth::guest())
+		$blog = Blog::findOrFail($blogId);
+
+		if(strcmp($blog->author()->username, Auth::user()->username) == 0)
 		{
-			return Response::make('Unauthorized', 401);
-		}
-		else
-		{
-			$blog = Blog::findOrFail($blogId);
-			
 			$inputData = Input::only("title", "excerpt", "text", "tags");
 
 			$post = new Post($inputData);
@@ -85,13 +81,18 @@ class PostController extends \BaseController {
 
 			return Response::json($post, 201);
 		}
+		else
+		{
+			App::abort(403);
+		}
+
 	}
 
 
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  str $slug
+	 * @param  string $slug
 	 * @return Response
 	 */
 	public function show($blogId, $slug)
@@ -106,48 +107,52 @@ class PostController extends \BaseController {
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param  int  $id
+	 * @param  string  $postId
 	 * @return Response
 	 */
-	public function update($blogId, $id)
+	public function update($blogId, $postId)
 	{
-		if (Auth::guest())
-		{
-			return Response::make('Unauthorized', 401);
-		}
-		else
+		$blog = Blog::findOrFail($blogId);
+
+		if(strcmp($blog->author()->username, Auth::user()->username) == 0)
 		{
 			$updateData = Input::only("title", "excerpt", "text", "tags");
 
-			Post::findOrFail($id)->update($updateData);
+			$blog->posts()->findOrFail($postId)->update($updateData);
 
 			return Response::json(array(), 200);
 		}
-		
+		else
+		{
+			App::abort(403);
+		}
+
 	}
 
 
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  int  $id
+	 * @param  string  $postId
 	 * @return Response
 	 */
-	public function destroy($blogId, $id)
+	public function destroy($blogId, $postId)
 	{
 		
-		if (Auth::guest())
+		$blog = Blog::findOrFail($blogId);
+
+		if(strcmp($blog->author()->username, Auth::user()->username) == 0)
 		{
-			return Response::make('Unauthorized', 401);
-		}
-		else
-		{
-			Post::findOrFail($id)->delete();
+			$updateData = Input::only("title", "excerpt", "text", "tags");
+
+			$blog->posts()->findOrFail($postId)->delete();
 
 			return Response::json(array(), 200);
 		}
-
-		
+		else
+		{
+			App::abort(403);
+		}
 	}
 
 

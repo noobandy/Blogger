@@ -2,41 +2,18 @@
 
 class BlogController extends \BaseController {
 
-	
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		if(Auth::check())
-		{
-			
-		}
-
-		$inputData = Input::only("name", "about");
-		$blog = new Blog($inputData);
-		$username = Auth::user()->username;
-		$author = User::where("username", "=", $username)->firstOrFail();
-		$blog = $author->blog()->save($blog);
-
-		return Response::json($blog, 201);
-		//
-	}
 
 
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param  string  $blogId
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($blogId)
 	{
-		//
-		$blog = Blog::findOrFail($id);
+		
+		$blog = Blog::findOrFail($blogId);
 
 		return Response::json($blog, 200);
 	}
@@ -45,32 +22,50 @@ class BlogController extends \BaseController {
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param  int  $id
+	 * @param  string  $blogId
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($blogId)
 	{
-		//
-		$updateData = Input::only("name", "about");
+		$blog = Blog::findOrFail($blogId);
 
-		Blog::findOrFail($id)->update($updateData);
+		if(strcmp($blog->author()->username, Auth::user()->username) == 0)
+		{
+			$updateData = Input::only("name", "about");
 
-		return Response::json(array(), 200);
+			$blog->update($updateData);
+
+			return Response::json(array(), 200);
+		}
+		else
+		{
+			App::abort(403);
+		}
 	}
 
 
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  int  $id
+	 * @param  string  $blogId
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy($blogId)
 	{
-		//
-		Blog::findOrFail($id)->delete();
+		$blog = Blog::findOrFail($blogId);
 
-		return Response::json(array(), 200);
+		if(strcmp($blog->author()->username, Auth::user()->username) == 0)
+		{
+			$updateData = Input::only("name", "about");
+
+			$blog->delete();
+
+			return Response::json(array(), 200);
+		}
+		else
+		{
+			App::abort(403);
+		}
 	}
 
 

@@ -11,8 +11,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
 	use UserTrait, RemindableTrait, SoftDeletingTrait;
 
-	protected $primaryKey = "username";
-
 	protected $dates = ['deleted_at'];
 
 	/**

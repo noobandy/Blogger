@@ -73,27 +73,6 @@
 			<div class="col-md-6">
 				<div class="row">
 					<div class="col-md-12">
-						<form name="loginForm" class="form-inline" method="post" action="<?php echo(URL::to("/login")); ?>">
-							<div class="form-group">
-								<input class="form-control" name="username" type="text" placeholder="username" />
-							</div>
-							<div class="form-group">
-								<input class="form-control" name="password" type="password" placeholder="password" />
-							</div>
-							<div class="form-group">
-								<label>
-									<input name="remember" type="checkbox" />
-									remeber
-								</label>
-								
-							</div>
-							<button class="btn btn-primary" type="submit">Login</button>
-						</form>
-						<a href="<?php echo(URL::action("RemindersController@getRemind")); ?>">forgot password? </a>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
 						<form name="registrationForm" method="post" action="<?php echo(URL::to('/register')); ?>">
 							<legend>Register</legend>
 							<?php
@@ -134,6 +113,15 @@
 							</div>
 							<div class="form-group">
 								<input name="repeatPassword" type="password" class="form-control input-lg" placeholder="repeat password"/>
+							</div>
+							<?php
+								if($errors->register->has("blogName")){
+									echo("<div class=\"form-group has-error\">");
+								}else{
+									echo("<div class=\"form-group\">");
+								}
+							 ?>
+								<input name="blogName" type="text" class="form-control input-lg" placeholder="blog name"/>
 							</div>
 							<button type="submit" class="btn btn-primary btn-lg">Register</button>
 				</form>

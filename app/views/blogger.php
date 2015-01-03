@@ -56,8 +56,7 @@
 	<script type="text/javascript">
 
 		var BASE_URL = "<?php echo URL::to("/"); ?>";
-
-		var blog = <?php echo $blog; ?>;
+		var BLOG = <?php  echo $blog; ?>;
 
 	</script>
 	<?php echo(HTML::script("packages/jquery/jquery.min.js")); ?>

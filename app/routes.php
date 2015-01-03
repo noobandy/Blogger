@@ -16,13 +16,13 @@ Route::get("/", function()
 	return View::make("index");
 });
 
-Route::post("/register", "LoginController@register");
+Route::post("/register", "RegistrationController@register");
 
-Route::get("/activate", "LoginController@activate");
+Route::get("/activate", "RegistrationController@activate");
 
-Route::post("/login", "AjaxLoginController@login");
+Route::post("/login", "LoginController@login");
 
-Route::post("/logout", "AjaxLoginController@logout");
+Route::post("/logout", "LoginController@logout");
 
 Route::get("/password/remind", "RemindersController@getRemind");
 
@@ -36,22 +36,48 @@ Route::post("/password/reset", "RemindersController@postReset");
 
 
 
-Route::resource("blog", "BlogController", array( "except" => array("index", "create", "edit")));
+Route::get("/blog/{blogId}","BlogController@show");
 
-Route::resource("blog.post", "PostController", array( "except" => array( "create", "edit")));
+Route::put("/blog/{blogId}", array('before' => "basic.once","BlogController@update"));
 
-Route::resource("blog.post.comment", "CommentController", array( "except" => array( "create", "edit")));
+Route::delete("/blog/{blogId}", array('before' => "basic.once","BlogController@destroy"));
 
-Route::resource("blog.post.commentCount", "CommentCountController", array( "only" => array( "create", "index")));
 
-Route::resource("blog.tag", "TagController", array( "only" => array( "index")));
+Route::get("/blog/{blogId}/post","PostController@index");
 
-Route::resource("blog.archive", "ArchiveController", array( "only" => array( "index")));
+Route::post("/blog/{blogId}/post", array('before' => "basic.once", "PostController@store"));
+
+Route::get("/blog/{blogId}/post/{slug}","PostController@show");
+
+Route::put("/blog/{blogId}/post/{postId}", array('before' => "basic.once", "PostController@update"));
+
+Route::delete("/blog/{blogId}/post/{postId}", array('before' => "basic.once", "PostController@destroy"));
+
+
+Route::get("/blog/{blogId}/post/{postId}/comment","CommentController@index");
+
+Route::post("/blog/{blogId}/post/{postId}/comment", array('before' => "basic.once", "CommentController@store"));
+
+Route::get("/blog/{blogId}/post/{postId}/comment/{commentId}","CommentController@show");
+
+Route::put("/blog/{blogId}/post/{postId}/comment/{commentId}", array('before' => "basic.once", "CommentController@update"));
+
+Route::delete("/blog/{blogId}/post/{postId}/comment/commentId", array('before' => "basic.once", "CommentController@destroy"));
+
+Route::get("/blog/{blogId}/post/{postId}/commentCount","CommentCountController@index");
+
+Route::get("/blog/{blogId}/tag","TagController@index");
+
+Route::get("/blog/{blogId}/archive","ArchiveController@index");
+
 
 Route::get("/blogger/{username}", function($username){
-	$author = User::where("username", "=", $username)->firstOrFail();
+	
+	$user = User::where("username", "=", $username)->where("active", "=", true)->firstOrFail();
 
-	$blog =  $author->blog;
+	$blog = Blog::with("author")->where("user_id", "=", $user->_id)->firstOrFail();
 
-	return View::make("blogger")->with(array("blog" => $blog->toJson()));
+	$data = array("blog" => $blog->toJson());
+	
+	return View::make("blogger")->with($data);
 });
