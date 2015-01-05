@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-	<?php echo(HTML::style("packages/bootstrap/css/bootstrap-lumen.css")); ?>
+	<?php echo(HTML::style("packages/bootstrap/css/bootstrap-cerulean.css")); ?>
 	<?php echo(HTML::style("packages/nav-tree/abn_tree.css")); ?>
 	<?php echo(HTML::style("packages/app/css/animation.css")); ?>
 	<?php echo(HTML::style("packages/codemirror-4.8/lib/codemirror.css")); ?>
@@ -97,7 +97,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-9">
-				<ui-view name="content@base">
+				<ui-view class="slide" name="content@base">
 
 				</ui-view>	
 			</div>

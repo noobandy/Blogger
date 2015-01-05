@@ -2,6 +2,45 @@
 
 var bloggerAppService = angular.module("bloggerApp.service",[]);
 
+bloggerAppService.factory('loadingInerceptor', ["ProgressDialog", function(ProgressDialog) {
+    var loadingInerceptor = {
+        request: function(config) {
+        	console.log("loading begin");
+        	ProgressDialog.open();
+            return config;
+        },
+        response: function(response) {
+        	console.log("loading done");
+        	ProgressDialog.close();
+            return response;
+        }
+    };
+    return loadingInerceptor;
+}]);
+
+bloggerApp.service("ProgressDialog",["$modal","APP_DATA",
+	function($modal, APP_DATA)
+	{
+		 var progressModal = null;
+		  
+
+		  this.open = function()
+		  {
+		  	progressModal = $modal.open({
+					"templateUrl": APP_DATA.BASE_URL + "/packages/app/partial/progressModal.html",
+            		"controller" : function()
+            		{
+            		},
+            		"size" : "lg"
+				});
+		  }
+
+		  this.close = function()
+		  {
+		  	progressModal.dismiss("ok");
+		  }
+	}])
+
 bloggerAppService.service("LoginService", [
 	"$http", "APP_DATA",
 	function($http, APP_DATA)

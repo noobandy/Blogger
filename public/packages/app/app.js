@@ -41,7 +41,7 @@ bloggerApp.config([
 	"$stateProvider", "$urlRouterProvider", "$httpProvider", "APP_DATA",
 	function($stateProvider, $urlRouterProvider, $httpProvider, APP_DATA)
 	{
-
+		$httpProvider.interceptors.push('loadingInerceptor');
 		//default state when non matches
 		$urlRouterProvider.otherwise("/home");
 
