@@ -3,8 +3,8 @@
 var bloggerAppController = angular.module("bloggerApp.controller",[]);
 
 bloggerAppController.controller("LoginController",[
-	"$rootScope", "$scope", "$modalInstance", "LoginService", "authService",
-	function($rootScope, $scope, $modalInstance, LoginService, authService)
+	"$rootScope", "$scope", "$modalInstance", "authService",
+	function($rootScope, $scope, $modalInstance, authService)
 	{
 		$scope.alerts = [];
 
@@ -16,34 +16,19 @@ bloggerAppController.controller("LoginController",[
 
     	$scope.closeLoginModal = function()
     	{
-    		authService.loginCancelled({},"User Abort");
     		$modalInstance.dismiss("ok");
     	}
 
     	$scope.login = function(username, password) {
-    		LoginService.login(username, password).success(function(data)
+    		authService.login(username, password).then(function(data)
     		{
-    			if(data.loggedInUser != null)
-    			{
-    				$scope.alerts.push(
-	    				{ type: 'success', msg: 'You are successfully logged in.' }
-	    				);
-    				
-    				$rootScope.isLoggedIn = true;
-    				$rootScope.loggedInUser = data.loggedInUser;
-
-    				authService.loginConfirmed();
-    				
-    				$modalInstance.dismiss("ok");
-    			}
-    			else
-    			{
-    				$scope.alerts.push(
+    			$modalInstance.dismiss("ok");
+    			
+    		},function(data)
+    		{
+    			$scope.alerts.push(
 	    				{ type: 'danger', msg: 'Wrong username or password.' }
 	    				);
-    				$scope.loginError = true;
-    			}	
-    			
     		});
     	}
 	}
@@ -51,9 +36,10 @@ bloggerAppController.controller("LoginController",[
 
 
 bloggerAppController.controller("NavbarController",[
-	"$rootScope", "$scope", "APP_DATA", "$state", "LoginService",
-	function($rootScope, $scope, APP_DATA, $state, LoginService)
+	"$rootScope", "$scope", "APP_DATA", "$state", "$modal", "authService",
+	function($rootScope, $scope, APP_DATA, $state, $modal, authService)
 	{
+		$scope.navCollapsed = true;
 		$scope.blog = APP_DATA.BLOG;
 
 		$scope.searchText = "";
@@ -70,12 +56,18 @@ bloggerAppController.controller("NavbarController",[
 			});
 		}
 
+		$scope.loginDialog = function(e)
+		{
+			$modal.open(
+			{
+    			templateUrl: APP_DATA.BASE_URL + "/packages/app/partial/loginForm.html",
+				size: "sm",
+				controller: "LoginController"
+    		});
+		}
+
 		$scope.logout = function() {
-    		LoginService.logout().success.function(data)
-    		{
-    			$rootScope.isLoggedIn = false;
-    			$rootScope.loggedInUser = null;
-    		};
+    		authService.logout();
     	}
 	}
 	]);
@@ -125,6 +117,7 @@ bloggerAppController.controller("HomeController",[
 		$scope.posts = data.items;
 
 		$scope.totalItems = data.count;
+
 	  	$scope.currentPage = 1;
 	  	
 	  	
@@ -136,12 +129,12 @@ bloggerAppController.controller("HomeController",[
 	  	$scope.loadData = function(){
 	  		PostService.list({
 	  			"ps" : paginationConfig.itemsPerPage,
-	  			"pn" : $scope.currentPage
+	  			"pn" : $scope.currentPage,
 	  		}).success(function(data)
-	  			{	
-					$scope.posts = data.items;
-					$scope.totalItems = data.count;
-	  			});
+	  		{		
+				$scope.posts = data.items;
+				$scope.totalItems = data.count;
+	  		});
 	  	}
 	}
 	]);

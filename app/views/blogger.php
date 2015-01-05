@@ -1,8 +1,7 @@
 <!doctype html>
 <html>
 <head>
-	<?php echo(HTML::style("packages/bootstrap/css/bootstrap.min.css")); ?>
-	<?php echo(HTML::style("packages/bootstrap/css/bootstrap-theme.min.css")); ?>
+	<?php echo(HTML::style("packages/bootstrap/css/bootstrap-lumen.css")); ?>
 	<?php echo(HTML::style("packages/nav-tree/abn_tree.css")); ?>
 	<?php echo(HTML::style("packages/app/css/animation.css")); ?>
 	<?php echo(HTML::style("packages/codemirror-4.8/lib/codemirror.css")); ?>
@@ -81,7 +80,9 @@
 	<?php echo( HTML::script("packages/highlight.js/highlight.min.js"));?>
 	<?php echo( HTML::script("packages/marked.js/marked.min.js"));?>
 	<?php echo( HTML::script("packages/ui-select/select.min.js"));?>
-	<?php echo( HTML::script("packages/app/interceptor/http-auth-interceptor.js"));?>
+	<?php echo( HTML::script("packages/angular-local-storage/angular-local-storage.js"));?>
+	<?php echo( HTML::script("packages/angular-base64/angular-base64.js"));?>
+	<?php echo( HTML::script("packages/angular-basicauth/angular-basicauth.js"));?>
 	<?php echo( HTML::script("packages/app/app.js"));?>
 	<?php echo( HTML::script("packages/app/controller/controller.js"));?>
 	<?php echo( HTML::script("packages/app/service/service.js"));?>

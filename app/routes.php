@@ -16,24 +16,29 @@ Route::get("/", function()
 	return View::make("index");
 });
 
-Route::post("/register", "RegistrationController@register");
+Route::any("/register", "RegistrationController@register");
 
-Route::get("/activate", "RegistrationController@activate");
+Route::any("/activate", "RegistrationController@activate");
 
-Route::post("/login", "LoginController@login");
+Route::any("/login", "LoginController@login");
 
-Route::post("/logout", "LoginController@logout");
+Route::any("/logout", array("" => "basic.once",
+	"uses" => "LoginController@logout",
+	"as" => "login.logout"));
 
-Route::get("/password/remind", "RemindersController@getRemind");
+
+Route::any("/password/remind", "RemindersController@getRemind");
 
 
-Route::post("/password/remind", "RemindersController@postRemind");
+Route::any("/password/remind", "RemindersController@postRemind");
 
 Route::get("/password/reset/{token}", "RemindersController@getReset");
 
 
 Route::post("/password/reset", "RemindersController@postReset");
 
+
+Route::get("/user/{username}","UserController@show");
 
 
 Route::get("/blog/{blogId}","BlogController@show");

@@ -24,6 +24,17 @@ bloggerAppService.service("LoginService", [
 
 	}
 	]);
+bloggerAppService.service("UserService", [
+	"$http", "APP_DATA",
+	function($http, APP_DATA)
+	{
+		var dataUrl = APP_DATA.BASE_URL + "/user";
+		this.getUser = function(username)
+		{
+			return $http.get(dataUrl + "/" + username);
+		}
+	}
+	]);
 
 
 bloggerAppService.service("PostService", [

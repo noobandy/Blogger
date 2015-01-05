@@ -19,7 +19,7 @@ class LoginController extends BaseController {
 		}
 		else
 		{
-			return Response::json(array("loggedInUser" => null), 200);
+			return Response::json(array(), 401);
 		}
 		
 	}

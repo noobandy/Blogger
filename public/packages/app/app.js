@@ -11,7 +11,7 @@ var bloggerApp = angular.module("bloggerApp", [
 	"ui.codemirror",
 	"ngSanitize",
 	"ui.select",
-	"http-auth-interceptor"
+	"angularBasicAuth"
 	]);
 
 
@@ -21,7 +21,7 @@ bloggerApp.constant("APP_DATA", {
 });
 
 bloggerApp.constant('paginationConfig', {
-  itemsPerPage: 5,
+  itemsPerPage: 10,
   boundaryLinks: true,
   directionLinks: true,
   firstText: 'First',
@@ -98,6 +98,9 @@ bloggerApp.config([
 
 
 				}
+			},
+			data : {
+				isAuthRequired : false
 			}
 		});
 
@@ -128,6 +131,9 @@ bloggerApp.config([
 							}]
 					}
 				}
+			},
+			data : {
+				isAuthRequired : false
 			}
 		});
 
@@ -139,6 +145,9 @@ bloggerApp.config([
 					"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/blogEditor.html",
 					"controller" : "BlogController"
 				}
+			},
+			data : {
+				isAuthRequired : true
 			}
 			
 		});
@@ -179,6 +188,9 @@ bloggerApp.config([
 						}] 
 					}
 				}
+			},
+			data : {
+				isAuthRequired : true
 			}
 			
 		});
@@ -216,6 +228,9 @@ bloggerApp.config([
 					}
 
 				}
+			},
+			data : {
+				isAuthRequired : false
 			}
 			
 		});
@@ -255,6 +270,9 @@ bloggerApp.config([
 	  				
 	  				return deferred.promise;
 				}]
+			},
+			data : {
+				isAuthRequired : false
 			}
 		});
 
@@ -296,6 +314,9 @@ bloggerApp.config([
 						}] 
 					}
 				}
+			},
+			data : {
+				isAuthRequired : true
 			}
 		});
 
@@ -328,6 +349,9 @@ bloggerApp.config([
 							}]
 					}
 				}
+			},
+			data : {
+				isAuthRequired : false
 			}
 		});
 
@@ -359,6 +383,9 @@ bloggerApp.config([
 							}]
 					}
 				}
+			},
+			data : {
+				isAuthRequired :false
 			}
 		});
 
@@ -391,6 +418,9 @@ bloggerApp.config([
 							}]
 					}
 				}
+			},
+			data : {
+				isAuthRequired : false
 			}
 		});
 
@@ -398,22 +428,52 @@ bloggerApp.config([
 	]);
 
 bloggerApp.run(["APP_DATA", "$rootScope", "$modal",
-	function(APP_DATA, $rootScope, $modal)
+	"authDefaults", "authService", "UserService",
+	function(APP_DATA, $rootScope, $modal, authDefaults, authService, UserService)
 	{
-		$rootScope.$on("event:auth-loginRequired", function()
-		{
-			$modal.open(
-    		{
-    			templateUrl: APP_DATA.BASE_URL + "/packages/app/partial/loginForm.html",
-				size: "sm",
-				controller: "LoginController"
-    		});
-		});
+		authDefaults.authenticateUrl = APP_DATA.BASE_URL +"/login";
+		authService.addEndpoint();
 
-		$rootScope.$on("event:auth-loginConfirmed", function()
+		var username = authService.username();
+
+		if(typeof username !== "undefined" 
+			&& username != null && username.trim() !== "")
 		{
-			$rootScope.isLoggedIn = true;
-		});
+			UserService.getUser(authService.username()).success(function(data)
+			{
+            	$rootScope.loggedInUser = data;
+            });
+		}
+		else
+		{
+			$rootScope.loggedInUser = null;
+		}
+		
+		$rootScope.$on('$stateChangeStart',
+			function(event, toState, toParams, fromState, fromParams)
+			{
+				if(toState.data.isAuthRequired)
+				{	
+					if($rootScope.loggedInUser === null)
+					{
+						event.preventDefault(); 
+					}
+				}
+			});
+
+		// listen for login events
+        $rootScope.$on('login', function() {
+            UserService.getUser(authService.username()).success(function(data)
+            {
+            	$rootScope.loggedInUser = data;
+
+            });
+        });
+
+        // listen for logout events
+        $rootScope.$on('logout', function() {
+           $rootScope.loggedInUser = null;
+        });
 	}
 	]);
 
