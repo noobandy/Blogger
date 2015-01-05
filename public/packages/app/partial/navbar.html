@@ -15,7 +15,7 @@
 		    <div collapse="navCollapsed" class="collapse navbar-collapse">
 		      <ul class="nav navbar-nav">
 		      	<li ng-if="loggedInUser">
-		        	<a href="">
+		        	<a href="" ng-click="userProfileDialog(loggedInUser.username)">
 		        		<i class="glyphicon glyphicon-user">
 		         		</i>
 		         		<span ng-bind="loggedInUser.username"></span>

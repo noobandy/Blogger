@@ -34,6 +34,25 @@ bloggerAppController.controller("LoginController",[
 	}
 	]);
 
+bloggerAppController.controller("UserProfileController",[
+	"$rootScope", "$scope", "$modalInstance", "user", "authService",
+	function($rootScope, $scope, $modalInstance, user, authService)
+	{
+		$scope.user = user;
+		$scope.alerts = [];
+
+		$scope.closeAlert = function(index)
+		{
+			$scope.alerts.splice(index, 1);
+
+		};
+
+    	$scope.closeUserProfileModal = function()
+    	{
+    		$modalInstance.dismiss("ok");
+    	}
+	}
+	]);
 
 bloggerAppController.controller("NavbarController",[
 	"$rootScope", "$scope", "APP_DATA", "$state", "$modal", "authService",
@@ -64,6 +83,26 @@ bloggerAppController.controller("NavbarController",[
 				size: "sm",
 				controller: "LoginController"
     		});
+		}
+
+		$scope.userProfileDialog = function(username) {
+			$modal.open({
+					"templateUrl": APP_DATA.BASE_URL + "/packages/app/partial/userProfile.html",
+            		"resolve": {
+            			user : ["$q", "UserService",
+						function($q, UserService)
+						{
+							var deferred = $q.defer();
+							UserService.getUser(username).success(function(data)
+								{
+									deferred.resolve(data);
+								});
+							return deferred.promise;
+						}]
+            		},
+            		"controller" : "UserProfileController",
+            		"size" : "lg"
+				});
 		}
 
 		$scope.logout = function() {
