@@ -22,3 +22,38 @@
           transform: scaleX(1);
   opacity: 1;
 }
+
+/*
+Creating a block for social media buttons
+*/
+.card-body-social {
+  font-size: 30px;
+  margin-top: 10px;
+}
+.card-body-social .git {
+  color: black;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.card-body-social .twitter {
+  color: #19C4FF;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.card-body-social .google-plus {
+  color: #DD4B39;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.card-body-social .facebook {
+  color: #49649F;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.card-body-social .linkedin {
+  color: #007BB6;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+

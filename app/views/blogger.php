@@ -2,6 +2,7 @@
 <html>
 <head>
 	<?php echo(HTML::style("packages/bootstrap/css/bootstrap-cerulean.css")); ?>
+	<?php echo(HTML::style("packages/bootstrap/css/font-awesome.min.css")); ?>
 	<?php echo(HTML::style("packages/nav-tree/abn_tree.css")); ?>
 	<?php echo(HTML::style("packages/app/css/animation.css")); ?>
 	<?php echo(HTML::style("packages/ng-progress/ngProgress.css")); ?>

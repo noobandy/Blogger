@@ -1,10 +1,50 @@
 <!doctype html>
 <div class="modal-header">
-	<button class="btn btn-primary" ng-click="closeUserProfileModal()">&times;</button>
+	<button type="button" class="close" ng-click="closeUserProfileModal()" aria-label="Close">
+		<span aria-hidden="true">
+			&times;
+		</span>
+	</button>
+	<h4 ng-bind="user.username"></h4>
 </div>
 <div class="modal-body">
-	<div class="page-header">
-		<h4 ng-bind="user.username"><h4>
-	</div>
+	<tabset justified="true">
+    <tab heading="Justified">
+    		<div class="media">
+  <a class="media-left" href="#">
+    <img class="media-object update-card-MDimentions" src="http://3.bp.blogspot.com/-IbEOTNtCMyU/TfCAdHaAxEI/AAAAAAAAA8U/EATib38SSAM/s320/joe-mcelderry.jpg" alt="...">
+  </a>
+  <div class="media-body">
+    <div class="well well-sm btn-toolbar card-body-social" role="toolbar">
+      <div class="btn-group git">
+      	<i class="fa fa-github-alt"></i>
+      </div>
+      <div class="btn-group linkedin ">
+      	<i class="fa fa-linkedin-square"></i>
+      </div>
+      <div class="btn-group twitter ">
+      	<i class="fa fa-twitter"></i>
+      </div>
+      <div class="btn-group facebook ">
+      	<i class="fa fa-facebook"></i>
+      </div>
+      <div class="btn-group google-plus ">
+      	<i class="fa fa-google-plus"></i>
+      </div>
+    </div>
+    <blockquote>
+    	<p>
+    	A biography or simply bio is a detailed description or account of a person's life. It entails more than basic facts like education, work, relationships, and death—a biography also portrays a subject's experience of these events. Unlike a profile or curriculum vitae (résumé), a biography presents a subject's life story, highlighting various aspects of his or her life, including intimate details of experience, and may include an analysis of the subject's personality.
+   		</p>
+    </blockquote>
+    
+  </div>
+</div>
+    </tab>
+    <tab heading="SJ">
+
+    </tab>
+    <taing="Long Justified">Long b headLabeled Justified content</tab>
+  </tabset>
 </div>
 

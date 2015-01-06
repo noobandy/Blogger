@@ -1,11 +1,13 @@
 <!doctype html>
 <div class="modal-header">
-	<button class="btn btn-primary" ng-click="closeLoginModal()">&times;</button>
+	<button type="button" class="close" ng-click="closeLoginModal()" aria-label="Close">
+		<span aria-hidden="true">
+			&times;
+		</span>
+	</button>
+	<h4>Login<h4>
 </div>
 <div class="modal-body">
-	<div class="page-header">
-		<h4>Login<h4>
-	</div>
 	<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
   			<span ng-bind="alert.msg"></span>
   	</alert>
