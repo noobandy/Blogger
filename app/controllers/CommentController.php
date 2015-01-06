@@ -23,7 +23,7 @@ class CommentController extends \BaseController {
 
 
 
-		$comments = $query->orderBy("slug", "asc")->get();
+		$comments = $query->orderBy("depth", "asc")->with("author")->get();
 		
 		return Response::json(array("items" => $comments, "count" => $count), 200);
 	}
@@ -51,10 +51,23 @@ class CommentController extends \BaseController {
 
 		$comment->author()->associate($currentUser);
 
+		$comment->_id = uniqid();
+
 		if($parentId)
 		{
 			$parent = Comment::findOrFail($parentId);
+
 			$comment->parent()->associate($parent);
+
+			$comment->depth = $parent->depth + 1;
+
+			$comment->path = $parent->path."/"+$comment->_id;
+
+		}
+		else
+		{
+			$comment->depth = 0;
+			$comment->path = $comment->_id;
 		}
 	
 		$commnet = $post->comments()->save($comment);
