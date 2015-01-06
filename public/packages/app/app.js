@@ -11,7 +11,8 @@ var bloggerApp = angular.module("bloggerApp", [
 	"ui.codemirror",
 	"ngSanitize",
 	"ui.select",
-	"angularBasicAuth"
+	"angularBasicAuth",
+	"ngProgress"
 	]);
 
 
@@ -428,8 +429,8 @@ bloggerApp.config([
 	]);
 
 bloggerApp.run(["APP_DATA", "$rootScope", "$modal",
-	"authDefaults", "authService", "UserService",
-	function(APP_DATA, $rootScope, $modal, authDefaults, authService, UserService)
+	"authDefaults", "authService", "UserService", "ngProgress",
+	function(APP_DATA, $rootScope, $modal, authDefaults, authService, UserService, ngProgress)
 	{
 		authDefaults.authenticateUrl = APP_DATA.BASE_URL +"/login";
 		authService.addEndpoint();
@@ -452,6 +453,8 @@ bloggerApp.run(["APP_DATA", "$rootScope", "$modal",
 		$rootScope.$on('$stateChangeStart',
 			function(event, toState, toParams, fromState, fromParams)
 			{
+				ngProgress.start();
+
 				if(toState.data.isAuthRequired)
 				{	
 					if($rootScope.loggedInUser === null)
@@ -459,6 +462,11 @@ bloggerApp.run(["APP_DATA", "$rootScope", "$modal",
 						event.preventDefault(); 
 					}
 				}
+			});
+		$rootScope.$on('$stateChangeSuccess',
+			function(event, toState, toParams, fromState, fromParams)
+			{
+				ngProgress.complete();
 			});
 
 		// listen for login events

@@ -4,6 +4,7 @@
 	<?php echo(HTML::style("packages/bootstrap/css/bootstrap-cerulean.css")); ?>
 	<?php echo(HTML::style("packages/nav-tree/abn_tree.css")); ?>
 	<?php echo(HTML::style("packages/app/css/animation.css")); ?>
+	<?php echo(HTML::style("packages/ng-progress/ngProgress.css")); ?>
 	<?php echo(HTML::style("packages/codemirror-4.8/lib/codemirror.css")); ?>
 	<?php echo(HTML::style("packages/codemirror-4.8/theme/cobalt.css")); ?>
 	<?php echo(HTML::style("packages/highlight.js/default.min.css")); ?>
@@ -83,6 +84,7 @@
 	<?php echo( HTML::script("packages/angular-local-storage/angular-local-storage.js"));?>
 	<?php echo( HTML::script("packages/angular-base64/angular-base64.js"));?>
 	<?php echo( HTML::script("packages/angular-basicauth/angular-basicauth.js"));?>
+	<?php echo( HTML::script("packages/ng-progress/ngProgress.js"));?>
 	<?php echo( HTML::script("packages/app/app.js"));?>
 	<?php echo( HTML::script("packages/app/controller/controller.js"));?>
 	<?php echo( HTML::script("packages/app/service/service.js"));?>
