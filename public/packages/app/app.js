@@ -39,9 +39,14 @@ bloggerApp.constant('angularMomentConfig', {
 
 
 bloggerApp.config([
-	"$stateProvider", "$urlRouterProvider", "$httpProvider", "APP_DATA",
-	function($stateProvider, $urlRouterProvider, $httpProvider, APP_DATA)
+	"$locationProvider", "$stateProvider", "$urlRouterProvider", "$httpProvider", "APP_DATA",
+	function($locationProvider, $stateProvider, $urlRouterProvider, $httpProvider, APP_DATA)
 	{
+		/*$locationProvider.html5Mode({
+			enabled: true,
+  			requireBase: false
+		});*/
+		
 		//default state when non matches
 		$urlRouterProvider.otherwise("/home");
 

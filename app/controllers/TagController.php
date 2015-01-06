@@ -17,7 +17,8 @@ class TagController extends \BaseController {
 			 return $collection->aggregate(array(
 			 	array(
 			 		'$match' => array(
-			 			"blog_id" => $params["blogId"]
+			 			"blog_id" => $params["blogId"],
+			 			"deleted_at" => null
 			 			)
 			 		),
 			 	array('$unwind' => '$tags'),
