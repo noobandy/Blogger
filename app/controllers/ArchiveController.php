@@ -32,7 +32,8 @@ class ArchiveController extends \BaseController {
                     '$sum' => 1
                     )
                     )
-			 	)  
+			 	),
+                array( '$sort' => array("_id" => 1))
                     )
 			 	);
 			});
