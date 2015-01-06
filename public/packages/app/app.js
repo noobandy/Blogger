@@ -46,7 +46,7 @@ bloggerApp.config([
 			enabled: true,
   			requireBase: false
 		});*/
-		
+
 		//default state when non matches
 		$urlRouterProvider.otherwise("/home");
 
@@ -436,6 +436,8 @@ bloggerApp.run(["APP_DATA", "$rootScope", "$modal",
 	"authDefaults", "authService", "UserService", "ngProgress",
 	function(APP_DATA, $rootScope, $modal, authDefaults, authService, UserService, ngProgress)
 	{
+		$rootScope.currentBlog = APP_DATA.BLOG;
+		
 		authDefaults.authenticateUrl = APP_DATA.BASE_URL +"/login";
 		authService.addEndpoint();
 

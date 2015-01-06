@@ -1,6 +1,6 @@
 <div class="page-header">
 	<h1>Blog posts</h1>
-	<a ng-if="loggedInUser" class="btn btn-primary" ui-sref="base.newPost"><i class="glyphicon glyphicon-plus"></i> New Post</a>
+	<a ng-if="loggedInUser && currentBlog.user_id === loggedInUser._id" class="btn btn-primary" ui-sref="base.newPost"><i class="glyphicon glyphicon-plus"></i> New Post</a>
 </div>
 <div class="list-group">
 	<a ng-repeat="post in posts" class="list-group-item" ui-sref="base.post({slug: post.slug})">

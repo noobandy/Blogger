@@ -7,7 +7,7 @@
 	<div class="col-md-12">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<a class="btn btn-primary" ui-sref="base.editPost({slug: post.slug})">
+				<a ng-if="loggedInUser && currentBlog.user_id === loggedInUser._id && post.blog_id === currentBlog._id" class="btn btn-primary" ui-sref="base.editPost({slug: post.slug})">
 					<i class="glyphicon glyphicon-edit"></i> Edit
 				</a>
 			</div>
