@@ -5,18 +5,18 @@
     	var element = this;
     	var Discussion = {
 					loadComments : function(success, error) {
-						$.getJSON(options.basePath+"/blog/"+options.blogId+"/Comment?order="+options.order, function(data) {
+						$.getJSON(options.basePath+"/blog/"+options.blogId+"/post/"+options.postSlug+"/comment", function(data) {
 							var idToNodeMap = {};
 							var comments = [];
-							for(var i = 0; i < data.length; i++) {
-							    var datum = data[i];
+							for(var i = 0; i < data.items.length; i++) {
+							    var datum = data.items[i];
 							    datum.replies = [];
-							    idToNodeMap[datum.id] = datum;
+							    idToNodeMap[datum._id] = datum;
 							    
-							    if(datum.parentId === null) {
+							    if(typeof datum.parent_id === "undefined") {
 							        comments.push(datum);        
 							    } else {
-							        var parentNode = idToNodeMap[datum.parentId];
+							        var parentNode = idToNodeMap[datum.parent_id];
 							        parentNode.replies.push(datum);
 							    }
 							}
@@ -24,12 +24,12 @@
 							success(comments);
 						});
 					},
-					postComment : function(text,success,error) {
+					postComment : function(comment,success,error) {
 						$.ajax({
-							url : options.basePath+"/Discussion/"+options.discussionId+"/Comment",
+							url : options.basePath+"/blog/"+options.blogId+"/post/"+options.postId+"/comment",
 							method : "POST",
 							data : {
-								text : text
+								comment : comment
 							},
 							contentType : "application/x-www-form-urlencoded; charset=UTF-8",
 							cache : false,
@@ -43,13 +43,13 @@
 							error(data);
 						});
 				},
-				postReply : function(parentId,text,success,error) {
+				postReply : function(parentId,comment,success,error) {
 					$.ajax({
-						url : options.basePath+"/Discussion/"+options.discussionId+"/Comment",
+						url : options.basePath+"/blog/"+options.blogId+"/post/"+options.postId+"/comment",
 						method : "POST",
 						data : {
 							parentId : parentId,
-							text : text
+							comment : comment
 						},
 						contentType : "application/x-www-form-urlencoded; charset=UTF-8",
 						cache : false,
@@ -63,12 +63,12 @@
 						error(data);
 					});
 				},
-				updateComment : function(commentId, text,success,error) {
+				updateComment : function(commentId, comment,success,error) {
 					$.ajax({
-						url : options.basePath+"/Discussion/"+options.discussionId+"/Comment/"+commentId,
+						url : options.basePath+"/blog/"+options.blogId+"/post/"+options.postId+"/comment/"+commentId,
 						method : "PUT",
 						data : {
-							text : text
+							comment : comment
 						},
 						contentType : "application/x-www-form-urlencoded; charset=UTF-8",
 						cache : false,
@@ -84,7 +84,7 @@
 				},
 				removeComment : function(commentId,success,error) {
 					$.ajax({
-						url : options.basePath+"/Discussion/"+options.discussionId+"/Comment/"+commentId,
+						url : options.basePath+"/blog/"+options.blogId+"/post/"+options.postId+"/comment/"+commentId,
 						method : "DELETE",
 						contentType : "application/x-www-form-urlencoded; charset=UTF-8",
 						cache : false,
@@ -100,7 +100,7 @@
 				},
 				toggleUpvote : function(commentId,success,error) {
 					$.ajax({
-						url : options.basePath+"/Discussion/"+options.discussionId+"/Comment/"+commentId+"/upVotes",
+						url : options.basePath+"/blog/"+options.blogId+"/post/"+options.postId+"/comment/"+commentId+"/upvote",
 						method : "PUT",
 						contentType : "application/x-www-form-urlencoded; charset=UTF-8",
 						cache : false,
@@ -118,14 +118,14 @@
 				var data = [];
 				var userList = $("<ul/>").addClass("unstyled").attr("id","upvote-popover-"+commentId);
 				upvotes.forEach(function(upvote) {
-					if(options.min === upvote.mkclIdentificationNumber) {
+					if(options.loggedInUser === upvote.author.username) {
 						data.push(true);
 					}
 					userList.append(
 						$("<li>").append(
-							$("<a/>").attr("href",options.basePath+"/SocietyMember/publicProfile?min="+upvote.mkclIdentificationNumber).
-							attr("target", "_blank").html(upvote.legalFullName)
-						).attr("id","upvote-popover-"+commentId+"-min-"+upvote.mkclIdentificationNumber)	
+							$("<a/>").attr("href",options.basePath+"/SocietyMember/publicProfile?min="+upvote.author.username).
+							attr("target", "_blank").html(upvote.author.username)
+						).attr("id","upvote-popover-"+commentId+"-min-"+upvote.author.username)	
 					);
 				});
 				
@@ -140,18 +140,18 @@
 			
 			var commentToTree = function(comment) {
 				
-				var data = processUpvoteContent(comment.id, comment.upVotes);
-				var sanitizer = $("<span/>").text(comment.text);
+				var data = processUpvoteContent(comment._id, comment.up_votes);
+				var sanitizer = $("<span/>").text(comment.comment);
 				
-				var tree = '<li id="comment-'+ comment.id +
+				var tree = '<li id="comment-'+ comment._id +
 				'" class="media">' +
-				'<a class="pull-left" href="'+ options.basePath + '/SocietyMember/publicProfile?min='+
-				comment.societyMember.mkclIdentificationNumber+
+				'<a class="media-left" href="'+ options.basePath + '/SocietyMember/publicProfile?min='+
+				comment.author.username+
 				'" target="_blank">' +
 				'<img class="thumbnail media-object" src="';
 				
-				if(typeof comment.societyMember.profileImagePath !== "undefined" && comment.societyMember.profileImagePath.trim() !== "") {
-					tree = tree + options.cdnURL + comment.societyMember.profileImagePath;
+				if(typeof comment.author.profileImagePath !== "undefined" && comment.author.profileImagePath.trim() !== "") {
+					tree = tree + options.cdnURL + comment.author.profileImagePath;
 				} else {
 					tree = tree + options.noAvatarPic.trim();
 				}
@@ -160,53 +160,53 @@
 				'</a>' +
 				'<div class="media-body">' +
 				'<h4 class="media-heading">' +
-				comment.societyMember.legalFullName + ' <i class="icon-time"></i> <small>' + moment(comment.createOn).fromNow() + '</small>' +
+				comment.author.username + ' <i class="glyphicon glyphicon-time"></i> <small>' + moment(comment.created_at).fromNow() + '</small>' +
 				'</h4>' +
-				'<p id="comment-text-'+ comment.id + '">' +
+				'<p id="comment-text-'+ comment._id + '">' +
 				String(sanitizer.prop("innerHTML")) +
 				'</p>' +
-				'<div id="comment-edit-form-holder-'+ comment.id +'"></div>' +
-				'<div id="comment-control-'+ comment.id +'">' +
-				'<a href="#" class="upvote-count" id="comment-upvote-count-'+ comment.id +'"' +
+				'<div id="comment-edit-form-holder-'+ comment._id +'"></div>' +
+				'<div id="comment-control-'+ comment._id +'">' +
+				'<a href="#" class="upvote-count" id="comment-upvote-count-'+ comment._id +'"' +
 				' data-content=\''+ data[1] +'\'>';
 				
-				if(comment.upVotes.length > 0) {
+				if(comment.up_votes.length > 0) {
 					
-					tree = tree + String(comment.upVotes.length) + " ";
+					tree = tree + String(comment.up_votes.length) + " ";
 				}
 				
 				tree = tree + '</a>';
 				
-				tree = tree + '<a class="comment-control left upvote" href="#" data-id="'+ comment.id + '">';
+				tree = tree + '<a class="comment-control left upvote" href="#" data-id="'+ comment._id + '">';
 				
 				if(data[0] === true) {
-					tree = tree + '<i class="icon-thumbs-up voted"></i></a>';
+					tree = tree + '<i class="glyphicon glyphicon-thumbs-up voted"></i></a>';
 				} else {
-					tree = tree + '<i class="icon-thumbs-up"></i></a>';
+					tree = tree + '<i class="glyphicon glyphicon-thumbs-up"></i></a>';
 				}
 				
 				
-				if(options.min === comment.societyMember.mkclIdentificationNumber || options.isSocietyAdmin === "true") {
+				if(options.loggedInUser === comment.author.username || options.isBlogOwner === "true") {
 					tree = tree + '<a class="comment-control left edit" href="#" data-id="'+
-					comment.id +
+					comment._id +
 					'">' +
-					'<i class="icon-edit"></i>' +
+					'<i class="glyphicon glyphicon-edit"></i>' +
 					'</a>' +
 					'<a class="comment-control left delete" href="#" data-id="'+
-					comment.id +
+					comment._id +
 					'">' +
-					'<i class="icon-trash"></i>' +
+					'<i class="glyphicon glyphicon-trash"></i>' +
 					'</a>';
 				}
 				 
 				tree = tree + '<a class="comment-control reply" href="#" data-id="'+
-				comment.id +
+				comment._id +
 				'">' +
 				'Reply' +
 				'</a>' +
 				'</div>';
 				
-				tree = tree + '<div id="comment-reply-form-holder-'+ comment.id +'"></div>';
+				tree = tree + '<div id="comment-reply-form-holder-'+ comment._id +'"></div>';
 				
 				/*
 					Nested media object
@@ -228,13 +228,11 @@
 			};
 			
 			var commentFormElement = function() {
-				return $("<form/>").addClass("comment-form").append(
-					$("<legend/>").append($("<h6/>").html("Post Comment"))		
+				return $("<form/>").addClass("comment-form well").append(
+					$("<legend/>").html("Post Comment")		
 				).append(
-					$("<div/>").addClass("control-group").append(
-						$("<div/>").addClass("control").append(
-							$("<textarea/>").addClass("comment-text span12").attr("placeholder", options.placeholder)		
-						)		
+					$("<div/>").addClass("form-group").append(
+						$("<textarea/>").addClass("comment-text form-control input-lg").attr("placeholder", options.placeholder)		
 					)		
 				).append(
 					$("<div/>").addClass("form-actions").append(
@@ -248,13 +246,11 @@
 			};
 			
 			var replyFormElement = function(parentId) {
-				return $("<form/>").addClass("reply-form").attr("data-parent",parentId).append(
-						$("<legend/>").append($("<h6/>").html("Post Reply"))		
+				return $("<form/>").addClass("reply-form well").attr("data-parent",parentId).append(
+						$("<legend/>").html("Post Reply")		
 					).append(
-						$("<div/>").addClass("control-group").append(
-							$("<div/>").addClass("control").append(
-								$("<textarea/>").addClass("comment-text span12").attr("placeholder", options.placeholder)		
-							)		
+						$("<div/>").addClass("form-group").append(
+							$("<textarea/>").addClass("comment-text form-control input-lg").attr("placeholder", options.placeholder)	
 						)		
 					).append(
 						$("<div/>").addClass("form-actions").append(
@@ -268,13 +264,11 @@
 				};
 			
 				var editFormElement = function(commentId, oldText) {
-					return $("<form/>").addClass("edit-form").attr("data-parent",commentId).append(
-							$("<legend/>").append($("<h6/>").html("Edit Comment"))		
+					return $("<form/>").addClass("edit-form well").attr("data-parent",commentId).append(
+							$("<legend/>").html("Edit Comment")		
 						).append(
-							$("<div/>").addClass("control-group").append(
-								$("<div/>").addClass("control").append(
-									$("<textarea/>").addClass("comment-text span12").attr("placeholder", options.placeholder).val(oldText)		
-								)		
+							$("<div/>").addClass("form-group").append(
+								$("<textarea/>").addClass("comment-text form-control input-lg").attr("placeholder", options.placeholder).val(oldText)		
 							)		
 						).append(
 							$("<div/>").addClass("form-actions").append(
@@ -376,14 +370,14 @@
 				element.on("submit", "form.reply-form", function(e) {
 					e.preventDefault();
 					
-					var text = $(this).find("textarea").filter(':visible:first').val();
+					var comment = $(this).find("textarea").filter(':visible:first').val();
 					
 					 $(this).find("textarea").filter(':visible:first').val("");
 					
 					 var parentId = $(this).attr("data-parent");
 					
-					if(typeof text !== "undefined" && text.trim() !== "") {
-						Discussion.postReply(parentId, text, function(comment) {
+					if(typeof comment !== "undefined" && comment.trim() !== "") {
+						Discussion.postReply(parentId, comment, function(comment) {
 							
 							//detach reply form
 							detachReplyForm(parentId);
@@ -397,19 +391,19 @@
 				element.on("submit", "form.edit-form", function(e) {
 					e.preventDefault();
 					
-					var text = $(this).find("textarea").filter(':visible:first').val();
+					var comment = $(this).find("textarea").filter(':visible:first').val();
 					
 					 $(this).find("textarea").filter(':visible:first').val("");
 					
 					 var commentId = $(this).attr("data-parent");
 					
-					if(typeof text !== "undefined" && text.trim() !== "") {
-						Discussion.updateComment(commentId, text, function(comment) {
+					if(typeof comment !== "undefined" && comment.trim() !== "") {
+						Discussion.updateComment(commentId, comment, function(comment) {
 							
 							//detach reply form
 							detachEditForm(commentId);
 							//add reply in the list
-							$("#comment-text-"+commentId).filter(":visible:first").empty().html(comment.text);
+							$("#comment-text-"+commentId).filter(":visible:first").empty().html(comment.comment);
 						});
 					}
 				});
@@ -476,7 +470,7 @@
 					e.preventDefault();
 					
 					var commentId = $(this).attr("data-id");
-					var icon = $(this).find("i.icon-thumbs-up").filter(':visible:first');
+					var icon = $(this).find("i.glyphicon-thumbs-up").filter(':visible:first');
 					
 					Discussion.toggleUpvote(commentId, function(data) {
 						
@@ -541,6 +535,7 @@
     $.fn.discussion.defaults = {
         	basePath : '',
     		blogId : '',
+    		postSlug : '',
     		postId : '',
     		isBlogOwner: '',
     		loggedInUser : '',

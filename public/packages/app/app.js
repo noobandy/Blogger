@@ -437,6 +437,7 @@ bloggerApp.run(["APP_DATA", "$rootScope", "$modal",
 	function(APP_DATA, $rootScope, $modal, authDefaults, authService, UserService, ngProgress)
 	{
 		$rootScope.currentBlog = APP_DATA.BLOG;
+		$rootScope.basePath = APP_DATA.BASE_URL;
 		
 		authDefaults.authenticateUrl = APP_DATA.BASE_URL +"/login";
 		authService.addEndpoint();

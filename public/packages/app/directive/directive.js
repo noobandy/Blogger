@@ -45,12 +45,29 @@ bloggerAppDirective.directive("marked",[
 }]);
 
 
-bloggerAppDirective.directive("discussion",[
-  function () {
+bloggerAppDirective.directive("discussion",["$parse",
+  function ($parse) {
     return {
-      restrict: 'A',
+      restrict: "A",
+      scope : {
+        basePath : "@basePath",
+        blogId : "@blogId",
+        postSlug: "@postSlug",
+        postId : "@postId",
+        loggedInUser : "@loggedInUser",
+        isBlogOwner : "@isBlogOwner"
+      },
+      replace : false,
+      transclude : false,
       link: function (scope, element, attrs) {
-        element.discussion();
+        $(element).discussion({
+          basePath : scope.basePath,
+          blogId : scope.blogId,
+          postSlug : scope.postSlug,
+          postId : scope.postId,
+          isBlogOwner: scope.isBlogOwner,
+          loggedInUser : scope.loggedInUser
+        });
     }
   };
 }]);

@@ -73,6 +73,9 @@ class CommentController extends \BaseController {
 	
 		$commnet = $post->comments()->save($comment);
 
+		$comment = Comment::with(array("author","upVotes.author","downVotes.author","abuseReports.author"))
+		->where("_id", "=", $comment->_id)->firstOrFail();
+
 		return Response::json($comment, 201);
 		//
 	}
@@ -111,7 +114,10 @@ class CommentController extends \BaseController {
 		{
 			$updateData = Input::only("comment");
 			$comment->update($updateData);
-			return Response::json(array(), 200);
+			$comment = Comment::with(array("author","upVotes.author","downVotes.author","abuseReports.author"))
+		->where("_id", "=", $commentId)->firstOrFail();
+
+			return Response::json($comment, 200);
 		}
 		else
 		{
