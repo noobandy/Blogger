@@ -23,7 +23,8 @@ class CommentController extends \BaseController {
 
 
 
-		$comments = $query->orderBy("depth", "asc")->with("author")->get();
+		$comments = $query->orderBy("depth", "asc")
+		->with(array("author","upVotes","downVotes","abuseReports"))->get();
 		
 		return Response::json(array("items" => $comments, "count" => $count), 200);
 	}
@@ -86,7 +87,8 @@ class CommentController extends \BaseController {
 	public function show($blogId, $postId, $commentId)
 	{
 		//
-		$comment = Comment::findOrFail($commentId);
+		$comment = Comment::with(array("author","upVotes","downVotes","abuseReports"))
+		->where("_id", "=", $commentId)->firstOrFail();
 
 		return Response::json($comment, 200);
 	}
@@ -116,6 +118,128 @@ class CommentController extends \BaseController {
 			App::abort(403);
 		}
 		
+	}
+
+	public function upvote($blogId, $postId, $commentId)
+	{
+		
+		$comment = Comment::findOrFail($commentId);
+
+		$currentUser = User::where("username", "=", Auth::user()->username)->firstOrFail();
+
+		$existingDownVote = DownVote::where("comment_id", "=", $commentId)
+		->where("author_id", "=", $currentUser->_id)->first();
+
+		$existingUpVote = UpVote::where("comment_id", "=", $commentId)
+		->where("author_id", "=", $currentUser->_id)->first();
+
+
+		if(is_null($existingUpVote) && is_null($existingDownVote))
+		{
+			$upVote = new UpVote();
+
+			$upVote->author()->associate($currentUser);
+
+			$comment->downVotes()->save($upVote);
+
+			return Response::json($upVote, 200);
+		}
+		else
+		{
+			if(!is_null($existingDownVote) && is_null($existingUpVote))
+			{
+				$existingDownVote->delete();
+				
+				$upVote = new UpVote();
+
+				$upVote->author()->associate($currentUser);
+
+				$comment->downVotes()->save($upVote);
+
+				return Response::json($upVote, 200);
+			}
+			else
+			{
+				$existingUpVote->delete();
+				return Response::json(array(), 200);
+			}
+			
+		}
+	}
+
+
+	public function downvote($blogId, $postId, $commentId)
+	{
+		$comment = Comment::findOrFail($commentId);
+
+		$currentUser = User::where("username", "=", Auth::user()->username)->firstOrFail();
+
+		$existingDownVote = DownVote::where("comment_id", "=", $commentId)
+		->where("author_id", "=", $currentUser->_id)->first();
+
+		$existingUpVote = UpVote::where("comment_id", "=", $commentId)
+		->where("author_id", "=", $currentUser->_id)->first();
+
+
+		if(is_null($existingUpVote) && is_null($existingDownVote))
+		{
+			$downVote = new DownVote();
+
+			$downVote->author()->associate($currentUser);
+
+			$comment->downVotes()->save($downVote);
+
+			return Response::json($downVote, 200);
+		}
+		else
+		{
+			if(!is_null($existingUpVote) && is_null($existingDownVote))
+			{
+				$existingUpVote->delete();
+				
+				$downVote = new DownVote();
+
+				$downVote->author()->associate($currentUser);
+
+				$comment->downVotes()->save($downVote);
+
+				return Response::json($downVote, 200);
+			}
+			else
+			{
+				$existingDownVote->delete();
+				return Response::json(array(), 200);
+			}
+			
+		}
+	}
+
+
+	public function report($blogId, $postId, $commentId)
+	{
+		$comment = Comment::findOrFail($commentId);
+
+		$currentUser = User::where("username", "=", Auth::user()->username)->firstOrFail();
+
+		$existingAbuseReport = AbuseReport::where("comment_id", "=", $commentId)
+		->where("author_id", "=", $currentUser->_id)->first();
+
+		if(is_null($existingAbuseReport))
+		{
+			$abuseReport = new AbuseReport();
+
+			$abuseReport->author()->associate($currentUser);
+
+			$comment->abuseReports()->save($abuseReport);
+
+			return Response::json($abuseReport, 200);
+		}
+		else
+		{
+			$existingAbuseReport->delete();
+			return Response::json(array(), 200);
+		}
+
 	}
 
 	/**

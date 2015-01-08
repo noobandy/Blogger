@@ -88,6 +88,22 @@ Route::put("/blog/{blogId}/post/{postId}/comment/{commentId}",
 	"uses" => "CommentController@update",
 	"as" => "comment.update"));
 
+Route::put("/blog/{blogId}/post/{postId}/comment/{commentId}/upvote",
+	array('before' => "basic.once",
+	"uses" => "CommentController@upvote",
+	"as" => "comment.upvote"));
+
+Route::put("/blog/{blogId}/post/{postId}/comment/{commentId}/downvote",
+	array('before' => "basic.once",
+	"uses" => "CommentController@downvote",
+	"as" => "comment.downvote"));
+
+Route::put("/blog/{blogId}/post/{postId}/comment/{commentId}/report",
+	array('before' => "basic.once",
+	"uses" => "CommentController@report",
+	"as" => "comment.report"));
+
+
 Route::delete("/blog/{blogId}/post/{postId}/comment/commentId",
 	array('before' => "basic.once",
 	"uses" => "CommentController@destroy",

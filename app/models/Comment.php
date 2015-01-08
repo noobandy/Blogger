@@ -29,17 +29,17 @@ class Comment extends Eloquent {
 
 	public function upVotes()
 	{
-		return $this->hasMany("User");
+		return $this->hasMany("UpVote");
 	}
 
 	public function downVotes()
 	{
-		return $this->hasMany("User");
+		return $this->hasMany("DownVote");
 	}
 
-	public function flags()
+	public function abuseReports()
 	{
-		return $this->hasMany("User");
+		return $this->hasMany("AbuseReport");
 	}
 
 }
