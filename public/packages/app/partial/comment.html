@@ -11,6 +11,15 @@
 			</form>
 	</div>
 </div>
+<script type="text/ng-template" id="voteList">
+	<ul class="unstyled">
+	    <li ng-repeat="vote in votes">
+	    	<a href="" ng-bind="vote.author.username">
+	    	</a>         
+	    </li>
+    </ul>
+</script>
+
 <script type="text/ng-template" id="commentTree">
 	<a class="media-left" href="#">
       	<img class="img-circle" holder="holder.js/64x64">
@@ -27,10 +36,16 @@
 	        {{comment.comment}}
 	    </p>
 	    <div>
-			<a class="comment-control left" href="">
+	    	<a ng-if="comment.up_votes.length > 0" href="" ng-bind="comment.up_votes.length"
+	    	 popover-placement="top" Popover-animation="true" popover="{{}}">
+	    	</a>
+			<a class="comment-control left" href="" ng-click="upvoteComment(comment._id)">
 				<i class="glyphicon glyphicon-thumbs-up"></i>
 			</a>
-			<a class="comment-control left" href="">
+			<a ng-if="comment.down_votes.length > 0" href="" ng-bind="comment.down_votes.length" 
+			 popover-placement="top" Popover-animation="true" popover="I fade in and out!">
+			</a>
+			<a class="comment-control left" href="" ng-click="downvoteComment(comment._id)">
 				<i class="glyphicon glyphicon-thumbs-down"></i>
 			</a>
 			<a class="comment-control" href="">

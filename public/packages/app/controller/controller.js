@@ -319,6 +319,31 @@ bloggerAppController.controller("CommentController", [
 			});
 		}
 
+		$scope.upvoteComment = function(commentId)
+		{
+			CommentService.upvote($scope.post._id, commentId).success(function()
+			{
+
+			});
+		}
+
+
+		$scope.downvoteComment = function(commentId)
+		{
+			CommentService.downvote($scope.post._id, commentId).success(function()
+			{
+				
+			});
+		}
+
+		$scope.reportComment = function(commentId)
+		{
+			CommentService.report($scope.post._id, commentId).success(function()
+			{
+				
+			});
+		}
+
 	}]);
 
 bloggerAppController.controller("TextSearchController",[

@@ -43,3 +43,14 @@ bloggerAppDirective.directive("marked",[
       }
     };
 }]);
+
+
+bloggerAppDirective.directive("discussion",[
+  function () {
+    return {
+      restrict: 'A',
+      link: function (scope, element, attrs) {
+        element.discussion();
+    }
+  };
+}]);

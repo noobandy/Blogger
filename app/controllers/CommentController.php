@@ -24,7 +24,7 @@ class CommentController extends \BaseController {
 
 
 		$comments = $query->orderBy("depth", "asc")
-		->with(array("author","upVotes","downVotes","abuseReports"))->get();
+		->with(array("author","upVotes.author","downVotes.author","abuseReports.author"))->get();
 		
 		return Response::json(array("items" => $comments, "count" => $count), 200);
 	}
@@ -87,7 +87,7 @@ class CommentController extends \BaseController {
 	public function show($blogId, $postId, $commentId)
 	{
 		//
-		$comment = Comment::with(array("author","upVotes","downVotes","abuseReports"))
+		$comment = Comment::with(array("author","upVotes.author","downVotes.author","abuseReports.author"))
 		->where("_id", "=", $commentId)->firstOrFail();
 
 		return Response::json($comment, 200);

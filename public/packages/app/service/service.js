@@ -158,4 +158,19 @@ bloggerAppService.service("CommentService", [
 			return $http.put( dataUrl + "/" + comment.post_id + "/comment/", comment);
 		}
 
+		this.upvote = function(postId, commentId)
+		{
+			return $http.put( dataUrl + "/" + postId + "/comment/" + commentId + "/upvote");
+		}
+
+		this.downvote = function(postId, commentId)
+		{
+			return $http.put( dataUrl + "/" + postId + "/comment/" + commentId + "/downvote");
+		}
+
+		this.report = function(postId, commentId)
+		{
+			return $http.put( dataUrl + "/" + postId + "/comment/" + commentId + "/report");
+		}
+
 	}]);

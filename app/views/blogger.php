@@ -86,6 +86,7 @@
 	<?php echo( HTML::script("packages/angular-base64/angular-base64.js"));?>
 	<?php echo( HTML::script("packages/angular-basicauth/angular-basicauth.js"));?>
 	<?php echo( HTML::script("packages/ng-progress/ngProgress.js"));?>
+	<?php echo( HTML::script("packages/discussion/discussion.js"));?>
 	<?php echo( HTML::script("packages/app/app.js"));?>
 	<?php echo( HTML::script("packages/app/controller/controller.js"));?>
 	<?php echo( HTML::script("packages/app/service/service.js"));?>
