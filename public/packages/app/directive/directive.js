@@ -197,6 +197,22 @@ bloggerAppDirective.directive("discussion",[
       attr("id", "comment-edit-form-holder-"+comment._id);
     }
 
+    var userList = function(commentId, votes)
+    {
+      var list = $("<ul/>").addClass("list-unstyled").attr("id","popover-"+commentId);
+
+        votes.forEach(function(vote) {
+          list.append(
+            $("<li>").append(
+              $("<a/>").
+              attr("href","").
+              html(vote.author.username)
+            ).attr("id","popover-"+commentId+"-uid-"+vote.author_id) 
+          );
+        });
+
+        return  list;
+    }
 
     var commentActionElement = function(comment, upvoted, downvoted, canModifyComment)
     {
@@ -208,8 +224,10 @@ bloggerAppDirective.directive("discussion",[
       {
         holder.append(
             $("<a/>").
-            attr("herf", "").
+            attr("href", "").
+            addClass("vote-count").
             attr("id", "comment-upvote-count-"+comment._id).
+            attr("data-content", userList(comment._id, comment.up_votes).prop("outerHTML")).
             html(comment.up_votes.length)
           );
       }
@@ -219,7 +237,9 @@ bloggerAppDirective.directive("discussion",[
       attr("data-commentId", comment._id).
       addClass("comment-control left up-vote").
       append(
-          $("<i/>").addClass("glyphicon glyphicon-thumbs-up")
+          $("<i/>").
+          attr("id", "up-vote-icon-"+comment._id).
+          addClass("glyphicon glyphicon-thumbs-up")
         );
 
       if(upvoted)
@@ -234,7 +254,9 @@ bloggerAppDirective.directive("discussion",[
         holder.append(
             $("<a/>").
             attr("href", "").
+            addClass("vote-count").
             attr("id", "comment-downvote-count-"+comment._id).
+            attr("data-content", userList(comment._id, comment.down_votes).prop("outerHTML")).
             html(comment.down_votes.length)
           );
       }
@@ -243,7 +265,9 @@ bloggerAppDirective.directive("discussion",[
       attr("href", "").
       attr("data-commentId", comment._id).
       addClass("comment-control left down-vote").append(
-          $("<i/>").addClass("glyphicon glyphicon-thumbs-down")
+          $("<i/>").
+          attr("id", "down-vote-icon-"+comment._id).
+          addClass("glyphicon glyphicon-thumbs-down")
         );
 
       if(downvoted)
@@ -444,6 +468,33 @@ bloggerAppDirective.directive("discussion",[
         });
         });
 
+
+        element.on("click", "a.vote-count", function(e)
+        {
+          e.preventDefault() ;
+        }).on("mouseenter", "a.vote-count", function(e)
+        {
+          $(this).popover(
+          {
+            placement : "top",
+            trigger : "manual",
+            selector : 'a.vote-count',
+            html : true,
+            animation : true,
+            template: '<div class="popover" onmouseover="clearTimeout(timeoutObj);$(this).mouseleave(function() {$(this).hide();});"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>'
+          });
+                
+           $(this).popover('show');
+
+        }).on("mouseleave", "a.vote-count", function(e)
+        {
+          var ref = $(this);
+          window.timeoutObj = setTimeout(function()
+          {
+            ref.popover('hide');
+          }, 50);
+        });
+
         element.on("click", "a.edit", function(e)
         {
           e.preventDefault();
@@ -482,6 +533,58 @@ bloggerAppDirective.directive("discussion",[
           attachReplyForm(commentId);
 
         }); 
+
+        element.on("click", "a.up-vote", function(e)
+        {
+          e.preventDefault();
+          
+          var commentId = $(this).attr("data-commentId");
+
+          var upVoteControlIcon = $("#up-vote-icon-"+commentId);
+
+          var downVoteControlIcon = $("#down-vote-icon-"+commentId);
+
+          CommentService.upvote(scope.post._id, commentId).success(function(upvote)
+          {
+            if(upVoteControlIcon.hasClass("voted"))
+            {
+              upVoteControlIcon.removeClass("voted");
+            }
+            else
+            {
+              downVoteControlIcon.removeClass("voted");
+              upVoteControlIcon.addClass("voted");
+            }
+          });
+
+        });
+
+
+        element.on("click", "a.down-vote", function(e)
+        {
+          e.preventDefault();
+          
+          var commentId = $(this).attr("data-commentId");
+
+          var upVoteControlIcon = $("#up-vote-icon-"+commentId);
+
+          var downVoteControlIcon = $("#down-vote-icon-"+commentId);
+
+          CommentService.downvote(scope.post._id, commentId).success(function(upvote)
+          {
+            if(downVoteControlIcon.hasClass("voted"))
+            {
+              downVoteControlIcon.removeClass("voted");
+            }
+            else
+            {
+              upVoteControlIcon.removeClass("voted");
+              downVoteControlIcon.addClass("voted");
+            }
+          });
+
+        });
+
 
         element.on("submit", "form.comment-post-form", function(e)
         {

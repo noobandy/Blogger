@@ -346,7 +346,7 @@
 	                $(this).popover('show');
 	            }).on("mouseleave","a.upvote-count", function(e) {
 	                var ref = $(this);
-	                timeoutObj = setTimeout(function(){
+	                ref.timeoutObj = setTimeout(function(){
 	                    ref.popover('hide');
 	                }, 50);
 	            });

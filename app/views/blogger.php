@@ -18,6 +18,7 @@
 
 	</script>
 	<?php echo(HTML::script("packages/jquery/jquery.min.js")); ?>
+	<?php echo(HTML::script("packages/bootstrap/js/bootstrap.min.js")); ?>
 	<?php echo( HTML::script("packages/angular.js/angular.min.js"));?>
 	<?php echo( HTML::script("packages/angular.js/angular-sanitize.min.js"));?>
 	<?php echo( HTML::script("packages/ui-router/angular-ui-router.min.js"));?>
