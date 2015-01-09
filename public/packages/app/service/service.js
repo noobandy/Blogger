@@ -155,7 +155,7 @@ bloggerAppService.service("CommentService", [
 
 		this.update = function(comment)
 		{
-			return $http.put( dataUrl + "/" + comment.post_id + "/comment/", comment);
+			return $http.put( dataUrl + "/" + comment.post_id + "/comment/"+comment._id, comment);
 		}
 
 		this.upvote = function(postId, commentId)

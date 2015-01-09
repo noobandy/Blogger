@@ -10,49 +10,6 @@
 	<?php echo(HTML::style("packages/codemirror-4.8/theme/cobalt.css")); ?>
 	<?php echo(HTML::style("packages/highlight.js/default.min.css")); ?>
 	<?php echo(HTML::style("packages/ui-select/select.min.css")); ?>
-	<style type="text/css">
-		body{
-			padding-top: 80px;
-		}
-
-		input.ng-invalid.ng-touched {
-	    	border-color: #FA787E;
-	  	}
-
-	  	input.ng-valid.ng-touched {
-	    	border-color: #78FA89;
-	  	}
-
-
-	  	textarea.ng-invalid.ng-touched {
-	    	border-color: #FA787E;
-	  	}
-
-	  	textarea.ng-valid.ng-touched {
-	  		border-color: #78FA89;
-	  	}
-
-	  	.comment-control {
-   	 		display: inline-block;
-    		width: auto;
-    		padding: 2px;
-		}
-		
-		.left {
-		    border-right: 1px solid #ccc;
-		}
-
-		.CodeMirror {
-  			border: 1px solid #eee;
-  			height: auto;
-  			font-size: 16px;
-		}
-
-		.select2 > .select2-choice.ui-select-match {
-		    /* Because of the inclusion of Bootstrap */
-		    height: 36px;
-    	}
-	</style>
 	<!-- Globals -->
 	<script type="text/javascript">
 

@@ -178,32 +178,47 @@ bloggerAppDirective.directive("discussion",[
 
     var commentBodyElement = function(comment)
     {
-      return $("<p/>").addClass("comment-text").text(comment.comment);
+      return $("<p/>").addClass("comment-text").
+      attr("id", "comment-text-"+comment._id).
+      text(comment.comment);
     }
 
-    var replyFormHolderElement = function()
+    var replyFormHolderElement = function(comment)
     {
-      return $("<div/>").addClass("comment-reply-form-holder");
+      return $("<div/>").
+      addClass("comment-reply-form-holder").
+      attr("id", "comment-reply-form-holder-"+comment._id);
     }
 
-    var editFormHolderElement = function()
+    var editFormHolderElement = function(comment)
     {
-      return $("<div/>").addClass("comment-edit-form-holder");
+      return $("<div/>").
+      addClass("comment-edit-form-holder").
+      attr("id", "comment-edit-form-holder-"+comment._id);
     }
 
 
     var commentActionElement = function(comment, upvoted, downvoted, canModifyComment)
     {
-      var holder = $("<div/>").addClass("comment-control-holder");
+      var holder = $("<div/>").
+      addClass("comment-control-holder").
+      attr("id", "comment-control-holder-"+comment._id);
 
       if(comment.up_votes.length > 0)
       {
         holder.append(
-            $("<a/>").attr("herf", "").html(comment.up_votes.length)
+            $("<a/>").
+            attr("herf", "").
+            attr("id", "comment-upvote-count-"+comment._id).
+            html(comment.up_votes.length)
           );
       }
 
-      var upVoteControl = $("<a/>").attr("href", "").addClass("comment-control left up-vote").append(
+      var upVoteControl = $("<a/>").
+      attr("href", "").
+      attr("data-commentId", comment._id).
+      addClass("comment-control left up-vote").
+      append(
           $("<i/>").addClass("glyphicon glyphicon-thumbs-up")
         );
 
@@ -217,11 +232,17 @@ bloggerAppDirective.directive("discussion",[
       if(comment.down_votes.length > 0)
       {
         holder.append(
-            $("<a/>").attr("href", "").html(comment.down_votes.length)
+            $("<a/>").
+            attr("href", "").
+            attr("id", "comment-downvote-count-"+comment._id).
+            html(comment.down_votes.length)
           );
       }
 
-      var downVoteControl = $("<a/>").attr("href", "").addClass("comment-control left down-vote").append(
+      var downVoteControl = $("<a/>").
+      attr("href", "").
+      attr("data-commentId", comment._id).
+      addClass("comment-control left down-vote").append(
           $("<i/>").addClass("glyphicon glyphicon-thumbs-down")
         );
 
@@ -235,20 +256,31 @@ bloggerAppDirective.directive("discussion",[
       if(canModifyComment)
       {
         holder.append(
-            $("<a/>").attr("href", "").addClass("comment-control left edit").append(
+            $("<a/>").
+            attr("href", "").
+            attr("data-commentId", comment._id).
+            addClass("comment-control left edit").
+            append(
                 $("<i/>").addClass("glyphicon glyphicon-edit")
               )
           );
 
         holder.append(
-            $("<a/>").attr("href", "").addClass("comment-control left delete").append(
+            $("<a/>").
+            attr("href", "").
+            attr("data-commentId", comment._id).
+            addClass("comment-control left delete").
+            append(
                 $("<i/>").addClass("glyphicon glyphicon-trash")
               )
           );
       }
 
       holder.append(
-            $("<a/>").attr("href", "").addClass("reply").html("Reply")
+            $("<a/>").
+            attr("href", "").
+            attr("data-commentId", comment._id).
+            addClass("comment-control reply").html("Reply")
           );
 
       return holder;
@@ -261,7 +293,9 @@ bloggerAppDirective.directive("discussion",[
       var downvoted = voted(comment.down_votes);
       var modify = canModifyComment(comment);
 
-      var commentElement = $("<li>").addClass("media").attr("data-commentId", comment._id);
+      var commentElement = $("<li>").
+      addClass("media").
+      attr("id","comment-"+comment._id);
       
       commentElement.append(avatrElement(comment));
 
@@ -271,14 +305,16 @@ bloggerAppDirective.directive("discussion",[
 
       mediaBody.append(commentBodyElement(comment));
 
-      mediaBody.append(editFormHolderElement());
+      mediaBody.append(editFormHolderElement(comment));
 
-      mediaBody.append(replyFormHolderElement);
+      mediaBody.append(replyFormHolderElement(comment));
       
 
       mediaBody.append(commentActionElement(comment, upvoted, downvoted, modify));
 
-      var commentReplyHolder = $("<ul/>").addClass("media-list");
+      var commentReplyHolder = $("<ul/>").
+      addClass("media-list").
+      attr("id", "comment-reply-"+comment._id);
 
       if(comment.replies.length > 0)
       {
@@ -310,7 +346,9 @@ bloggerAppDirective.directive("discussion",[
 
       var discussionTreeCol = $("<div/>").addClass("col-md-12");
 
-      var discussionTree = $("<ul/>").addClass("media-list discussion-tree")
+      var discussionTree = $("<ul/>").
+      addClass("media-list discussion-tree").
+      attr("id", "discussion-tree")
 
       comments.forEach(function(comment)
       {
@@ -327,6 +365,38 @@ bloggerAppDirective.directive("discussion",[
 
       initAvatarPlaceHolder();
     }; 
+
+    var attachReplyForm = function(commentId)
+    {
+      $("#comment-reply-form-holder-"+commentId).append(replyFormElement(commentId));
+
+      $("#comment-control-holder-"+commentId).hide("slow");
+    };
+
+    var detachReplyForm = function(commentId)
+    {
+      $("#comment-reply-form-holder-"+commentId).empty();
+
+      $("#comment-control-holder-"+commentId).show("slow");
+    };
+
+    var attachEditForm = function(commentId, oldCommentText)
+    {
+      $("#comment-edit-form-holder-"+commentId).append(editFormElement(commentId, oldCommentText));
+
+      $("#comment-text-"+commentId).hide("slow");
+            
+      $("#comment-control-holder-"+commentId).hide("slow");
+    };
+
+    var detachEditForm = function(commentId)
+    {
+      $("#comment-edit-form-holder-"+commentId).empty();
+
+      $("#comment-text-"+commentId).show("slow");
+            
+      $("#comment-control-holder-"+commentId).show("slow");
+    };    
 
     var hasText = function(text)
     {
@@ -377,28 +447,39 @@ bloggerAppDirective.directive("discussion",[
         element.on("click", "a.edit", function(e)
         {
           e.preventDefault();
-          var commentId = $(this).parents("li.media").filter(":visible:first").attr("data-commentId");
+
+          var commentId = $(this).attr("data-commentId");
           
-          var oldCommentText = $(this).parents("p.comment-text").filter(":visible:first").text();
+          var oldCommentText = $("#comment-text-"+commentId).text();
 
-          $(this).parents("div.comment-control-holder").filter(":visible:first").hide("slow");
-
-          $(this).parents("div.comment-edit-form-holder").append(editFormElement(commentId, oldCommentText));
-
-
+          attachEditForm(commentId, oldCommentText);
         });
 
         element.on("click", "a.delete", function(e)
         {
           e.preventDefault();
-          $(this).parents("div.comment-control-holder").filter(":visible:first").hide("slow");
+
+          var commentId = $(this).attr("data-commentId");
+
+          if(confirm("Are you sure?"))
+          {
+            CommentService.delete(scope.post._id, commentId).success(function()
+            {
+              alert("Comment deleted successfully.");
+
+              $("#comment-"+commentId).empty().remove();
+            });
+          }
 
         });
 
         element.on("click", "a.reply", function(e)
         {
           e.preventDefault();
-          $(this).parents("div.comment-control-holder").filter(":visible:first").hide("slow");
+
+          var commentId = $(this).attr("data-commentId");
+
+          attachReplyForm(commentId);
 
         }); 
 
@@ -419,12 +500,72 @@ bloggerAppDirective.directive("discussion",[
               }).success(function(comment)
               {
                 comment.replies = [];
-                element.find("ul.discussion-tree").filter(":visible:first").
-                prepend(commentNode(comment));
+                element.find("ul#discussion-tree").
+                append(commentNode(comment));
 
                 initAvatarPlaceHolder();
-                
-                console.log(comment);
+
+              });
+          }
+
+        });
+
+
+        element.on("submit", "form.comment-reply-form", function(e)
+        {
+          e.preventDefault();
+          var commentText = $(this).find("textarea").filter(":visible:first").val();
+
+          var commentId = $(this).find("textarea").filter(":visible:first").attr("data-commentId"); 
+          
+          $(this).find("textarea").filter(":visible:first").val("");
+
+          if(hasText(commentText))
+          {
+
+            CommentService.add(
+              {
+                post_id : scope.post._id,
+                comment : commentText,
+                parentId : commentId
+              }).success(function(comment)
+              {
+                detachReplyForm(commentId);
+
+                comment.replies = [];
+
+                $("#comment-reply-"+commentId).append(commentNode(comment));
+
+                initAvatarPlaceHolder();
+
+              });
+          }
+
+        });
+
+
+        element.on("submit", "form.comment-edit-form", function(e)
+        {
+          e.preventDefault();
+          var commentText = $(this).find("textarea").filter(":visible:first").val();
+
+          var commentId = $(this).find("textarea").filter(":visible:first").attr("data-commentId"); 
+          
+          $(this).find("textarea").filter(":visible:first").val("");
+
+          if(hasText(commentText))
+          {
+
+            CommentService.update(
+              {
+                _id : commentId,
+                post_id : scope.post._id,
+                comment : commentText
+              }).success(function(comment)
+              {
+                detachEditForm(commentId);
+
+                $("#comment-text-"+commentId).text(comment.comment);
 
               });
           }

@@ -104,7 +104,7 @@ Route::put("/blog/{blogId}/post/{postId}/comment/{commentId}/report",
 	"as" => "comment.report"));
 
 
-Route::delete("/blog/{blogId}/post/{postId}/comment/commentId",
+Route::delete("/blog/{blogId}/post/{postId}/comment/{commentId}",
 	array('before' => "basic.once",
 	"uses" => "CommentController@destroy",
 	"as" => "comment.destroy"));

@@ -62,7 +62,7 @@ class CommentController extends \BaseController {
 
 			$comment->depth = $parent->depth + 1;
 
-			$comment->path = $parent->path."/"+$comment->_id;
+			$comment->path = $parent->path."/".$comment->_id;
 
 		}
 		else
@@ -258,11 +258,11 @@ class CommentController extends \BaseController {
 	{
 		$comment = Comment::findOrFail($commentId);
 		
-		$author = User::findOrFail($comment->author_id);
+		$currentUser = User::where("username", "=", Auth::user()->username)->firstOrFail();
 
-		if(strcmp($author->username, Auth::user()->username) == 0)
+		if(strcmp($comment->author_id, $currentUser->_id) == 0)
 		{
-			$comment->delete();
+			Comment::where("path", "like", $comment->path."%")->delete();
 			return Response::json(array(), 200);
 		}
 		else
