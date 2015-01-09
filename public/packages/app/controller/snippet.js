@@ -99,3 +99,5 @@ $scope.startDate = new Date(59859000);
 		}
 
 	}]);
+
+		<div discussion blog-id="{{currentBlog._id}}" post-slug="{{post.slug}}" post-id="{{post._id}}" logged-in-user="{{loggedInUser.username}}" base-path="{{basePath}}">

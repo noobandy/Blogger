@@ -282,8 +282,8 @@ bloggerAppController.controller("PostController",[
 	]);
 
 bloggerAppController.controller("CommentController", [
-	"$scope", "$stateParams", "CommentService", "comments",
-	function($scope, $stateParams, CommentService, comments){
+	"$rootScope", "$scope", "$stateParams", "CommentService", "comments",
+	function($rootScope, $scope, $stateParams, CommentService, comments){
 		$scope.comments = comments;
 
 		$scope.newCommentText;

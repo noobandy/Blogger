@@ -1,0 +1,46 @@
+<div class="row">
+	<div class="col-md-12">
+			<form class="well" name="commentForm" ng-submit="commentForm.$valid && postComment()" novalidate>
+				<legend>Post Comment</legend>
+				<div class="form-group">
+					<textarea ng-model="newCommentText" class="form-control input-lg" placeholder="write your comment" required></textarea>
+				</div>
+				<button class="btn btn-primary">
+					Submit
+				</button>
+			</form>
+	</div>
+</div>
+<script type="text/ng-template" id="voteList">
+	<ul class="unstyled">
+	    <li ng-repeat="vote in votes">
+	    	<a href="" ng-bind="vote.author.username">
+	    	</a>         
+	    </li>
+    </ul>
+</script>
+
+<script type="text/ng-template" id="commentTree">
+	<a class="media-left" href="#">
+      	<img class="img-circle" holder="holder.js/64x64">
+    </a>
+	<div class="media-body">
+	    <comment comment="comment">
+	    </comment>
+		<ul class="media-list" ng-if="comment.replies.length > 0">
+	        <li class="media" ng-repeat="comment in comment.replies" 
+	        ng-include="'commentTree'">           
+	        </li>
+    	</ul>
+	</div>
+</script>
+
+<div class="row">
+	<div class="col-md-12">
+		<ul class="media-list">
+  			<li ng-repeat="comment in comments" class="media" ng-include="'commentTree'">
+  			</li>
+		</ul>
+	</div>
+</div>
+

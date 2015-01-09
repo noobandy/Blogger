@@ -7,7 +7,7 @@
 	<div class="col-md-12">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<a ng-if="loggedInUser && currentBlog.user_id === loggedInUser._id && post.blog_id === currentBlog._id" class="btn btn-primary" ui-sref="base.editPost({slug: post.slug})">
+				<a ng-if="isBlogOwner" class="btn btn-primary" ui-sref="base.editPost({slug: post.slug})">
 					<i class="glyphicon glyphicon-edit"></i> Edit
 				</a>
 			</div>
@@ -27,8 +27,8 @@
 		<span ng-bind="commentsCount"></span> Comments</a>
 	</div>
 </div>
-<div discussion blog-id="{{currentBlog._id}}" post-slug="{{post.slug}}" post-id="{{post._id}}" logged-in-user="{{loggedInUser.username}}" base-path="{{basePath}}">
-</div>	
+</div>
+<discussion slug="{{post.slug}}"></discussion>	
 <ui-view>
 
 </ui-view>

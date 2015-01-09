@@ -244,7 +244,7 @@ bloggerApp.config([
 
 		$stateProvider.state("base.post.comment",
 		{
-			"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/comment.html",
+			"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/discussion.html",
 			"controller" : "CommentController",
 			"resolve" : {
 				comments : ["$q", "$stateParams", "CommentService",
@@ -436,25 +436,35 @@ bloggerApp.run(["APP_DATA", "$rootScope", "$modal",
 	"authDefaults", "authService", "UserService", "ngProgress",
 	function(APP_DATA, $rootScope, $modal, authDefaults, authService, UserService, ngProgress)
 	{
+		//store gloabl current blog data in root scope
 		$rootScope.currentBlog = APP_DATA.BLOG;
+		//store global base url in root scope
 		$rootScope.basePath = APP_DATA.BASE_URL;
 		
-		authDefaults.authenticateUrl = APP_DATA.BASE_URL +"/login";
+		//set authentication url
+		authDefaults.authenticateUrl = $rootScope.basePath +"/login";
+
+		//add current domain for end point
 		authService.addEndpoint();
 
 		var username = authService.username();
 
+		//if user is authnticated
+		// load and store logged in user data in root scope
+		// store is logged in user is owner of the current blog
 		if(typeof username !== "undefined" 
 			&& username != null && username.trim() !== "")
 		{
 			UserService.getUser(authService.username()).success(function(data)
 			{
             	$rootScope.loggedInUser = data;
+            	$rootScope.isBlogOwner = $rootScope.loggedInUser._id === $rootScope.currentBlog.user_id;
             });
 		}
 		else
 		{
 			$rootScope.loggedInUser = null;
+			$rootScope.isBlogOwner = false;
 		}
 		
 		$rootScope.$on('$stateChangeStart',
@@ -462,11 +472,12 @@ bloggerApp.run(["APP_DATA", "$rootScope", "$modal",
 			{
 				ngProgress.start();
 
+				//is this state require user to be authenticated
 				if(toState.data.isAuthRequired)
 				{	
 					if($rootScope.loggedInUser === null)
 					{
-						event.preventDefault(); 
+						event.preventDefault();
 					}
 				}
 			});
@@ -481,6 +492,7 @@ bloggerApp.run(["APP_DATA", "$rootScope", "$modal",
             UserService.getUser(authService.username()).success(function(data)
             {
             	$rootScope.loggedInUser = data;
+            	$rootScope.isBlogOwner = $rootScope.loggedInUser._id === $rootScope.currentBlog.user_id; 
 
             });
         });
@@ -488,6 +500,7 @@ bloggerApp.run(["APP_DATA", "$rootScope", "$modal",
         // listen for logout events
         $rootScope.$on('logout', function() {
            $rootScope.loggedInUser = null;
+           $rootScope.isBlogOwner = false;
         });
 	}
 	]);
