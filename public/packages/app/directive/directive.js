@@ -124,9 +124,7 @@ bloggerAppDirective.directive("discussion",[
 
     var replyFormElement = function(commentId)
     {
-      return $("<div/>").addClass("row").append(
-          $("<div/>").addClass("col-md-12").append(
-              $("<form/>").addClass("well comment-reply-form").append(
+      return $("<form/>").addClass("well comment-reply-form").append(
                   $("<legend>").html("Post Reply")
                 ).append(
                   $("<div/>").addClass("form-group").append(
@@ -134,17 +132,18 @@ bloggerAppDirective.directive("discussion",[
                       attr("data-commentId", commentId)
                     )
                 ).append(
-                  $("<button>").attr("type","submit").addClass("btn btn-primary").html("Submit")
-                )
-            )
-        )
+                  $("<div/>").addClass("form-group").append(
+                      $("<button>").attr("type","submit").addClass("btn btn-primary").html("Submit")
+                    ).append("&nbsp;").append(
+                      $("<a>").attr("href","").attr("data-commentId", commentId).
+                      addClass("btn btn-primary cancelReply").html("Cancel")
+                    )
+                );
     }
 
     var editFormElement = function(commentId, oldCommentText)
     {
-      return $("<div/>").addClass("row").append(
-          $("<div/>").addClass("col-md-12").append(
-              $("<form/>").addClass("well comment-edit-form").append(
+      return $("<form/>").addClass("well comment-edit-form").append(
                   $("<legend>").html("Edit Comment")
                 ).append(
                   $("<div/>").addClass("form-group").append(
@@ -152,12 +151,13 @@ bloggerAppDirective.directive("discussion",[
                       attr("data-commentId", commentId).val(oldCommentText)
                     )
                 ).append(
-                  $("<div/>").addClass("form-actions").append(
+                  $("<div/>").addClass("form-group").append(
                       $("<button>").attr("type","submit").addClass("btn btn-primary").html("Submit")
+                    ).append("&nbsp;").append(
+                      $("<a>").attr("href","").attr("data-commentId", commentId).
+                      addClass("btn btn-primary cancelEdit").html("Cancel")
                     )
-                )
-            )
-        )
+                );
     }
 
     var avatrElement = function(comment)
@@ -235,17 +235,18 @@ bloggerAppDirective.directive("discussion",[
       var upVoteControl = $("<a/>").
       attr("href", "").
       attr("data-commentId", comment._id).
-      addClass("comment-control left up-vote").
-      append(
-          $("<i/>").
+      addClass("comment-control left up-vote");
+
+      var upVoteControlIcon = $("<i/>").
           attr("id", "up-vote-icon-"+comment._id).
           addClass("glyphicon glyphicon-thumbs-up")
-        );
 
       if(upvoted)
       {
-        upVoteControl.addClass("voted");
+        upVoteControlIcon.addClass("voted");
       }
+
+      upVoteControl.append(upVoteControlIcon);
 
       holder.append(upVoteControl);
 
@@ -264,16 +265,18 @@ bloggerAppDirective.directive("discussion",[
       var downVoteControl = $("<a/>").
       attr("href", "").
       attr("data-commentId", comment._id).
-      addClass("comment-control left down-vote").append(
-          $("<i/>").
+      addClass("comment-control left down-vote");
+
+      var downVoteControlIcon = $("<i/>").
           attr("id", "down-vote-icon-"+comment._id).
-          addClass("glyphicon glyphicon-thumbs-down")
-        );
+          addClass("glyphicon glyphicon-thumbs-down");
 
       if(downvoted)
       {
-        downVoteControl.addClass("voted");
+        downVoteControlIcon.addClass("voted");
       }
+
+      downVoteControl.append(downVoteControlIcon);
 
       holder.append(downVoteControl);
 
@@ -506,6 +509,15 @@ bloggerAppDirective.directive("discussion",[
           attachEditForm(commentId, oldCommentText);
         });
 
+         element.on("click", "a.cancelEdit", function(e)
+        {
+          e.preventDefault();
+
+          var commentId = $(this).attr("data-commentId");
+
+          detachEditForm(commentId);
+        });
+
         element.on("click", "a.delete", function(e)
         {
           e.preventDefault();
@@ -532,7 +544,17 @@ bloggerAppDirective.directive("discussion",[
 
           attachReplyForm(commentId);
 
-        }); 
+        });
+
+        element.on("click", "a.cancelReply", function(e)
+        {
+          e.preventDefault();
+
+          var commentId = $(this).attr("data-commentId");
+
+          detachReplyForm(commentId);
+
+        });  
 
         element.on("click", "a.up-vote", function(e)
         {
@@ -569,6 +591,9 @@ bloggerAppDirective.directive("discussion",[
           var upVoteControlIcon = $("#up-vote-icon-"+commentId);
 
           var downVoteControlIcon = $("#down-vote-icon-"+commentId);
+
+          var downvoteCountControl = $("#comment-downvote-count-"+commentId);
+          
 
           CommentService.downvote(scope.post._id, commentId).success(function(upvote)
           {
