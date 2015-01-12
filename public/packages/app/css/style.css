@@ -23,6 +23,20 @@
   opacity: 1;
 }
 
+/*
+ * override the default CSS as an example
+ */
+
+#loading-bar .bar {
+  background: #DF013A;
+}
+#loading-bar .peg {
+  box-shadow: 0 0 10px #DF013A, 0 0 5px #DF013A;
+}
+#loading-bar-spinner .spinner-icon {
+  border-top-color:  #DF013A;
+  border-left-color: #DF013A;
+}
 
 
 body{

@@ -12,7 +12,6 @@ var bloggerApp = angular.module("bloggerApp", [
 	"ngSanitize",
 	"ui.select",
 	"angularBasicAuth",
-	"ngProgress",
 	"ngAnimate",
 	"angular-loading-bar"
 	]);
@@ -435,8 +434,8 @@ bloggerApp.config([
 	]);
 
 bloggerApp.run(["APP_DATA", "$rootScope", "$modal",
-	"authDefaults", "authService", "UserService", "ngProgress",
-	function(APP_DATA, $rootScope, $modal, authDefaults, authService, UserService, ngProgress)
+	"authDefaults", "authService", "UserService", "cfpLoadingBar",
+	function(APP_DATA, $rootScope, $modal, authDefaults, authService, UserService, cfpLoadingBar)
 	{
 		//store gloabl current blog data in root scope
 		$rootScope.currentBlog = APP_DATA.BLOG;
@@ -472,21 +471,25 @@ bloggerApp.run(["APP_DATA", "$rootScope", "$modal",
 		$rootScope.$on('$stateChangeStart',
 			function(event, toState, toParams, fromState, fromParams)
 			{
-				//ngProgress.start();
-
+				//start gloabal loading bar aimation.
+				cfpLoadingBar.start();
+				
 				//is this state require user to be authenticated
 				if(toState.data.isAuthRequired)
 				{	
 					if($rootScope.loggedInUser === null)
 					{
 						event.preventDefault();
+						//stop loading bar animation
+						cfpLoadingBar.complete();
 					}
 				}
 			});
 		$rootScope.$on('$stateChangeSuccess',
 			function(event, toState, toParams, fromState, fromParams)
 			{
-				//ngProgress.complete();
+				//stop loading bar animation
+				cfpLoadingBar.complete();
 			});
 
 		// listen for login events
