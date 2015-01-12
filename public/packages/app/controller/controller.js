@@ -56,8 +56,8 @@ bloggerAppController.controller("UserProfileController",[
 
 bloggerAppController.controller("NavbarController",[
 	"$rootScope", "$scope", "APP_DATA", "$state", "authService",
-	"UserProfileDialogService",
-	function($rootScope, $scope, APP_DATA, $state, authService, UserProfileDialogService)
+	"UserProfileDialogService", "$modal",
+	function($rootScope, $scope, APP_DATA, $state, authService, UserProfileDialogService, $modal)
 	{
 		$scope.navCollapsed = true;
 		$scope.blog = APP_DATA.BLOG;
