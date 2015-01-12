@@ -55,8 +55,9 @@ bloggerAppController.controller("UserProfileController",[
 	]);
 
 bloggerAppController.controller("NavbarController",[
-	"$rootScope", "$scope", "APP_DATA", "$state", "$modal", "authService",
-	function($rootScope, $scope, APP_DATA, $state, $modal, authService)
+	"$rootScope", "$scope", "APP_DATA", "$state", "authService",
+	"UserProfileDialogService",
+	function($rootScope, $scope, APP_DATA, $state, authService, UserProfileDialogService)
 	{
 		$scope.navCollapsed = true;
 		$scope.blog = APP_DATA.BLOG;
@@ -86,23 +87,7 @@ bloggerAppController.controller("NavbarController",[
 		}
 
 		$scope.userProfileDialog = function(username) {
-			$modal.open({
-					"templateUrl": APP_DATA.BASE_URL + "/packages/app/partial/userProfile.html",
-            		"resolve": {
-            			user : ["$q", "UserService",
-						function($q, UserService)
-						{
-							var deferred = $q.defer();
-							UserService.getUser(username).success(function(data)
-								{
-									deferred.resolve(data);
-								});
-							return deferred.promise;
-						}]
-            		},
-            		"controller" : "UserProfileController",
-            		"size" : "lg"
-				});
+			UserProfileDialogService.userProfile(username);
 		}
 
 		$scope.logout = function() {

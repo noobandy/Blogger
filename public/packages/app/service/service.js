@@ -2,6 +2,34 @@
 
 var bloggerAppService = angular.module("bloggerApp.service",[]);
 
+bloggerAppService.service("UserProfileDialogService",[
+	"APP_DATA", "$modal",
+	function(APP_DATA, $modal)
+	{
+		this.userProfile = function(username)
+		{
+			$modal.open({
+				"templateUrl": APP_DATA.BASE_URL + "/packages/app/partial/userProfile.html",
+	            "resolve": 
+	            {
+	            	user : ["$q", "UserService",
+	            	function($q, UserService)
+	            	{
+						var deferred = $q.defer();
+						UserService.getUser(username).success(function(data)
+						{
+							deferred.resolve(data);
+						});
+						
+						return deferred.promise;
+					}]
+	            },
+	            "controller" : "UserProfileController",
+	            "size" : "lg"
+			});
+		}
+	}]);
+
 bloggerAppService.factory('loadingInerceptor', [function(ProgressDialog) {
     var loadingInerceptor = {
         request: function(config) {

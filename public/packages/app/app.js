@@ -50,7 +50,7 @@ bloggerApp.config([
 
 		//default state when non matches
 		$urlRouterProvider.otherwise("/home");
-
+		
 		$stateProvider.state("base",
 		{
 			"abstract" : true,

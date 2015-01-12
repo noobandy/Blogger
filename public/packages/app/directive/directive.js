@@ -84,7 +84,9 @@ bloggerAppDirective.directive("comment", [
 
 bloggerAppDirective.directive("discussion",[
   "$rootScope", "PostService", "CommentService",
-  function($rootScope, PostService, CommentService) {
+  "UserProfileDialogService",
+  function($rootScope, PostService, CommentService,
+    UserProfileDialogService) {
     var voted = function(votes)
     {
       for(var vote in votes)
@@ -170,7 +172,11 @@ bloggerAppDirective.directive("discussion",[
     var commentHeaderElement = function(comment)
     {
       return $("<h4/>").addClass("media-heading").append(
-          $("<a/>").attr("href", "").html(comment.author.username)
+          $("<a/>").
+          addClass("user-profile").
+          attr("href", "").
+          attr("data-username", comment.author.username).
+          html(comment.author.username)
         ).append("&nbsp;").append(
           $("<small/>").html(moment.utc(comment.created_at).tz(tzid).fromNow())
         );
@@ -205,7 +211,9 @@ bloggerAppDirective.directive("discussion",[
           list.append(
             $("<li>").append(
               $("<a/>").
-              attr("href","").
+              addClass("user-profile").
+              attr("href", "").
+              attr("data-username", vote.author.username).
               html(vote.author.username)
             ).attr("id","popover-"+commentId+"-username-"+vote.author.username) 
           );
@@ -493,10 +501,16 @@ bloggerAppDirective.directive("discussion",[
         });
         });
 
+        element.on("click", "a.user-profile", function(e)
+        {
+          e.preventDefault();
+          UserProfileDialogService.userProfile($(this).attr("data-username"));
+
+        });
 
         element.on("click", "a.vote-count", function(e)
         {
-          e.preventDefault() ;
+          e.preventDefault();
         }).on("mouseenter", "a.vote-count", function(e)
         {
           $(this).popover(
@@ -675,7 +689,11 @@ bloggerAppDirective.directive("discussion",[
                   $("<li/>").
                   attr("id", "popover-"+commentId+"-username-"+$rootScope.loggedInUser.username).
                   append(
-                      $("<a/>").attr("href", "").html($rootScope.loggedInUser.username)
+                      $("<a/>").
+                      addClass("user-profile").
+                      attr("href", "").
+                      attr("data-username", $rootScope.loggedInUser.username).
+                      html($rootScope.loggedInUser.username)
                     )
                 )
 
@@ -791,7 +809,11 @@ bloggerAppDirective.directive("discussion",[
                   $("<li/>").
                   attr("id", "popover-"+commentId+"-username-"+$rootScope.loggedInUser.username).
                   append(
-                      $("<a/>").attr("href", "").html($rootScope.loggedInUser.username)
+                      $("<a/>").
+                      addClass("user-profile").
+                      attr("href", "").
+                      attr("data-username", $rootScope.loggedInUser.username).
+                      html($rootScope.loggedInUser.username)
                     )
                 )
 

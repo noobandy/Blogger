@@ -59,7 +59,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-9">
-				<ui-view class="slide" name="content@base">
+				<ui-view name="content@base">
 
 				</ui-view>	
 			</div>
