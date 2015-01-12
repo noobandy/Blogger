@@ -124,7 +124,7 @@ bloggerAppDirective.directive("discussion",[
 
     var replyFormElement = function(commentId)
     {
-      return $("<form/>").addClass("well comment-reply-form").append(
+      return $("<form/>").addClass("comment-reply-form").append(
                   $("<legend>").html("Post Reply")
                 ).append(
                   $("<div/>").addClass("form-group").append(
@@ -143,7 +143,7 @@ bloggerAppDirective.directive("discussion",[
 
     var editFormElement = function(commentId, oldCommentText)
     {
-      return $("<form/>").addClass("well comment-edit-form").append(
+      return $("<form/>").addClass("comment-edit-form").append(
                   $("<legend>").html("Edit Comment")
                 ).append(
                   $("<div/>").addClass("form-group").append(
@@ -231,6 +231,17 @@ bloggerAppDirective.directive("discussion",[
             html(comment.up_votes.length)
           );
       }
+      else
+      {
+        holder.append(
+            $("<a/>").
+            attr("href", "").
+            addClass("vote-count").
+            attr("id", "comment-upvote-count-"+comment._id).
+            attr("data-content", userList(comment._id, comment.up_votes).prop("outerHTML")).
+            html("")
+          );
+      }
 
       var upVoteControl = $("<a/>").
       attr("href", "").
@@ -259,6 +270,17 @@ bloggerAppDirective.directive("discussion",[
             attr("id", "comment-downvote-count-"+comment._id).
             attr("data-content", userList(comment._id, comment.down_votes).prop("outerHTML")).
             html(comment.down_votes.length)
+          );
+      }
+      else
+      {
+        holder.append(
+            $("<a/>").
+            attr("href", "").
+            addClass("vote-count").
+            attr("id", "comment-downvote-count-"+comment._id).
+            attr("data-content", userList(comment._id, comment.down_votes).prop("outerHTML")).
+            html("")
           );
       }
 

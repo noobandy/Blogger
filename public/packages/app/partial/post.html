@@ -23,12 +23,11 @@
 </div>
 <div class="row">
 	<div class="col-md-12">
-		<a ui-sref="base.post.comment" class="btn btn-primary btn-lg btn-block">
-		<span ng-bind="commentsCount"></span> Comments</a>
+		<button ng-click="showComments = true" href="" class="btn btn-primary">
+		<i class="glyphicon glyphicon-comment"></i>  <span ng-bind="commentsCount"></span> Comments</button>
 	</div>
 </div>
 </div>
-<discussion slug="{{post.slug}}"></discussion>	
-<ui-view>
+<br/>
 
-</ui-view>
+<discussion ng-if="showComments" slug="{{post.slug}}"></discussion>

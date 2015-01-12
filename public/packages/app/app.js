@@ -12,7 +12,9 @@ var bloggerApp = angular.module("bloggerApp", [
 	"ngSanitize",
 	"ui.select",
 	"angularBasicAuth",
-	"ngProgress"
+	"ngProgress",
+	"ngAnimate",
+	"angular-loading-bar"
 	]);
 
 
@@ -470,7 +472,7 @@ bloggerApp.run(["APP_DATA", "$rootScope", "$modal",
 		$rootScope.$on('$stateChangeStart',
 			function(event, toState, toParams, fromState, fromParams)
 			{
-				ngProgress.start();
+				//ngProgress.start();
 
 				//is this state require user to be authenticated
 				if(toState.data.isAuthRequired)
@@ -484,7 +486,7 @@ bloggerApp.run(["APP_DATA", "$rootScope", "$modal",
 		$rootScope.$on('$stateChangeSuccess',
 			function(event, toState, toParams, fromState, fromParams)
 			{
-				ngProgress.complete();
+				//ngProgress.complete();
 			});
 
 		// listen for login events

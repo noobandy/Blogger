@@ -10,6 +10,7 @@
 	<?php echo(HTML::style("packages/codemirror-4.8/theme/cobalt.css")); ?>
 	<?php echo(HTML::style("packages/highlight.js/default.min.css")); ?>
 	<?php echo(HTML::style("packages/ui-select/select.min.css")); ?>
+	<?php echo(HTML::style("packages/angular-loading-bar/loading-bar.css")); ?>
 	<!-- Globals -->
 	<script type="text/javascript">
 
@@ -20,6 +21,7 @@
 	<?php echo(HTML::script("packages/jquery/jquery.min.js")); ?>
 	<?php echo(HTML::script("packages/bootstrap/js/bootstrap.min.js")); ?>
 	<?php echo( HTML::script("packages/angular.js/angular.min.js"));?>
+	<?php echo(HTML::script("packages/angular.js/angular-animate.js")) ?>
 	<?php echo( HTML::script("packages/angular.js/angular-sanitize.min.js"));?>
 	<?php echo( HTML::script("packages/ui-router/angular-ui-router.min.js"));?>
 	<?php echo( HTML::script("packages/ui-bootstrap/ui-bootstrap-tpls-0.12.0.min.js"));?>
@@ -43,8 +45,8 @@
 	<?php echo( HTML::script("packages/angular-local-storage/angular-local-storage.js"));?>
 	<?php echo( HTML::script("packages/angular-base64/angular-base64.js"));?>
 	<?php echo( HTML::script("packages/angular-basicauth/angular-basicauth.js"));?>
+	<?php echo( HTML::script("packages/angular-loading-bar/loading-bar.js"));?>
 	<?php echo( HTML::script("packages/ng-progress/ngProgress.js"));?>
-	<?php echo( HTML::script("packages/discussion/discussion.js"));?>
 	<?php echo( HTML::script("packages/app/app.js"));?>
 	<?php echo( HTML::script("packages/app/controller/controller.js"));?>
 	<?php echo( HTML::script("packages/app/service/service.js"));?>
