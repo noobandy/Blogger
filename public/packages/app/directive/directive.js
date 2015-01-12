@@ -207,7 +207,7 @@ bloggerAppDirective.directive("discussion",[
               $("<a/>").
               attr("href","").
               html(vote.author.username)
-            ).attr("id","popover-"+commentId+"-uid-"+vote.author_id) 
+            ).attr("id","popover-"+commentId+"-username-"+vote.author.username) 
           );
         });
 
@@ -566,16 +566,104 @@ bloggerAppDirective.directive("discussion",[
 
           var downVoteControlIcon = $("#down-vote-icon-"+commentId);
 
+          var upVoteCountControl = $("#comment-upvote-count-"+commentId);
+
+          var upVoteCount = upVoteCountControl.html();
+
+          var upVotePopoverContent = $(upVoteCountControl.attr("data-content"));
+
+
+          if(!(typeof upVoteCount !== "undefined" && upVoteCount.trim() === ""))
+          {
+            upVoteCount = parseInt(upVoteCount);
+          }
+          else
+          {
+            upVoteCount = 0;
+          }
+
+          var downVoteCountControl = $("#comment-downvote-count-"+commentId);
+
+          var downVoteCount = downVoteCountControl.html();
+
+          var downVotePopoverContent = $(downVoteCountControl.attr("data-content"));
+
+          if(!(typeof downVoteCount !== "undefined" && downVoteCount.trim() === ""))
+          {
+            downVoteCount = parseInt(downVoteCount);
+          }
+          else
+          {
+            downVoteCount = 0;
+          }
+
           CommentService.upvote(scope.post._id, commentId).success(function(upvote)
           {
             if(upVoteControlIcon.hasClass("voted"))
             {
+              upVoteCount--;
+
+              upVotePopoverContent.
+              find("li#popover-"+commentId+"-username-"+$rootScope.loggedInUser.username).
+              empty().
+              remove();
+
               upVoteControlIcon.removeClass("voted");
+
+              if(upVoteCount > 0)
+              {
+                upVoteCountControl.html(upVoteCount);
+              }
+              else
+              {
+                upVoteCountControl.html("");
+              }
+
+              upVoteCountControl.attr("data-content", upVotePopoverContent.prop("outerHTML"));
+
             }
             else
             {
-              downVoteControlIcon.removeClass("voted");
+              if(downVoteControlIcon.hasClass("voted"))
+              {
+                 downVoteCount--;
+
+                downVotePopoverContent.
+                find("li#popover-"+commentId+"-username-"+$rootScope.loggedInUser.username).
+                empty().
+                remove();
+
+                downVoteControlIcon.removeClass("voted");
+
+                if(downVoteCount > 0)
+                {
+                  downVoteCountControl.html(downVoteCount);
+                }
+                else
+                {
+                  downVoteCountControl.html("");
+                }
+
+                downVoteCountControl.attr("data-content", downVotePopoverContent.prop("outerHTML"));
+              }
+
+              upVoteCount++;
+
+              upVotePopoverContent.append(
+                  $("<li/>").
+                  attr("id", "popover-"+commentId+"-username-"+$rootScope.loggedInUser.username).
+                  append(
+                      $("<a/>").attr("href", "").html($rootScope.loggedInUser.username)
+                    )
+                )
+
               upVoteControlIcon.addClass("voted");
+
+              upVoteCountControl.html(upVoteCount);
+
+              upVoteCountControl.attr("data-content", upVotePopoverContent.prop("outerHTML"));
+
+             
             }
           });
 
@@ -592,19 +680,104 @@ bloggerAppDirective.directive("discussion",[
 
           var downVoteControlIcon = $("#down-vote-icon-"+commentId);
 
-          var downvoteCountControl = $("#comment-downvote-count-"+commentId);
+          var upVoteCountControl = $("#comment-upvote-count-"+commentId);
+
+          var upVoteCount = upVoteCountControl.html();
+
+          var upVotePopoverContent = $(upVoteCountControl.attr("data-content"));
+
+
+          if(!(typeof upVoteCount !== "undefined" && upVoteCount.trim() === ""))
+          {
+            upVoteCount = parseInt(upVoteCount);
+          }
+          else
+          {
+            upVoteCount = 0;
+          }
+
+          var downVoteCountControl = $("#comment-downvote-count-"+commentId);
+
+          var downVoteCount = downVoteCountControl.html();
+
+          var downVotePopoverContent = $(downVoteCountControl.attr("data-content"));
+
+          if(!(typeof downVoteCount !== "undefined" && downVoteCount.trim() === ""))
+          {
+            downVoteCount = parseInt(downVoteCount);
+          }
+          else
+          {
+            downVoteCount = 0;
+          }
           
 
           CommentService.downvote(scope.post._id, commentId).success(function(upvote)
           {
             if(downVoteControlIcon.hasClass("voted"))
             {
+              downVoteCount--;
+
+              downVotePopoverContent.
+              find("li#popover-"+commentId+"-username-"+$rootScope.loggedInUser.username).
+              empty().
+              remove();
+
               downVoteControlIcon.removeClass("voted");
+
+              if(downVoteCount > 0)
+              {
+                downVoteCountControl.html(downVoteCount);
+              }
+              else
+              {
+                downVoteCountControl.html("");
+              }
+
+              downVoteCountControl.attr("data-content", downVotePopoverContent.prop("outerHTML"));
+
             }
             else
             {
-              upVoteControlIcon.removeClass("voted");
+              if(upVoteControlIcon.hasClass("voted"))
+              {
+                upVoteCount--;
+
+                upVotePopoverContent.
+                find("li#popover-"+commentId+"-username-"+$rootScope.loggedInUser.username).
+                empty().
+                remove();
+
+                upVoteControlIcon.removeClass("voted");
+
+                if(upVoteCount > 0)
+                {
+                  upVoteCountControl.html(upVoteCount);
+                }
+                else 
+                {
+                  upVoteCountControl.html("");
+                }
+
+                upVoteCountControl.attr("data-content", upVotePopoverContent.prop("outerHTML"));
+              }
+
+
+              downVoteCount++;
+
+              downVotePopoverContent.append(
+                  $("<li/>").
+                  attr("id", "popover-"+commentId+"-username-"+$rootScope.loggedInUser.username).
+                  append(
+                      $("<a/>").attr("href", "").html($rootScope.loggedInUser.username)
+                    )
+                )
+
               downVoteControlIcon.addClass("voted");
+
+              downVoteCountControl.html(downVoteCount);
+
+              downVoteCountControl.attr("data-content", downVotePopoverContent.prop("outerHTML"));
             }
           });
 
