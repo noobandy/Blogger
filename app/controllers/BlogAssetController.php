@@ -52,7 +52,10 @@ class BlogAssetController extends \BaseController {
 
 		if(strcmp($author->username, Auth::user()->username) == 0)
 		{
-			if(Input::hasFile("asset"))
+			$validator = Validator::make(Input::all(),
+			array("asset" => "required|mimes:jpeg,bmp,png,gif|max:200"));
+
+			if(!$validator->fails())
 			{
 				$uploadedFile = Input::file("asset");
 
@@ -60,14 +63,12 @@ class BlogAssetController extends \BaseController {
 
 				$digest = md5_file($uploadedFile->getRealPath());
 
-				$part1 = substr($digest, 0, 4);
-				$part2 = substr($digest, 4, 4);
-				$part3 = substr($digest, 8, 4);
-				$part4 = substr($digest, 12, 4);
+				$part1 = substr($digest, 0, 2);
+				$part2 = substr($digest, 2, 2);
+				$part3 = substr($digest, 4, 2);
+				$part4 = substr($digest, 6, 2);
 
-				$destinationPath = public_path().
-				DIRECTORY_SEPARATOR.
-				"uploads".
+				$fileDir = "uploads".
 				DIRECTORY_SEPARATOR.
 				$part1.
 				DIRECTORY_SEPARATOR.
@@ -75,18 +76,20 @@ class BlogAssetController extends \BaseController {
 				DIRECTORY_SEPARATOR.
 				$part3.
 				DIRECTORY_SEPARATOR.
-				$part4.
-				DIRECTORY_SEPARATOR.
-				$digest.
-				$uploadedFile->getClientOriginalExtension();
+				$part4;
 
-				$uploadedFile->move($uploadedFile);
+				$fileName = $digest.".".$uploadedFile->getClientOriginalExtension();
 
-				$asset = new Asset();
+				$destinationPath = public_path().DIRECTORY_SEPARATOR.$fileDir;
+
+
+				$uploadedFile->move($destinationPath, $fileName);
+
+				$asset = new BlogAsset();
 
 				$asset->name = $originalFileName;
 
-				$asset->path = $destinationPath;
+				$asset->path = $fileDir.DIRECTORY_SEPARATOR.$fileName;
 
 				$blog->assets()->save($asset);
 
@@ -94,7 +97,7 @@ class BlogAssetController extends \BaseController {
 			}
 			else
 			{
-
+				return Response::json(array("errors" => $validator->messages()), 200);
 			}
 		}
 		else
@@ -113,7 +116,7 @@ class BlogAssetController extends \BaseController {
 	 */
 	public function show($blogId, $assetId)
 	{
-		$asset = Asset::findOrFail($assetId);
+		$asset = BlogAsset::findOrFail($assetId);
 
 		return Response::json($asset, 200);
 	}
@@ -123,10 +126,10 @@ class BlogAssetController extends \BaseController {
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  string  $postId
+	 * @param  string  $assetId
 	 * @return Response
 	 */
-	public function destroy($blogId, $postId)
+	public function destroy($blogId, $assetId)
 	{
 		
 		$blog = Blog::findOrFail($blogId);
@@ -135,7 +138,7 @@ class BlogAssetController extends \BaseController {
 
 		if(strcmp($author->username, Auth::user()->username) == 0)
 		{
-			$asset = Asset::findOrFail($assetId);
+			$asset = BlogAsset::findOrFail($assetId);
 
 			$asset->delete();
 
