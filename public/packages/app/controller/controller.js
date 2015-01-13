@@ -173,6 +173,14 @@ bloggerAppController.controller("BlogController",[
 	}
 	]);
 
+bloggerAppController.controller("AssetController",[
+	"$scope", "$stateParams", "AssetService", "data",
+	function($scope, $stateParams, PostService, data)
+	{
+		$scope.assets = data.items;
+	}
+	]);
+
 bloggerAppController.controller("PostEditorController",[
 	"$scope", "PostService", "$modal", "APP_DATA", "TagService",
 	"$state", "post", "availableTags",

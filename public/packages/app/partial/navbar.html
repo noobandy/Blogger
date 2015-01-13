@@ -35,6 +35,13 @@
 		         		Log in
 		         	</a>
 		     	</li>
+		     	<li ng-if="isBlogOwner">
+		         	<a ui-sref="base.asset">
+		         		<i class="glyphicon glyphicon-folder-open">
+		         		</i>
+		         		Assets
+		         	</a>
+		     	</li>
 		      </ul>
 		      <form novalidate name="searchForm" ng-submit="searchForm.$valid && search()" class="navbar-form navbar-right" role="search">
 					<div class="form-group">

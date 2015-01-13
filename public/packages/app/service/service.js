@@ -145,6 +145,37 @@ bloggerAppService.service("TagService", [
 
 	}]);
 
+bloggerAppService.service("AssetService", [
+	"$http", "APP_DATA",
+	function($http, APP_DATA)
+	{
+		var dataUrl = APP_DATA.BASE_URL+"/blog/"+APP_DATA.BLOG._id+"/asset";
+
+		this.list = function(params)
+		{
+			return $http({
+				method : "GET",
+				url : dataUrl,
+				params : params
+			});
+		}
+
+		this.get = function(assetId)
+		{
+			return $http.get(dataUrl + "/" + assetId);
+		}
+
+		this.delete = function(assetId)
+		{
+			return $http.delete(dataUrl + "/" + assetId);
+		}
+
+		this.add = function(asset)
+		{
+			return $http.post(dataUrl, asset);
+		}
+
+	}]);
 
 bloggerAppService.service("CommentService", [
 	"$http", "APP_DATA",

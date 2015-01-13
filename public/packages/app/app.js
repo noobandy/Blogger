@@ -13,7 +13,8 @@ var bloggerApp = angular.module("bloggerApp", [
 	"ui.select",
 	"angularBasicAuth",
 	"ngAnimate",
-	"angular-loading-bar"
+	"angular-loading-bar",
+	"angularFileUpload"
 	]);
 
 
@@ -153,6 +154,40 @@ bloggerApp.config([
 				}
 			},
 			data : {
+				isAuthRequired : true
+			}
+			
+		});
+
+		$stateProvider.state("base.asset",
+		{
+			"url" : "blog/{blogId}/asset",
+			"views" : {
+				"content@base" : {
+					"templateUrl" : APP_DATA.BASE_URL + "/packages/app/partial/assetList.html",
+					"controller" : "AssetController"
+				}
+			},
+			"resolve" : {
+				"data" : [
+							"$q", "AssetService", "paginationConfig",
+							function($q, AssetService, paginationConfig)
+							{
+								var deferred = $q.defer();
+								var params = {
+									ps : paginationConfig.itemsPerPage,
+									pn : 1
+								}
+
+								AssetService.list({}).success(function(data)
+								{
+									deferred.resolve(data);
+								});
+
+								return deferred.promise;
+							}]
+			},
+			"data" : {
 				isAuthRequired : true
 			}
 			

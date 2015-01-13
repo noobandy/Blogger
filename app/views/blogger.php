@@ -45,6 +45,11 @@
 	<?php echo( HTML::script("packages/angular-base64/angular-base64.js"));?>
 	<?php echo( HTML::script("packages/angular-basicauth/angular-basicauth.js"));?>
 	<?php echo( HTML::script("packages/angular-loading-bar/loading-bar.js"));?>
+
+	<!-- shim is needed to support non-HTML5 FormData browsers (IE8-9)-->
+	<?php echo( HTML::script("packages/angular-file-upload/angular-file-upload-shim.min.js"));?>
+	<?php echo( HTML::script("packages/angular-file-upload/angular-file-upload.min.js"));?>
+	
 	<?php echo( HTML::script("packages/app/app.js"));?>
 	<?php echo( HTML::script("packages/app/controller/controller.js"));?>
 	<?php echo( HTML::script("packages/app/service/service.js"));?>
