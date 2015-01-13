@@ -20,4 +20,9 @@ class Blog extends Eloquent {
 	{
 		return $this->hasMany("Post");
 	}
+
+	public function assets()
+	{
+		return $this->hasMany("BlogAsset");
+	}
 }

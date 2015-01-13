@@ -54,6 +54,23 @@ Route::delete("/blog/{blogId}",
 		"as" => "blog.destroy"));
 
 
+
+Route::get("/blog/{blogId}/asset","BlogAssetController@index");
+
+Route::post("/blog/{blogId}/asset",
+	array('before' => "basic.once",
+		"uses" => "BlogAssetController@store",
+		"as" => "asset.store"));
+
+Route::get("/blog/{blogId}/asset/{assetId}","BlogAssetController@show");
+
+
+Route::delete("/blog/{blogId}/asset/{assetId}",
+	array('before' => "basic.once",
+		"uses" => "BlogAssetController@destroy",
+		"as" => "asset.destroy"));
+
+
 Route::get("/blog/{blogId}/post","PostController@index");
 
 Route::post("/blog/{blogId}/post",
