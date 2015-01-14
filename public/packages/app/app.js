@@ -13,6 +13,7 @@ var bloggerApp = angular.module("bloggerApp", [
 	"ui.select",
 	"angularBasicAuth",
 	"ngAnimate",
+	"ngTouch",
 	"angular-loading-bar",
 	"angularFileUpload"
 	]);

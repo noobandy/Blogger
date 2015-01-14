@@ -69,7 +69,7 @@
 	<div class="col-md-12">
 		<div class="col-xs-4 col-md-2" ng-repeat="asset in assets">
     		<div class="thumbnail">
-      			<img src="{{basePath}}/{{asset.thumbnail}}" alt="{{asset.name}}">
+      			<img ng-click="galleryDialog($index)" src="{{basePath}}/{{asset.thumbnail}}" alt="{{asset.name}}">
       			<div class="caption">
       				<div class="center-block" style="white-space: nowrap;
       					overflow: hidden;

@@ -175,9 +175,9 @@ bloggerAppController.controller("BlogController",[
 
 bloggerAppController.controller("AssetController",[
 	"APP_DATA", "$scope", "$stateParams", "AssetService", 
-	"$upload", "$timeout", "authService", "data", 
+	"$upload", "$timeout", "authService", "data", "$modal",
 	function(APP_DATA, $scope, $stateParams, AssetService, 
-		$upload, $timeout, authService, data)
+		$upload, $timeout, authService, data, $modal)
 	{
 		$scope.fileReaderSupported = window.FileReader != null && 
 		(window.FileAPI == null || FileAPI.html5 != false);
@@ -297,7 +297,58 @@ bloggerAppController.controller("AssetController",[
 			});
 		}
 
+
+		$scope.galleryDialog = function(index)
+		{
+			$modal.open(
+			{
+    			"templateUrl": APP_DATA.BASE_URL + "/packages/app/partial/imageGallery.html",
+				"size": "lg",
+				"controller": "ImageGalleryController",
+				"scope" : $scope
+    		});
+		};
+
 	}]);
+
+
+bloggerAppController.controller("ImageGalleryController",[
+	"$scope", "$modalInstance",
+	function($scope, $modalInstance)
+	{
+
+	    // Set of Photos
+
+	    // initial image index
+	    $scope._Index = 0;
+
+	    // if a current image is the same as requested image
+	    $scope.isActive = function (index) {
+	        return $scope._Index === index;
+	    };
+
+	    // show prev image
+	    $scope.showPrev = function () {
+	        $scope._Index = ($scope._Index > 0) ? --$scope._Index : $scope.assets.length - 1;
+	    };
+
+	    // show next image
+	    $scope.showNext = function () {
+	        $scope._Index = ($scope._Index < $scope.assets.length - 1) ? ++$scope._Index : 0;
+	    };
+
+	    // show a certain image
+	    $scope.showPhoto = function (index) {
+	        $scope._Index = index;
+	    };
+
+	    $scope.closeGallery = function()
+    	{
+    		$modalInstance.dismiss("ok");
+    	}
+
+	}]);
+
 
 bloggerAppController.controller("PostEditorController",[
 	"$scope", "PostService", "$modal", "APP_DATA", "TagService",
