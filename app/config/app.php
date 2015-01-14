@@ -125,6 +125,7 @@ return array(
 		'Jenssegers\Mongodb\Auth\ReminderServiceProvider',
 		'Jenssegers\Mongodb\Session\SessionServiceProvider',
 		'Cviebrock\EloquentSluggable\SluggableServiceProvider',
+		'Folklore\Image\ImageServiceProvider',
 
 	),
 
@@ -192,6 +193,7 @@ return array(
 		'URL'               => 'Illuminate\Support\Facades\URL',
 		'Validator'         => 'Illuminate\Support\Facades\Validator',
 		'View'              => 'Illuminate\Support\Facades\View',
+		'Image' 			=> 'Folklore\Image\Facades\Image',
 
 	),
 

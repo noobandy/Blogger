@@ -174,12 +174,116 @@ bloggerAppController.controller("BlogController",[
 	]);
 
 bloggerAppController.controller("AssetController",[
-	"$scope", "$stateParams", "AssetService", "data",
-	function($scope, $stateParams, PostService, data)
+	"APP_DATA", "$scope", "$stateParams", "AssetService", 
+	"$upload", "$timeout", "authService", "data", 
+	function(APP_DATA, $scope, $stateParams, PostService, 
+		$upload, $timeout, authService, data)
 	{
+		$scope.fileReaderSupported = window.FileReader != null && 
+		(window.FileAPI == null || FileAPI.html5 != false);
+
+		$scope.maxProgress = 100;
 		$scope.assets = data.items;
-	}
-	]);
+
+		$scope.alerts = [];
+
+		$scope.files = [];
+
+		$scope.inProgressFilter = function(file)
+		{
+			if(typeof file.progress === "undefined")
+			{
+				return true;
+			}
+			else
+			{
+				return file.progress < $scope.maxProgress;
+			}
+    	};
+
+		$scope.closeAlert = function(index) {
+			$scope.alerts.splice(index, 1);
+		};
+
+		
+
+		$scope.generateThumb = function(file)
+		{
+			if (file != null)
+			{
+				if ($scope.fileReaderSupported && file.type.indexOf('image') > -1)
+				{
+					$timeout(function()
+					{
+						var fileReader = new FileReader();
+						fileReader.readAsDataURL(file);
+					
+						fileReader.onload = function(e)
+						{
+							$timeout(function()
+							{
+								file.dataUrl = e.target.result;
+							});
+						}
+					});
+				}
+			}
+		}
+
+
+		$scope.onFileSelect = function($files)
+		{	
+			//$files: an array of files selected, each file has name, size, and type.
+			for (var i = 0; i < $files.length; i++) {
+				
+				(function(file){
+
+					$scope.generateThumb(file);
+
+					file.upload = $upload.upload({
+					url: APP_DATA.BASE_URL+'/blog/'+$stateParams.blogId+'/asset', //upload.php script, node.js route, or servlet url
+					method:'POST',
+					headers: {
+						'Content-Type' : 'multipart/form-data',
+						'Authorization' : authService.getAuth()
+					},
+					//withCredentials: true,
+					//data: {myObj: $scope.myModelObj},
+					file: file, // or list of files ($files) for html5 only
+					//fileName: 'doc.jpg' or ['1.jpg', '2.jpg', ...] // to modify the name of the file(s)
+					// customize file formData name ('Content-Desposition'), server side file variable name. 
+					//fileFormDataName: myFile, //or a list of names for multiple files (html5). Default is 'file' 
+					fileFormDataName: "asset"
+					// customize how data is added to formData. See #40#issuecomment-28612000 for sample code
+					//formDataAppender: function(formData, key, val){}
+				}).progress(function(evt)
+				{
+					file.progress = parseInt(100.0 * evt.loaded / evt.total);
+				}).success(function(data, status, headers, config)
+				{
+					if(data.errors)
+					{
+						data.errors.asset.forEach(function(msg)
+						{
+							$scope.alerts.push({ type: 'danger', msg: msg });
+						});
+					}
+					else
+					{
+						// file is uploaded successfully
+						//$scope.alerts.push({ type: 'success', msg: 'File successfully uploaded' });
+						
+						$scope.assets.push(data);
+
+					}
+				}).error(function(data)
+				{
+					$scope.alerts.push({ type: 'danger', msg: 'Failed to upload file' });
+				});
+				})($files[i]);
+			}
+		};
+	}]);
 
 bloggerAppController.controller("PostEditorController",[
 	"$scope", "PostService", "$modal", "APP_DATA", "TagService",

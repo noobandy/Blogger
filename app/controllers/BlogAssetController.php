@@ -53,7 +53,7 @@ class BlogAssetController extends \BaseController {
 		if(strcmp($author->username, Auth::user()->username) == 0)
 		{
 			$validator = Validator::make(Input::all(),
-			array("asset" => "required|mimes:jpeg,bmp,png,gif|max:200"));
+			array("asset" => "required|mimes:jpeg,bmp,png,gif|max:1024"));
 
 			if(!$validator->fails())
 			{
@@ -80,16 +80,28 @@ class BlogAssetController extends \BaseController {
 
 				$fileName = $digest.".".$uploadedFile->getClientOriginalExtension();
 
+				$thumbnailFileName = $digest."_thumb.".$uploadedFile
+				->getClientOriginalExtension();
+
 				$destinationPath = public_path().DIRECTORY_SEPARATOR.$fileDir;
 
 
 				$uploadedFile->move($destinationPath, $fileName);
+
+				Image::make($destinationPath.DIRECTORY_SEPARATOR.$fileName,
+					array(
+					'width' => 100,
+					'height' => 100
+					))->save($destinationPath.DIRECTORY_SEPARATOR.$thumbnailFileName);
+
 
 				$asset = new BlogAsset();
 
 				$asset->name = $originalFileName;
 
 				$asset->path = $fileDir.DIRECTORY_SEPARATOR.$fileName;
+				
+				$asset->thumbnail = $fileDir.DIRECTORY_SEPARATOR.$thumbnailFileName;
 
 				$blog->assets()->save($asset);
 

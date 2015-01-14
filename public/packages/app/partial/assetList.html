@@ -2,22 +2,76 @@
 <div class="page-header">
 	<h4>Blog Assets<h4>
 </div>
+
+<div class="row">
+	<div class="col-md-12">
+		<!-- Alert messages -->
+		<alert ng-repeat="alert in alerts" type="{{alert.type}}"
+			close="closeAlert($index)"> {{alert.msg}} </alert>
+	</div>
+</div>
+
+<!-- File drag drop control for file upload -->
+<div class="row">
+	<div class="col-md-12">
+		<div ng-file-drop ng-file-select ng-model="files"
+		ng-accept="'image/*'" ng-file-change="onFileSelect($files)" 
+		class="drop-box" 
+		drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}"
+		ng-multiple="true" accept="image/*">
+			Drop Images
+			<div>
+				here
+			</div>
+		</div>
+		<div ng-no-file-drop class="drop-box">
+			File Farg&Drop not supported on your browser
+		</div>
+	</div>
+</div>
+<hr>
+
+<!-- File upload thumb with progress -->
+<div class="row">
+	<div class="col-md-12">
+		<ul ng-show="files.length > 0" class="media-list">
+			<li ng-repeat="f in files | filter:inProgressFilter" class="media">
+				<a href="" class="media-left">
+					<img ng-show="f.dataUrl" ng-src="{{f.dataUrl}}" class="thumbnail" 
+						style="width: 64px;height: 64px">
+				</a>
+				<div class="media-body">
+					
+					<h4 class="media-heading">
+						{{f.name}} - 
+						<small>
+							 size: {{f.size}}B - type: {{f.type}}
+						</small>
+					</h4>
+					<button type="button" class="close" ng-click="f.upload.abort();f.upload.aborted=true" 
+						ng-show="f.upload != null && f.progress < 100 && !f.upload.aborted">
+							&times;
+					</button>
+					<progressbar class="progress-striped" max="maxProgress" 
+						value="f.progress" type="success">
+							{{f.progress}}%
+					</progressbar>
+					
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+
+
+<!-- Existing images -->
 <div class="row">
 	<div class="col-md-12">
 		<ul class="list-unstyled">
 			<li ng-repeat="asset in assets">
-				<div class="thumbnail">
-					<img src="{{basePath}}/{{asset.path}}">
-					 <div class="caption">
-	        			<h3 ng-bind="asset.name">
-	        			</h3>
-	        			<p>
-        					<a href="#" class="btn btn-danger" role="button">
-        						<i class="glyphicon glyphicon-trash"></i>
-        					</a>
-        				</p>
-      				</div>
-				</div>
+				<a href="{{basePath}}/{{asset.path}}">
+					<img class="img-responsive img-thumbnail" src="{{basePath}}/{{asset.thumbnail}}">
+				</a>
 			</li>
 		</ul>
 	</div>
