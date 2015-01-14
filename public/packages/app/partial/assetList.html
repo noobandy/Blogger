@@ -67,12 +67,20 @@
 <!-- Existing images -->
 <div class="row">
 	<div class="col-md-12">
-		<ul class="list-unstyled">
-			<li ng-repeat="asset in assets">
-				<a href="{{basePath}}/{{asset.path}}">
-					<img class="img-responsive img-thumbnail" src="{{basePath}}/{{asset.thumbnail}}">
-				</a>
-			</li>
-		</ul>
+		<div class="col-xs-4 col-md-2" ng-repeat="asset in assets">
+    		<div class="thumbnail">
+      			<img src="{{basePath}}/{{asset.thumbnail}}" alt="{{asset.name}}">
+      			<div class="caption">
+      				<div class="center-block" style="white-space: nowrap;
+      					overflow: hidden;
+      					text-overflow: ellipsis;">
+      					<small ng-bind="asset.name"></small>
+      				</div>
+      				<a ng-click="deleteAsset($index)" href="" class="btn btn-danger btn-block">
+        				Delete
+        			</a>		
+      			</div>
+    		</div>
+  		</div>
 	</div>
 </div>

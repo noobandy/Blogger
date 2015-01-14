@@ -176,7 +176,7 @@ bloggerAppController.controller("BlogController",[
 bloggerAppController.controller("AssetController",[
 	"APP_DATA", "$scope", "$stateParams", "AssetService", 
 	"$upload", "$timeout", "authService", "data", 
-	function(APP_DATA, $scope, $stateParams, PostService, 
+	function(APP_DATA, $scope, $stateParams, AssetService, 
 		$upload, $timeout, authService, data)
 	{
 		$scope.fileReaderSupported = window.FileReader != null && 
@@ -283,6 +283,20 @@ bloggerAppController.controller("AssetController",[
 				})($files[i]);
 			}
 		};
+
+
+		$scope.deleteAsset = function(index)
+		{
+			var asset = $scope.assets[index];
+
+			AssetService.delete(asset._id).success(function()
+			{
+				$scope.assets.splice(index, 1);
+
+				$scope.alerts.push({ type: 'success', msg: 'Asset successfully deleted.' });
+			});
+		}
+
 	}]);
 
 bloggerAppController.controller("PostEditorController",[
