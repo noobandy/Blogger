@@ -175,9 +175,9 @@ bloggerAppController.controller("BlogController",[
 
 bloggerAppController.controller("AssetController",[
 	"APP_DATA", "$scope", "$stateParams", "AssetService", 
-	"$upload", "$timeout", "authService", "data", "$modal",
+	"$upload", "$timeout", "authService", "data",
 	function(APP_DATA, $scope, $stateParams, AssetService, 
-		$upload, $timeout, authService, data, $modal)
+		$upload, $timeout, authService, data)
 	{
 		$scope.fileReaderSupported = window.FileReader != null && 
 		(window.FileAPI == null || FileAPI.html5 != false);
@@ -297,56 +297,6 @@ bloggerAppController.controller("AssetController",[
 			});
 		}
 
-
-		$scope.galleryDialog = function(index)
-		{
-			$modal.open(
-			{
-    			"templateUrl": APP_DATA.BASE_URL + "/packages/app/partial/imageGallery.html",
-				"size": "lg",
-				"controller": "ImageGalleryController",
-				"scope" : $scope
-    		});
-		};
-
-	}]);
-
-
-bloggerAppController.controller("ImageGalleryController",[
-	"$scope", "$modalInstance",
-	function($scope, $modalInstance)
-	{
-
-	    // Set of Photos
-
-	    // initial image index
-	    $scope._Index = 0;
-
-	    // if a current image is the same as requested image
-	    $scope.isActive = function (index) {
-	        return $scope._Index === index;
-	    };
-
-	    // show prev image
-	    $scope.showPrev = function () {
-	        $scope._Index = ($scope._Index > 0) ? --$scope._Index : $scope.assets.length - 1;
-	    };
-
-	    // show next image
-	    $scope.showNext = function () {
-	        $scope._Index = ($scope._Index < $scope.assets.length - 1) ? ++$scope._Index : 0;
-	    };
-
-	    // show a certain image
-	    $scope.showPhoto = function (index) {
-	        $scope._Index = index;
-	    };
-
-	    $scope.closeGallery = function()
-    	{
-    		$modalInstance.dismiss("ok");
-    	}
-
 	}]);
 
 
@@ -442,71 +392,6 @@ bloggerAppController.controller("PostController",[
 		
 	}
 	]);
-
-bloggerAppController.controller("CommentController", [
-	"$rootScope", "$scope", "$stateParams", "CommentService", "comments",
-	function($rootScope, $scope, $stateParams, CommentService, comments){
-		$scope.comments = comments;
-
-		$scope.newCommentText;
-
-		$scope.postComment = function()
-		{
-			var commentObj = {
-				post_id : $scope.post._id,
-				comment : $scope.newCommentText
-			};
-
-			$scope.newCommentText = "";
-
-			$scope.commentForm.$setUntouched();
-
-			CommentService.add(commentObj).success(function(data)
-			{
-				$scope.comments.unshift(data);
-			});	
-		}
-
-		$scope.postReply = function(comment, reply)
-		{
-			var commentObj = {
-				post_id : $scope.post._id,
-				parent_id : comment._id,
-				comment : reply 
-			}
-
-			CommentService.add(commentObj).success(function(data)
-			{
-				coomment.replies.unshift(data);
-			});
-		}
-
-		$scope.upvoteComment = function(commentId)
-		{
-			CommentService.upvote($scope.post._id, commentId).success(function()
-			{
-
-			});
-		}
-
-
-		$scope.downvoteComment = function(commentId)
-		{
-			CommentService.downvote($scope.post._id, commentId).success(function()
-			{
-				
-			});
-		}
-
-		$scope.reportComment = function(commentId)
-		{
-			CommentService.report($scope.post._id, commentId).success(function()
-			{
-				
-			});
-		}
-
-	}]);
 
 bloggerAppController.controller("TextSearchController",[
 	"$scope", "$stateParams", "PostService", "data", "paginationConfig",

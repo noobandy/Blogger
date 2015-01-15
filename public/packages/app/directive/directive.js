@@ -44,43 +44,41 @@ bloggerAppDirective.directive("marked",[
     };
 }]);
 
-bloggerAppDirective.directive("comment", [
-  "APP_DATA", "$rootScope",
-  function(APP_DATA, $rootScope)
+
+bloggerAppDirective.directive("imageGallery",[
+  function()
   {
-    var voted = function(votes)
-    {
-      for(var vote in votes)
-      {
-        if($rootScope.loggedInUser != null && 
-          $rootScope.loggedInUser._id === votes[vote].author_id)
-        {
-          return true;
-        }
-      }
-  };
-
-  var canModifyComment = function(comment)
-  {
-    return ($rootScope.loggedInUser != null 
-      && $rootScope.loggedInUser._id === comment.author_id) ||
-      $rootScope.isBlogOwner; 
-  };
-
-
     return {
-      restrict : "E",
-      templateUrl : APP_DATA.BASE_URL + "/packages/app/partial/comment.html",
-      transclude : false,
-      link: function(scope, element, attrs)
+      restrict : "EA",
+      transclude : true,
+      template : '<div>'+
+      '<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls">'+
+      '<div class="slides"></div>'+
+      '<h3 class="title"></h3>'+
+      '<a class="prev">‹</a>'+
+      '<a class="next">›</a>'+
+      '<a class="close">×</a>'+
+      '<a class="play-pause"></a>'+
+      '<ol class="indicator"></ol>'+
+      '</div>'+
+      '<div id="imageGalleryLinks" ng-transclude></div>'+
+      '</div>',
+      link : function(scope, element, attrs)
       {
-        scope.upvoted = voted(scope.comment.up_votes);
-        scope.downvoted = voted(scope.comment.down_votes);
-      } 
-    }
+        var imageLinkContainer = element.find("#imageGalleryLinks")
+        imageLinkContainer.on("click", "a", function(e)
+        {
+          e.preventDefault();
+          var target = e.target || e.srcElement,
+          link = target.src ? target.parentNode : target,
+          options = {index: link, event: event},
+          links = imageLinkContainer.find("a");
+          blueimp.Gallery(links, options);
+        });
+      }
+    };
+
   }]);
-
-
 
 bloggerAppDirective.directive("discussion",[
   "$rootScope", "PostService", "CommentService",

@@ -63,22 +63,23 @@
 	</div>
 </div>
 
-
 <!-- Existing images -->
-<div class="row">
-	<div class="col-md-12">
+ <div class="row">
+	<div class="col-md-12" image-gallery>
 		<div class="col-xs-4 col-md-2" ng-repeat="asset in assets">
     		<div class="thumbnail">
-      			<img ng-click="galleryDialog($index)" src="{{basePath}}/{{asset.thumbnail}}" alt="{{asset.name}}">
+    			<a href="{{basePath}}/{{asset.path}}" title="{{asset.name}}">
+    				<img src="{{basePath}}/{{asset.thumbnail}}" alt="{{asset.name}}">
+    			</a>
       			<div class="caption">
       				<div class="center-block" style="white-space: nowrap;
       					overflow: hidden;
       					text-overflow: ellipsis;">
       					<small ng-bind="asset.name"></small>
       				</div>
-      				<a ng-click="deleteAsset($index)" href="" class="btn btn-danger btn-block">
+      				<button ng-click="deleteAsset($index)" href="" class="btn btn-danger btn-block">
         				Delete
-        			</a>		
+        			</button>		
       			</div>
     		</div>
   		</div>
