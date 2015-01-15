@@ -40,6 +40,10 @@ Route::post("/password/reset", "RemindersController@postReset");
 
 Route::get("/user/{username}","UserController@show");
 
+Route::post("/user/{username}/avatar",
+	array("before" => "basic.once",
+		"uses" => "UserController@changeProfilePic",
+		"as" => "user.avatar"));
 
 Route::get("/blog/{blogId}","BlogController@show");
 

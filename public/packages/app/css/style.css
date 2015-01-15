@@ -72,6 +72,7 @@ ng-repeat transit
 .drop-box.dragover-err {
   border: 5px dashed red;
 }
+
 /*
  * override the default CSS as an example
  */

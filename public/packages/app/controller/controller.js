@@ -36,10 +36,74 @@ bloggerAppController.controller("LoginController",[
 
 bloggerAppController.controller("UserProfileController",[
 	"$rootScope", "$scope", "$modalInstance", "user", "authService",
-	function($rootScope, $scope, $modalInstance, user, authService)
+	"$upload", "APP_DATA",
+	function($rootScope, $scope, $modalInstance, user, authService, $upload, APP_DATA)
 	{
+		$scope.fileReaderSupported = window.FileReader != null && 
+		(window.FileAPI == null || FileAPI.html5 != false);
+
+		$scope.maxProgress = 100;
+
 		$scope.user = user;
+
 		$scope.alerts = [];
+
+
+		$scope.onFileSelect = function($files)
+		{	
+			//$files: an array of files selected, each file has name, size, and type.
+			for (var i = 0; i < $files.length; i++) {
+				
+				(function(file){
+					file.upload = $upload.upload({
+					url: APP_DATA.BASE_URL+'/user/'+$scope.user.username+'/avatar', //upload.php script, node.js route, or servlet url
+					method:'POST',
+					headers: {
+						'Content-Type' : 'multipart/form-data',
+						'Authorization' : authService.getAuth()
+					},
+					//withCredentials: true,
+					//data: {myObj: $scope.myModelObj},
+					file: file, // or list of files ($files) for html5 only
+					//fileName: 'doc.jpg' or ['1.jpg', '2.jpg', ...] // to modify the name of the file(s)
+					// customize file formData name ('Content-Desposition'), server side file variable name. 
+					//fileFormDataName: myFile, //or a list of names for multiple files (html5). Default is 'file' 
+					fileFormDataName: "profilePicture"
+					// customize how data is added to formData. See #40#issuecomment-28612000 for sample code
+					//formDataAppender: function(formData, key, val){}
+				}).progress(function(evt)
+				{
+					$scope.currentProgress = parseInt(100.0 * evt.loaded / evt.total);
+				}).success(function(data, status, headers, config)
+				{
+					if(data.errors)
+					{
+						data.errors.profilePicture.forEach(function(msg)
+						{
+							$scope.alerts.push({ type: 'danger', msg: msg });
+						});
+					}
+					else
+					{
+						// file is uploaded successfully
+						//$scope.alerts.push({ type: 'success', msg: 'File successfully uploaded' });
+						
+						$scope.user = data;
+
+					}
+				}).error(function(data)
+				{
+					$scope.alerts.push({ type: 'danger', msg: 'Failed to change profile picture' });
+				});
+				})($files[i]);
+			}
+		};
+
+
+		$scope.removeProfilePicture = function()
+		{
+			
+		}
 
 		$scope.closeAlert = function(index)
 		{

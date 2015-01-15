@@ -8,12 +8,25 @@
 	<h4 ng-bind="user.username"></h4>
 </div>
 <div class="modal-body">
-	<tabset justified="true">
-    <tab heading="Justified">
-    		<div class="media">
-  <a class="media-left" href="#">
-    <img class="media-object update-card-MDimentions" src="http://3.bp.blogspot.com/-IbEOTNtCMyU/TfCAdHaAxEI/AAAAAAAAA8U/EATib38SSAM/s320/joe-mcelderry.jpg" alt="...">
-  </a>
+  <div class="row">
+    <div class="col-md-12">
+    <!-- Alert messages -->
+      <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
+        {{alert.msg}} 
+      </alert>
+    </div>
+  </div>
+  <progressbar ng-if="currentProgress < maxProgress" class="progress-striped" max="maxProgress" value="currentProgress" type="success">
+    {{currentProgress}}%
+  </progressbar>
+  <div class="media">
+  <div ng-file-drop ng-file-select ng-model="files"
+      ng-accept="'image/*'" ng-file-change="onFileSelect($files)" 
+      drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}"
+      ng-multiple="false" accept="image/*" class="media-left profile-pic-drop-box">
+      
+      <img class="media-object" ng-src="{{basePath}}/{{user.profilePicture.thumbnail}}" alt="{{user.username}}">
+  </div>
   <div class="media-body">
     <div class="well well-sm btn-toolbar card-body-social" role="toolbar">
       <div class="btn-group git">
@@ -40,11 +53,5 @@
     
   </div>
 </div>
-    </tab>
-    <tab heading="SJ">
-
-    </tab>
-    <taing="Long Justified">Long b headLabeled Justified content</tab>
-  </tabset>
 </div>
 

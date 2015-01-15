@@ -163,7 +163,9 @@ bloggerAppDirective.directive("discussion",[
     var avatrElement = function(comment)
     {
       return $("<a/>").addClass("media-left").append(
-          $("<img/>").attr("src", "holder.js/64x64").addClass("avatar img-circle")
+          $("<img/>").
+          attr("src", BASE_URL+"/"+comment.author.profilePicture.avatar).
+          addClass("avatar img-circle")
         )
     }
 

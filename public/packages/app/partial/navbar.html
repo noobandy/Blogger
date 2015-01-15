@@ -16,8 +16,7 @@
 		      <ul class="nav navbar-nav">
 		      	<li ng-if="loggedInUser">
 		        	<a href="" ng-click="userProfileDialog(loggedInUser.username)">
-		        		<i class="glyphicon glyphicon-user">
-		         		</i>
+		        		<img class="img-circle" ng-src="{{basePath}}/{{loggedInUser.profilePicture.avatar}}">
 		         		<span ng-bind="loggedInUser.username"></span>
 		        	</a>
 		        </li>
