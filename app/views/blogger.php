@@ -11,6 +11,7 @@
 	<?php echo(HTML::style("packages/angular-loading-bar/loading-bar.css")); ?>
 	<?php echo(HTML::style("packages/Gallery-2.15.2/css/blueimp-gallery.css")); ?>
 	<?php echo(HTML::style("packages/app/css/style.css")); ?>
+	<?php echo(HTML::style("packages/pagedown/pagedown.css")); ?>
 	<!-- Globals -->
 	<script type="text/javascript">
 
@@ -53,6 +54,13 @@
 	<?php echo( HTML::script("packages/angular-file-upload/angular-file-upload.min.js"));?>
 	<!-- Image Gallery -->
 	<?php echo( HTML::script("packages/Gallery-2.15.2/js/blueimp-gallery.js"));?>
+
+	<!-- pagedown js -->
+	<?php echo( HTML::script("packages/pagedown/Markdown.Converter.js"));?>
+	<?php echo( HTML::script("packages/pagedown/Markdown.Sanitizer.js"));?>
+	<?php echo( HTML::script("packages/pagedown/Markdown.Editor.js"));?>
+
+	<!-- Application scripts -->
 	<?php echo( HTML::script("packages/app/app.js"));?>
 	<?php echo( HTML::script("packages/app/controller/controller.js"));?>
 	<?php echo( HTML::script("packages/app/service/service.js"));?>

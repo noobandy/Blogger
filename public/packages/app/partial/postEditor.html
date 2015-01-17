@@ -41,7 +41,7 @@
 				<textarea class="form-control input-lg" required ui-codemirror ui-codemirror-opts="editorOptions" ng-model="post.excerpt"></textarea>
 			</div>
 			<div class="form-group">
-				<textarea required ui-codemirror ui-codemirror-opts="editorOptions" ng-model="post.text"></textarea>
+				<textarea pagedown-editor content="post.text"></textarea>
 			</div>
 		</form>
 	</div>

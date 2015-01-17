@@ -377,3 +377,25 @@ bloggerAppDirective.directive("comment", [
       } 
     }
   }]);
+
+
+$("body").append(
+              '<div id="fileManager" class="modal hide fade" tabindex="-1" role="dialog">'+
+              '<div class="modal-header">'+
+              '<button type="button" class="close" data-dismiss="modal">×</button>'+
+              '<h3>Dialog</h3>'+
+              '</div>'+
+              '<div class="modal-body">'+
+              '<iframe src="" style="zoom:0.60" width="99.6%" height="250" frameborder="0"></iframe>'+
+              '</div>'+
+              '<div class="modal-footer">'+
+              '<button class="btn" data-dismiss="modal">OK</button>'+
+              '</div>'+
+              '</div>');
+
+             $('#fileManager').on('show', function () {
+              $('iframe').attr("src","http://localhost/FileManager/");
+            });
+
+             
+            $('#fileManager').modal({show:true});
