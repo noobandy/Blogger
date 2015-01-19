@@ -45,7 +45,8 @@ bloggerAppDirective.directive("marked",[
 }]);
 
 bloggerAppDirective.directive("pagedownEditor",[
-  function()
+  "$rootScope",
+  function($rootScope)
   {
     return {
       restrict : "EA",
@@ -71,11 +72,12 @@ bloggerAppDirective.directive("pagedownEditor",[
                 
         editor.run();
 
+
         editor.hooks.set("insertImageDialog", function(callback)
         {
           var iframe = $("<iframe id='filemanager_iframe' width='100%'' height='500px'' frameborder='0' scrolling='yes' allowtransparency='true'>").
           attr({
-            src: 'http://localhost/FileManager/index.html?field_name=selected_asset'// Change it to wherever  Filemanager is stored. 
+            src: 'http://localhost/FileManager/index.html?PageDownEditor=cleanupFunction&field_name=selected_asset'// Change it to wherever  Filemanager is stored. 
           });
 
           var FileManagerBackDrop = $("<div id='file-manager-backdrop' class='modal-backdrop fade  in' modal-backdrop='' style='z-index: 1040;'>");
@@ -102,6 +104,12 @@ bloggerAppDirective.directive("pagedownEditor",[
           $("body").append(FileManagerBackDrop);
 
           $("body").append(FileManagerContainer);
+
+          Markdown.Editor.cleanupFunction = function(url) {
+            callback($rootScope.basePath+"/"+url);
+            $('#file-manager-backdrop').empty().remove();
+            $("#file-manager").empty().remove();
+          }
 
           $("#file-manager-close").on("click", function(e)
           {
