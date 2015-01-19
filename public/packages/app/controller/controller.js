@@ -382,9 +382,31 @@ bloggerAppController.controller("PostEditorController",[
 	        lineWrapping : true,
 	        lineNumbers: true,
 	        readOnly: false,
-	        mode: "Markdown",
+	        mode: "markdown",
 	        theme: "cobalt",
-	        autofocus: true
+	        autofocus: true,
+	        keyMap : "sublime",
+	        fullScreen : false,
+	        showCursorWhenSelecting : true,
+	        matchBrackets : true,
+	        autoCloseBrackets : true,
+	        matchTags  : true,
+	        autoCloseTags : true,
+	        showTrailingSpace : false,
+	        newlineAndIndentContinueMarkdownList : false,
+	        highlightSelectionMatches: {showToken: /\w/},
+	        styleActiveLine: true,
+    		foldGutter: true,
+    		gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+    		extraKeys: 
+    		{
+    			"Ctrl-Space" : "autocomplete",
+    		 	"F11" : function(cm)
+    			{
+    		 		cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+    			}
+    		}
+
     	};
 
     	$scope.post = post;

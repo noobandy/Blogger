@@ -38,8 +38,45 @@
 	<?php echo( HTML::script("packages/holder.js/holder.js"));?>
 	<?php echo( HTML::script("packages/codemirror-4.8/lib/codemirror.js"));?>
 	<?php echo( HTML::script("packages/codemirror-4.8/addon/mode/overlay.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/mode/xml/xml.js"));?>
 	<?php echo( HTML::script("packages/codemirror-4.8/mode/gfm/gfm.js"));?>
 	<?php echo( HTML::script("packages/codemirror-4.8/mode/markdown/markdown.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/keymap/sublime.js"));?>
+
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/comment/comment.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/comment/continuecomment.js"));?>
+
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/edit/closebrackets.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/edit/closetag.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/edit/matchbrackets.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/edit/matchtags.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/edit/trailingspace.js"));?>
+
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/fold/brace-fold.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/fold/comment-fold.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/fold/foldcode.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/fold/foldgutter.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/fold/indent-fold.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/fold/markdown-fold.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/fold/xml-fold.js"));?>
+
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/hint/anyword-hint.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/hint/css-hint.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/hint/javascript-hint.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/hint/python-hint.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/hint/show-hint.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/hint/sql-hint.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/hint/xml-hint.js"));?>
+
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/search/match-highlighter.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/search/search.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/search/searchcursor.js"));?>
+
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/selection/active-line.js"));?>
+
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/display/fullscreen.js"));?>
+	<?php echo( HTML::script("packages/codemirror-4.8/addon/display/placeholder.js"));?>
+
 	<?php echo( HTML::script("packages/ui-codemirror-0.2.1/ui-codemirror.js"));?>
 	<?php echo( HTML::script("packages/highlight.js/highlight.min.js"));?>
 	<?php echo( HTML::script("packages/marked.js/marked.min.js"));?>
