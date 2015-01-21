@@ -40,16 +40,8 @@ class UserController extends \BaseController {
 				$part2 = substr($digest, 2, 2);
 				$part3 = substr($digest, 4, 2);
 				$part4 = substr($digest, 6, 2);
-
-				$fileDir = "uploads".
-				DIRECTORY_SEPARATOR.
-				$part1.
-				DIRECTORY_SEPARATOR.
-				$part2.
-				DIRECTORY_SEPARATOR.
-				$part3.
-				DIRECTORY_SEPARATOR.
-				$part4;
+				
+				$fileDir = $user->asset_dir;
 
 				$fileName = $username.".".$uploadedFile->getClientOriginalExtension();
 
