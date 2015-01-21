@@ -18,7 +18,6 @@ var bloggerApp = angular.module("bloggerApp", [
 	"angularFileUpload"
 	]);
 
-
 bloggerApp.constant("APP_DATA", {
 	"BASE_URL": BASE_URL,
 	"BLOG": BLOG
