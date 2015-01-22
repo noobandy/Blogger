@@ -52,7 +52,7 @@ class RegistrationController extends BaseController {
 
 			File::makeDirectory(public_path().DIRECTORY_SEPARATOR.$assetDir, 0775, true);
 
-			$user->asset_dir = $assetDir;
+			$user->asset_dir = str_replace(DIRECTORY_SEPARATOR, "/", $assetDir);
 
 			$user->save();
 

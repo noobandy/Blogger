@@ -32,16 +32,7 @@ class UserController extends \BaseController {
 			{
 				$uploadedFile = Input::file("profilePicture");
 
-				$originalFileName = $uploadedFile->getClientOriginalName();
-
-				$digest = md5_file($uploadedFile->getRealPath());
-
-				$part1 = substr($digest, 0, 2);
-				$part2 = substr($digest, 2, 2);
-				$part3 = substr($digest, 4, 2);
-				$part4 = substr($digest, 6, 2);
-				
-				$fileDir = $user->asset_dir;
+				$fileDir = str_replace("/", DIRECTORY_SEPARATOR, $user->asset_dir);
 
 				$fileName = $username.".".$uploadedFile->getClientOriginalExtension();
 
@@ -72,9 +63,9 @@ class UserController extends \BaseController {
 				$thumbnailFilePath =  $fileDir.DIRECTORY_SEPARATOR.$thumbnailFileName;
 
 				$user->profilePicture = array(
-						"original" => $originFilePath,
-						"thumbnail" => $thumbnailFilePath,
-						"avatar" => $avatarFilePath,
+						"original" => str_replace(DIRECTORY_SEPARATOR, "/", $originFilePath),
+						"thumbnail" => str_replace(DIRECTORY_SEPARATOR, "/", $thumbnailFilePath),
+						"avatar" => str_replace(DIRECTORY_SEPARATOR, "/", $avatarFilePath),
 					);
 
 				$user->save();
