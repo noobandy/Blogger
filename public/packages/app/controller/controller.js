@@ -366,9 +366,9 @@ bloggerAppController.controller("AssetController",[
 
 bloggerAppController.controller("PostEditorController",[
 	"$scope", "PostService", "$modal", "APP_DATA", "TagService",
-	"$state", "post", "availableTags",
+	"$state", "post", "availableTags", "authService", "$rootScope",
 	function($scope, PostService, $modal, APP_DATA, TagService,
-	 $state, post, availableTags)
+	 $state, post, availableTags, authService, $rootScope)
 	{
 		$scope.alerts = [];
 
@@ -395,7 +395,7 @@ bloggerAppController.controller("PostEditorController",[
 	        showTrailingSpace : false,
 	        newlineAndIndentContinueMarkdownList : false,
 	        //highlightSelectionMatches: {showToken: /\w/},
-	        scrollbarStyle : "overlay",
+	        scrollbarStyle : "simple",
 	        styleActiveLine: true,
     		foldGutter: true,
     		gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
@@ -463,6 +463,47 @@ bloggerAppController.controller("PostEditorController",[
 	    			$state.go("base.home");
 	    		});
     		}
+    	}
+
+
+    	$scope.openFileManager = function()
+    	{
+    		var iframe = $("<iframe id='filemanager_iframe' width='100%'' height='500px'' frameborder='0' scrolling='yes' allowtransparency='true'>").
+    		attr({
+    		src: 'http://localhost/FileManager/index.html?exclusiveFolder='+$rootScope.loggedInUser.asset_dir
+    		});
+
+          var FileManagerBackDrop = $("<div id='file-manager-backdrop' class='modal-backdrop fade  in' modal-backdrop='' style='z-index: 1040;'>");
+
+          var FileManagerContainer = $("<div id='file-manager' class='modal fade in' role='dialog' tagindex='-1' style='z-index: 1050; display: block;'>").append(
+            $("<div class='file-manager modal-dialog modal-lg'/>").
+          append($("<div class='modal-content'>").append(
+            $("<div class='modal-header'>").append(
+              $("<button id='file-manager-close' type='button' class='close'/>").
+              html("&times;")
+              )
+            ).append($("<div class='modal-body'>").append(
+              $("<div class='row'>").
+              append($("<div class='col-md-12'>").append(
+                iframe
+                )
+              )
+              )
+            ))
+            );
+
+          $("body").append($("<input id='selected_asset' type='hidden'>"));
+
+          $("body").append(FileManagerBackDrop);
+
+          $("body").append(FileManagerContainer);
+
+          $("#file-manager-close").on("click", function(e)
+          {
+            $('#file-manager-backdrop').empty().remove();
+            $("#file-manager").empty().remove();
+          });
+
     	}
 	}
 	]);
