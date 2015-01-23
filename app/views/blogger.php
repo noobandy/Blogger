@@ -4,8 +4,8 @@
 	<?php echo(HTML::style("packages/bootstrap/css/bootstrap-cerulean.css")); ?>
 	<?php echo(HTML::style("packages/bootstrap/css/font-awesome.min.css")); ?>
 	<?php echo(HTML::style("packages/nav-tree/abn_tree.css")); ?>
-	<?php echo(HTML::style("packages/codemirror-4.8/lib/codemirror.css")); ?>
-	<?php echo(HTML::style("packages/codemirror-4.8/theme/neat.css")); ?>
+	<?php echo(HTML::style("packages/CodeMirror-4.12.0/lib/codemirror.css")); ?>
+	<?php echo(HTML::style("packages/CodeMirror-4.12.0/theme/neat.css")); ?>
 	<?php echo(HTML::style("packages/highlight.js/default.min.css")); ?>
 	<?php echo(HTML::style("packages/ui-select/select.min.css")); ?>
 	<?php echo(HTML::style("packages/angular-loading-bar/loading-bar.css")); ?>
@@ -36,55 +36,55 @@
 			var tzid = tzdetect.matches()[0]
 	</script>
 	<?php echo( HTML::script("packages/holder.js/holder.js"));?>
-	<?php echo( HTML::script("packages/codemirror-4.8/lib/codemirror-dist.js"));?>
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/mode/overlay.js"));?>
-	<?php echo( HTML::script("packages/codemirror-4.8/mode/xml/xml.js"));?>
-	<?php echo( HTML::script("packages/codemirror-4.8/mode/gfm/gfm.js"));?>
-	<?php echo( HTML::script("packages/codemirror-4.8/mode/markdown/markdown.js"));?>
-	<?php echo( HTML::script("packages/codemirror-4.8/keymap/sublime.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/lib/codemirror.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/mode/overlay.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/mode/xml/xml.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/mode/gfm/gfm.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/mode/markdown/markdown.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/keymap/sublime.js"));?>
 
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/comment/comment.js"));?>
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/comment/continuecomment.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/comment/comment.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/comment/continuecomment.js"));?>
 
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/edit/closebrackets.js"));?>
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/edit/closetag.js"));?>
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/edit/matchbrackets.js"));?>
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/edit/matchtags.js"));?>
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/edit/trailingspace.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/edit/closebrackets.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/edit/closetag.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/edit/matchbrackets.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/edit/matchtags.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/edit/trailingspace.js"));?>
 
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/fold/brace-fold.js"));?>
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/fold/comment-fold.js"));?>
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/fold/foldcode.js"));?>
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/fold/foldgutter.js"));?>
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/fold/indent-fold.js"));?>
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/fold/markdown-fold.js"));?>
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/fold/xml-fold.js"));?>
-	<?php echo( HTML::style("packages/codemirror-4.8/addon/fold/foldgutter.css"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/fold/brace-fold.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/fold/comment-fold.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/fold/foldcode.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/fold/foldgutter.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/fold/indent-fold.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/fold/markdown-fold.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/fold/xml-fold.js"));?>
+	<?php echo( HTML::style("packages/CodeMirror-4.12.0/addon/fold/foldgutter.css"));?>
 
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/hint/anyword-hint.js"));?>
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/hint/show-hint.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/hint/anyword-hint.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/hint/show-hint.js"));?>
 	
-	<?php echo( HTML::style("packages/codemirror-4.8/addon/hint/show-hint.css"));?>
+	<?php echo( HTML::style("packages/CodeMirror-4.12.0/addon/hint/show-hint.css"));?>
 
 
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/dialog/dialog.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/dialog/dialog.js"));?>
 
-	<?php echo( HTML::style("packages/codemirror-4.8/addon/dialog/dialog.css"));?>
+	<?php echo( HTML::style("packages/CodeMirror-4.12.0/addon/dialog/dialog.css"));?>
 
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/search/match-highlighter.js"));?>
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/search/search.js"));?>
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/search/searchcursor.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/search/match-highlighter.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/search/search.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/search/searchcursor.js"));?>
 
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/selection/active-line.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/selection/active-line.js"));?>
 
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/display/fullscreen.js"));?>
-	<?php echo( HTML::style("packages/codemirror-4.8/addon/display/fullscreen.css"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/display/fullscreen.js"));?>
+	<?php echo( HTML::style("packages/CodeMirror-4.12.0/addon/display/fullscreen.css"));?>
 
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/display/placeholder.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/display/placeholder.js"));?>
 
-	<?php echo( HTML::style("packages/codemirror-4.8/addon/scroll/simplescrollbars.css"));?>
+	<?php echo( HTML::style("packages/CodeMirror-4.12.0/addon/scroll/simplescrollbars.css"));?>
 
-	<?php echo( HTML::script("packages/codemirror-4.8/addon/scroll/simplescrollbars.js"));?>
+	<?php echo( HTML::script("packages/CodeMirror-4.12.0/addon/scroll/simplescrollbars.js"));?>
 
 	<?php echo( HTML::script("packages/ui-codemirror-0.2.1/ui-codemirror.js"));?>
 	<?php echo( HTML::script("packages/highlight.js/highlight.min.js"));?>
