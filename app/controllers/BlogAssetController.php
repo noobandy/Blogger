@@ -136,6 +136,35 @@ class BlogAssetController extends \BaseController {
 
 
 	/**
+	 * update the specified resource.
+	 * @param  string  $assetId
+	 * @return Response
+	 */
+	public function update($blogId, $assetId)
+	{
+		
+		$blog = Blog::findOrFail($blogId);
+		
+		$author = User::findOrFail($blog->user_id);
+
+		if(strcmp($author->username, Auth::user()->username) == 0)
+		{
+			$asset = BlogAsset::findOrFail($assetId);
+
+			$updateData = Input::only("name");
+
+			$asset->update($updateData);
+
+			return Response::json(array(), 200);
+		}
+		else
+		{
+			App::abort(403);
+		}
+	}
+
+
+	/**
 	 * Remove the specified resource from storage.
 	 *
 	 * @param  string  $assetId
@@ -161,6 +190,5 @@ class BlogAssetController extends \BaseController {
 			App::abort(403);
 		}
 	}
-
 
 }

@@ -38,15 +38,10 @@
 		  		</ui-select>
 			</div>
 			<div class="form-group">
-				<textarea class="form-control input-lg" required ui-codemirror ui-codemirror-opts="editorOptions" ng-model="post.excerpt"></textarea>
+				<textarea class="form-control input-lg" ui-tinymce="tinyMceEditorOptions" ng-model="post.excerpt"></textarea>
 			</div>
 			<div class="form-group">
-				<div class="btn-group">
-					<button ng-click="openFileManager()" class="btn" type="button">
-						<i class="glyphicon glyphicon-folder-open"></i>
-					</button>
-				</div>
-				<textarea ui-codemirror ui-codemirror-opts="editorOptions"  ng-model="post.text" placeholder="Post content"></textarea>
+				<textarea class="form-control input-lg" ui-tinymce="tinyMceEditorOptions" ng-model="post.text"  placeholder="Post content"></textarea>
 			</div>
 		</form>
 	</div>

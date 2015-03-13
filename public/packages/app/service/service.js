@@ -165,6 +165,15 @@ bloggerAppService.service("AssetService", [
 			return $http.get(dataUrl + "/" + assetId);
 		}
 
+		this.update = function(asset)
+		{
+			return  $http({
+				method : "PUT",
+				url : dataUrl + "/" + asset._id,
+				data : asset
+			});
+		}
+
 		this.delete = function(assetId)
 		{
 			return $http.delete(dataUrl + "/" + assetId);

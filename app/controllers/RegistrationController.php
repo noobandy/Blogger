@@ -28,34 +28,7 @@ class RegistrationController extends BaseController {
 			$user->activationKey = $key;
 			$user->active = false;
 			$user->save();
-
-			//create asset folder for this user
-
-			$digest = md5($user->username);
-
-			$part1 = substr($digest, 0, 2);
-			$part2 = substr($digest, 2, 2);
-			$part3 = substr($digest, 4, 2);
-			$part4 = substr($digest, 6, 2);
-
-			$assetDir = "uploads".
-			DIRECTORY_SEPARATOR.
-			$part1.
-			DIRECTORY_SEPARATOR.
-			$part2.
-			DIRECTORY_SEPARATOR.
-			$part3.
-			DIRECTORY_SEPARATOR.
-			$part4.
-			DIRECTORY_SEPARATOR.
-			$user->username;
-
-			File::makeDirectory(public_path().DIRECTORY_SEPARATOR.$assetDir, 0775, true);
-
-			$user->asset_dir = str_replace(DIRECTORY_SEPARATOR, "/", $assetDir);
-
-			$user->save();
-
+			
 			//save blog data in the db
 
 			$blog = new Blog();

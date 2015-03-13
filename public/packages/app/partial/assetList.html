@@ -66,20 +66,18 @@
 <!-- Existing images -->
  <div class="row">
 	<div class="col-md-12" image-gallery>
-		<div class="col-xs-4 col-md-2" ng-repeat="asset in assets">
+		<div class="col-md-4" ng-repeat="asset in assets">
     		<div class="thumbnail">
     			<a href="{{basePath}}/{{asset.path}}" title="{{asset.name}}">
     				<img src="{{basePath}}/{{asset.thumbnail}}" alt="{{asset.name}}">
     			</a>
       			<div class="caption">
-      				<div class="center-block" style="white-space: nowrap;
-      					overflow: hidden;
-      					text-overflow: ellipsis;">
-      					<small ng-bind="asset.name"></small>
-      				</div>
-      				<button ng-click="deleteAsset($index)" href="" class="btn btn-danger btn-block">
-        				Delete
-        			</button>		
+      				<h3 editable-text="asset.name" buttons="no" onaftersave="updateAsset(asset)" ng-bind="asset.name"></h3>
+      				<p>
+      					<button ng-click="deleteAsset($index)" href="" class="btn btn-sm btn-danger">
+        				<i class="glyphicon glyphicon-trash"></i>
+        				</button>		
+      				</p>
       			</div>
     		</div>
   		</div>

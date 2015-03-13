@@ -69,6 +69,12 @@ Route::post("/blog/{blogId}/asset",
 Route::get("/blog/{blogId}/asset/{assetId}","BlogAssetController@show");
 
 
+Route::put("/blog/{blogId}/asset/{assetId}",
+	array("before" => "basic.once",
+		"uses" => "BlogAssetController@update",
+		"as" => "asset.update"));
+
+
 Route::delete("/blog/{blogId}/asset/{assetId}",
 	array('before' => "basic.once",
 		"uses" => "BlogAssetController@destroy",

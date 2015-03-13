@@ -12,8 +12,7 @@
 		"jenssegers/mongodb-session": "~1.0",
 		"components/angular.js": "~1.3",
 		"cviebrock/eloquent-sluggable": "~2.0",
-		"folklore/image": "0.1.*",
-		"thebingservices/codemirror": "dev-master"
+		"folklore/image": "0.1.*"
 	},
 	"autoload": {
 		"classmap": [
@@ -31,8 +30,7 @@
 			"php artisan optimize",
 			"php artisan asset:publish --path=vendor/twbs/bootstrap/dist bootstrap",
 			"php artisan asset:publish --path=vendor/components/jquery jquery",
-			"php artisan asset:publish --path=vendor/components/angular.js angular.js",
-			"php artisan asset:publish --path=vendor/thebingservices/codemirror/CodeMirror codemirror"
+			"php artisan asset:publish --path=vendor/components/angular.js angular.js"
 
 		],
 		"post-update-cmd": [
@@ -40,8 +38,7 @@
 			"php artisan optimize",
 			"php artisan asset:publish --path=vendor/twbs/bootstrap/dist bootstrap",
 			"php artisan asset:publish --path=vendor/components/jquery jquery",
-			"php artisan asset:publish --path=vendor/components/angular.js angular.js",
-			"php artisan asset:publish --path=vendor/thebingservices/codemirror/CodeMirror codemirror"
+			"php artisan asset:publish --path=vendor/components/angular.js angular.js"
 		],
 		"post-create-project-cmd": [
 			"php artisan key:generate"

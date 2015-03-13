@@ -361,6 +361,16 @@ bloggerAppController.controller("AssetController",[
 			});
 		}
 
+		$scope.updateAsset = function( asset )
+		{
+			AssetService.update(asset).success(function(data)
+			{
+				$scope.alerts.push({ type: 'success', msg: 'Asset successfully updated.' });
+			});
+		}
+
+
+
 	}]);
 
 
@@ -409,6 +419,19 @@ bloggerAppController.controller("PostEditorController",[
     		}
 
     	};
+
+    	$scope.tinyMceEditorOptions = {
+    		selector: "textarea",
+    		theme: "modern",
+    		plugins: ["autoresize advlist autolink lists link image charmap print preview hr anchor pagebreak",
+		        "searchreplace wordcount visualblocks visualchars code fullscreen",
+		        "insertdatetime media nonbreaking save table contextmenu directionality",
+		        "emoticons template paste textcolor colorpicker textpattern"],
+    		toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+    		toolbar2: "print preview media | forecolor backcolor emoticons",
+    		image_advtab: true
+        	};
+
 
     	$scope.post = post;
 
@@ -463,47 +486,6 @@ bloggerAppController.controller("PostEditorController",[
 	    			$state.go("base.home");
 	    		});
     		}
-    	}
-
-
-    	$scope.openFileManager = function()
-    	{
-    		var iframe = $("<iframe id='filemanager_iframe' width='100%'' height='500px'' frameborder='0' scrolling='yes' allowtransparency='true'>").
-    		attr({
-    		src: 'http://localhost/FileManager/index.html?exclusiveFolder='+$rootScope.loggedInUser.asset_dir
-    		});
-
-          var FileManagerBackDrop = $("<div id='file-manager-backdrop' class='modal-backdrop fade  in' modal-backdrop='' style='z-index: 1040;'>");
-
-          var FileManagerContainer = $("<div id='file-manager' class='modal fade in' role='dialog' tagindex='-1' style='z-index: 1050; display: block;'>").append(
-            $("<div class='file-manager modal-dialog modal-lg'/>").
-          append($("<div class='modal-content'>").append(
-            $("<div class='modal-header'>").append(
-              $("<button id='file-manager-close' type='button' class='close'/>").
-              html("&times;")
-              )
-            ).append($("<div class='modal-body'>").append(
-              $("<div class='row'>").
-              append($("<div class='col-md-12'>").append(
-                iframe
-                )
-              )
-              )
-            ))
-            );
-
-          $("body").append($("<input id='selected_asset' type='hidden'>"));
-
-          $("body").append(FileManagerBackDrop);
-
-          $("body").append(FileManagerContainer);
-
-          $("#file-manager-close").on("click", function(e)
-          {
-            $('#file-manager-backdrop').empty().remove();
-            $("#file-manager").empty().remove();
-          });
-
     	}
 	}
 	]);

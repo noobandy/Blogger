@@ -12,6 +12,8 @@
 	<?php echo(HTML::style("packages/Gallery-2.15.2/css/blueimp-gallery.css")); ?>
 	<?php echo(HTML::style("packages/app/css/style.css")); ?>
 	<?php echo(HTML::style("packages/pagedown/pagedown.css")); ?>
+	<?php echo(HTML::style("packages/angular-xeditable-0.1.8/css/xeditable.css")); ?>
+	
 	<!-- Globals -->
 	<script type="text/javascript">
 
@@ -105,6 +107,14 @@
 	<?php echo( HTML::script("packages/pagedown/Markdown.Converter.js"));?>
 	<?php echo( HTML::script("packages/pagedown/Markdown.Sanitizer.js"));?>
 	<?php echo( HTML::script("packages/pagedown/Markdown.Editor.js"));?>
+
+	<!-- x-editable -->
+	<?php echo( HTML::script("packages/angular-xeditable-0.1.8/js/xeditable.js")) ?>
+
+	<!-- ui-tinymce -->
+	<?php echo( HTML::script("packages/tinymce/js/tinymce/tinymce.min.js")) ?>
+	
+	<?php echo( HTML::script("packages/ui-tinymce-0.0.4/src/tinymce.js")) ?>
 
 	<!-- Application scripts -->
 	<?php echo( HTML::script("packages/app/app.js"));?>

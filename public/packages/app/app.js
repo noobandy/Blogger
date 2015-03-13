@@ -15,7 +15,9 @@ var bloggerApp = angular.module("bloggerApp", [
 	"ngAnimate",
 	"ngTouch",
 	"angular-loading-bar",
-	"angularFileUpload"
+	"angularFileUpload",
+	"xeditable",
+	"ui.tinymce"
 	]);
 
 bloggerApp.constant("APP_DATA", {
@@ -469,9 +471,12 @@ bloggerApp.config([
 	]);
 
 bloggerApp.run(["APP_DATA", "$rootScope", "$modal",
-	"authDefaults", "authService", "UserService", "cfpLoadingBar",
-	function(APP_DATA, $rootScope, $modal, authDefaults, authService, UserService, cfpLoadingBar)
+	"authDefaults", "authService", "UserService", "cfpLoadingBar","editableOptions",
+	function(APP_DATA, $rootScope, $modal, authDefaults, authService, UserService, cfpLoadingBar,
+		editableOptions)
 	{
+		 editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
+		
 		//store gloabl current blog data in root scope
 		$rootScope.currentBlog = APP_DATA.BLOG;
 		//store global base url in root scope
